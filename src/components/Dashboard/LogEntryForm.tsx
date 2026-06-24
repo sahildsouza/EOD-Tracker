@@ -2,16 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getCurrentDateIST } from '../../utils/dateUtils';
 import { useAuth } from '../../contexts/AuthContext';
+import { parseISO } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
 
 interface LogEntryFormProps {
   onSaved: () => void;
   disabled?: boolean;
   suggestedStartTime?: string;
+  editingLog?: any;
+  onCancelEdit?: () => void;
 }
 
 const CATEGORIES = ['Meeting', 'Support', 'Troubleshooting', 'Break', 'Activity', 'Others'];
 
-export default function LogEntryForm({ onSaved, disabled, suggestedStartTime }: LogEntryFormProps) {
+export default function LogEntryForm({ onSaved, disabled, suggestedStartTime, editingLog, onCancelEdit }: LogEntryFormProps) {
   const { user } = useAuth();
   const [category, setCategory] = useState(CATEGORIES[0]);
   const [title, setTitle] = useState('');
@@ -22,11 +26,20 @@ export default function LogEntryForm({ onSaved, disabled, suggestedStartTime }: 
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (suggestedStartTime) {
+    if (editingLog) {
+      setCategory(editingLog.category);
+      setTitle(editingLog.title);
+      setFromTime(formatInTimeZone(parseISO(editingLog.from_time), 'Asia/Kolkata', 'HH:mm'));
+      setToTime(formatInTimeZone(parseISO(editingLog.to_time), 'Asia/Kolkata', 'HH:mm'));
+      setNotes(editingLog.notes || '');
+      setError('');
+    } else if (suggestedStartTime) {
       setFromTime(suggestedStartTime);
-      // We don't overwrite toTime if it's already later, but for a fresh entry let's just leave it blank or default to fromTime
+      setToTime('');
+      setTitle('');
+      setNotes('');
     }
-  }, [suggestedStartTime]);
+  }, [editingLog, suggestedStartTime]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +61,7 @@ export default function LogEntryForm({ onSaved, disabled, suggestedStartTime }: 
 
       const durationMins = Math.round((toDate.getTime() - fromDate.getTime()) / 60000);
 
-      const { error: dbError } = await supabase.from('log_entries').insert([{
+      const payload = {
         user_id: user.id,
         date: today,
         category,
@@ -57,13 +70,23 @@ export default function LogEntryForm({ onSaved, disabled, suggestedStartTime }: 
         to_time: toIso,
         duration_minutes: durationMins,
         notes: notes || null
-      }]);
+      };
 
-      if (dbError) throw dbError;
+      if (editingLog) {
+        const { error: dbError } = await supabase.from('log_entries').update(payload).eq('id', editingLog.id);
+        if (dbError) throw dbError;
+      } else {
+        const { error: dbError } = await supabase.from('log_entries').insert([payload]);
+        if (dbError) throw dbError;
+      }
       
       // Reset form
       setTitle('');
-      setFromTime(toTime); // auto-set next start time to current end time
+      if (!editingLog) {
+        setFromTime(toTime); // auto-set next start time to current end time
+      } else {
+        setFromTime('');
+      }
       setToTime('');
       setNotes('');
       onSaved();
@@ -76,7 +99,14 @@ export default function LogEntryForm({ onSaved, disabled, suggestedStartTime }: 
 
   return (
     <div>
-      <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem' }}>Add Log Entry</h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>{editingLog ? 'Edit Log Entry' : 'Add Log Entry'}</h3>
+        {editingLog && onCancelEdit && (
+          <button type="button" className="btn-outline" onClick={onCancelEdit} style={{ padding: '0.25rem 0.75rem', fontSize: '0.875rem' }}>
+            Cancel Edit
+          </button>
+        )}
+      </div>
       
       {error && <div style={{ color: 'var(--danger-color)', marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
 
@@ -112,7 +142,7 @@ export default function LogEntryForm({ onSaved, disabled, suggestedStartTime }: 
 
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <button type="submit" className="btn-primary" disabled={disabled || saving}>
-            {saving ? 'Adding...' : 'Add Log Entry'}
+            {saving ? 'Saving...' : (editingLog ? 'Save Changes' : 'Add Log Entry')}
           </button>
         </div>
       </form>

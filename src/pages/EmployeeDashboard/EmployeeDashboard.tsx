@@ -26,6 +26,7 @@ export default function EmployeeDashboard() {
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [shift, setShift] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [editingLogId, setEditingLogId] = useState<string | null>(null);
 
   const today = getCurrentDateIST();
   const locked = isDateLocked(today);
@@ -155,9 +156,11 @@ export default function EmployeeDashboard() {
           {status?.status === 'shift' && (
             <div className={styles.card}>
               <LogEntryForm 
-                onSaved={fetchData} 
+                onSaved={() => { setEditingLogId(null); fetchData(); }} 
                 disabled={locked} 
                 suggestedStartTime={suggestedStartTime}
+                editingLog={entries.find(e => e.id === editingLogId) || null}
+                onCancelEdit={() => setEditingLogId(null)}
               />
             </div>
           )}
@@ -197,7 +200,10 @@ export default function EmployeeDashboard() {
                       <td>{entry.duration_minutes}m</td>
                       <td>
                         {!locked ? (
-                          <button style={{ color: 'var(--danger-color)', fontSize: '0.875rem', fontWeight: 600 }} onClick={() => handleDelete(entry.id)}>Delete</button>
+                          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                            <button style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', fontWeight: 600 }} onClick={() => { setEditingLogId(entry.id); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Edit</button>
+                            <button style={{ color: 'var(--danger-color)', fontSize: '0.875rem', fontWeight: 600 }} onClick={() => handleDelete(entry.id)}>Delete</button>
+                          </div>
                         ) : (
                           <span title="Day is locked">🔒</span>
                         )}
