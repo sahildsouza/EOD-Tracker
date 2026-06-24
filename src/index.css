@@ -177,3 +177,21 @@ table th, table td {
   flex-direction: column;
   gap: 0.5rem;
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
