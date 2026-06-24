@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import styles from './AdminSettings.module.css';
-import { Trash2, Edit } from 'lucide-react';
+import { Trash2, Edit, Clock, Briefcase, Plus, X, Check } from 'lucide-react';
 import { parseISO, differenceInMinutes } from 'date-fns';
 
 export default function AdminSettings() {
@@ -15,6 +15,10 @@ export default function AdminSettings() {
   const [newShiftEnd, setNewShiftEnd] = useState('');
   
   const [newDesigName, setNewDesigName] = useState('');
+
+  // Edit states
+  const [editingShiftId, setEditingShiftId] = useState<string | null>(null);
+  const [editingDesigId, setEditingDesigId] = useState<string | null>(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -31,7 +35,7 @@ export default function AdminSettings() {
     fetchData();
   }, []);
 
-  const handleAddShift = async (e: React.FormEvent) => {
+  const handleSaveShift = async (e: React.FormEvent) => {
     e.preventDefault();
     // Calculate duration
     const today = new Date().toISOString().split('T')[0];
@@ -46,15 +50,34 @@ export default function AdminSettings() {
     const diffMins = differenceInMinutes(end, start);
     const durationHours = diffMins / 60; // Total duration including break
 
-    await supabase.from('shifts').insert([{
+    const payload = {
       name: newShiftName,
       start_time: newShiftStart + ':00',
       end_time: newShiftEnd + ':00',
       duration_hours: durationHours
-    }]);
+    };
+
+    if (editingShiftId) {
+      await supabase.from('shifts').update(payload).eq('id', editingShiftId);
+      setEditingShiftId(null);
+    } else {
+      await supabase.from('shifts').insert([payload]);
+    }
 
     setNewShiftName(''); setNewShiftStart(''); setNewShiftEnd('');
     fetchData();
+  };
+
+  const handleEditShiftClick = (shift: any) => {
+    setEditingShiftId(shift.id);
+    setNewShiftName(shift.name);
+    setNewShiftStart(shift.start_time.slice(0, 5));
+    setNewShiftEnd(shift.end_time.slice(0, 5));
+  };
+
+  const handleCancelShiftEdit = () => {
+    setEditingShiftId(null);
+    setNewShiftName(''); setNewShiftStart(''); setNewShiftEnd('');
   };
 
   const handleDeleteShift = async (id: string) => {
@@ -64,11 +87,26 @@ export default function AdminSettings() {
     fetchData();
   };
 
-  const handleAddDesignation = async (e: React.FormEvent) => {
+  const handleSaveDesignation = async (e: React.FormEvent) => {
     e.preventDefault();
-    await supabase.from('designations').insert([{ name: newDesigName }]);
+    if (editingDesigId) {
+      await supabase.from('designations').update({ name: newDesigName }).eq('id', editingDesigId);
+      setEditingDesigId(null);
+    } else {
+      await supabase.from('designations').insert([{ name: newDesigName }]);
+    }
     setNewDesigName('');
     fetchData();
+  };
+
+  const handleEditDesigClick = (desig: any) => {
+    setEditingDesigId(desig.id);
+    setNewDesigName(desig.name);
+  };
+
+  const handleCancelDesigEdit = () => {
+    setEditingDesigId(null);
+    setNewDesigName('');
   };
 
   const handleDeleteDesignation = async (id: string) => {
@@ -92,29 +130,43 @@ export default function AdminSettings() {
       <div className={styles.grid}>
         {/* Shifts */}
         <div className={styles.card}>
-          <h2 className={styles.title}>Shifts</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <Clock className="text-secondary" size={24} />
+            <h2 className={styles.title} style={{ margin: 0 }}>Shifts</h2>
+          </div>
+          
           <div className={styles.list}>
             {shifts.map(s => (
-              <div key={s.id} className={styles.listItem}>
+              <div key={s.id} className={styles.listItem} style={{ borderColor: editingShiftId === s.id ? 'var(--accent-color)' : '' }}>
                 <div className={styles.itemInfo}>
                   <div className={styles.itemName}>{s.name}</div>
                   <div className={styles.itemDesc}>{s.start_time.slice(0,5)} - {s.end_time.slice(0,5)} ({s.duration_hours} hrs required)</div>
                 </div>
                 <div className={styles.itemActions}>
-                  <button className="btn-danger" style={{ padding: '0.5rem' }} onClick={() => handleDeleteShift(s.id)}>
-                    <Trash2 size={16} />
+                  <button className={styles.iconBtn} onClick={() => handleEditShiftClick(s)} title="Edit">
+                    <Edit size={18} />
+                  </button>
+                  <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDeleteShift(s.id)} title="Delete">
+                    <Trash2 size={18} />
                   </button>
                 </div>
               </div>
             ))}
-            {shifts.length === 0 && <p className="text-secondary">No shifts configured.</p>}
+            {shifts.length === 0 && <p className="text-secondary" style={{ padding: '1rem', textAlign: 'center', backgroundColor: 'var(--bg-page)', borderRadius: '8px' }}>No shifts configured.</p>}
           </div>
 
-          <form className={styles.addForm} onSubmit={handleAddShift}>
-            <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>Add New Shift</h3>
+          <form className={styles.addForm} onSubmit={handleSaveShift}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>{editingShiftId ? 'Edit Shift' : 'Add New Shift'}</h3>
+              {editingShiftId && (
+                <button type="button" className={styles.iconBtn} onClick={handleCancelShiftEdit} title="Cancel Edit">
+                  <X size={18} />
+                </button>
+              )}
+            </div>
             <div className={styles.formGroup}>
               <label className={styles.label}>Shift Name</label>
-              <input required className="surface input" value={newShiftName} onChange={e => setNewShiftName(e.target.value)} />
+              <input required className="surface input" placeholder="e.g. Morning Shift" value={newShiftName} onChange={e => setNewShiftName(e.target.value)} />
             </div>
             <div className={styles.timeGrid}>
               <div className={styles.formGroup}>
@@ -126,34 +178,51 @@ export default function AdminSettings() {
                 <input type="time" required className="surface input" value={newShiftEnd} onChange={e => setNewShiftEnd(e.target.value)} />
               </div>
             </div>
-            <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>Add Shift</button>
+            <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+              {editingShiftId ? <><Check size={18} /> Save Changes</> : <><Plus size={18} /> Add Shift</>}
+            </button>
           </form>
         </div>
 
         {/* Designations */}
         <div className={styles.card}>
-          <h2 className={styles.title}>Designations</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <Briefcase className="text-secondary" size={24} />
+            <h2 className={styles.title} style={{ margin: 0 }}>Designations</h2>
+          </div>
           <div className={styles.list}>
             {designations.map(d => (
-              <div key={d.id} className={styles.listItem}>
+              <div key={d.id} className={styles.listItem} style={{ borderColor: editingDesigId === d.id ? 'var(--accent-color)' : '' }}>
                 <div className={styles.itemName}>{d.name}</div>
                 <div className={styles.itemActions}>
-                  <button className="btn-danger" style={{ padding: '0.5rem' }} onClick={() => handleDeleteDesignation(d.id)}>
-                    <Trash2 size={16} />
+                  <button className={styles.iconBtn} onClick={() => handleEditDesigClick(d)} title="Edit">
+                    <Edit size={18} />
+                  </button>
+                  <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDeleteDesignation(d.id)} title="Delete">
+                    <Trash2 size={18} />
                   </button>
                 </div>
               </div>
             ))}
-            {designations.length === 0 && <p className="text-secondary">No designations configured.</p>}
+            {designations.length === 0 && <p className="text-secondary" style={{ padding: '1rem', textAlign: 'center', backgroundColor: 'var(--bg-page)', borderRadius: '8px' }}>No designations configured.</p>}
           </div>
 
-          <form className={styles.addForm} onSubmit={handleAddDesignation}>
-            <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>Add New Designation</h3>
+          <form className={styles.addForm} onSubmit={handleSaveDesignation}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>{editingDesigId ? 'Edit Designation' : 'Add New Designation'}</h3>
+              {editingDesigId && (
+                <button type="button" className={styles.iconBtn} onClick={handleCancelDesigEdit} title="Cancel Edit">
+                  <X size={18} />
+                </button>
+              )}
+            </div>
             <div className={styles.formGroup}>
               <label className={styles.label}>Designation Name</label>
-              <input required className="surface input" value={newDesigName} onChange={e => setNewDesigName(e.target.value)} />
+              <input required className="surface input" placeholder="e.g. Software Engineer" value={newDesigName} onChange={e => setNewDesigName(e.target.value)} />
             </div>
-            <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem' }}>Add Designation</button>
+            <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+              {editingDesigId ? <><Check size={18} /> Save Changes</> : <><Plus size={18} /> Add Designation</>}
+            </button>
           </form>
         </div>
       </div>
