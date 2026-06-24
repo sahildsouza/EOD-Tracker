@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { differenceInMinutes, parseISO } from 'date-fns';
 import { supabase } from '../../lib/supabase';
 import { getCurrentDateIST } from '../../utils/dateUtils';
-import styles from '../AdminSettings/AdminSettings.module.css';
+import styles from './AdminDashboard.module.css';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({ employees: 0, loggedToday: 0, offToday: 0, defaulters: 0 });
@@ -88,22 +88,22 @@ export default function AdminDashboard() {
     <div className={`page-container ${styles.container}`}>
       <h1 className={styles.title} style={{ marginBottom: '1.5rem' }}>Dashboard Overview</h1>
       
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
-        <div className={styles.card} style={{ alignItems: 'center', textAlign: 'center' }}>
-          <div className="text-secondary" style={{ fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase' }}>Active Employees</div>
-          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--text-primary)' }}>{stats.employees}</div>
+      <div className={styles.kpiGrid}>
+        <div className={styles.kpiCard}>
+          <div className={styles.kpiLabel}>Active Employees</div>
+          <div className={styles.kpiValue} style={{ color: 'var(--text-primary)' }}>{stats.employees}</div>
         </div>
-        <div className={styles.card} style={{ alignItems: 'center', textAlign: 'center' }}>
-          <div className="text-secondary" style={{ fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase' }}>On Shift Today</div>
-          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--accent-color)' }}>{stats.loggedToday}</div>
+        <div className={styles.kpiCard}>
+          <div className={styles.kpiLabel}>On Shift Today</div>
+          <div className={styles.kpiValue} style={{ color: 'var(--accent-color)' }}>{stats.loggedToday}</div>
         </div>
-        <div className={styles.card} style={{ alignItems: 'center', textAlign: 'center' }}>
-          <div className="text-secondary" style={{ fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase' }}>Leave / Week-off</div>
-          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--text-primary)' }}>{stats.offToday}</div>
+        <div className={styles.kpiCard}>
+          <div className={styles.kpiLabel}>Leave / Week-off</div>
+          <div className={styles.kpiValue} style={{ color: 'var(--text-primary)' }}>{stats.offToday}</div>
         </div>
-        <div className={styles.card} style={{ alignItems: 'center', textAlign: 'center' }}>
-          <div className="text-secondary" style={{ fontSize: '0.875rem', fontWeight: 600, textTransform: 'uppercase' }}>Defaulters (Yesterday)</div>
-          <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--danger-color)' }}>{stats.defaulters}</div>
+        <div className={styles.kpiCard}>
+          <div className={styles.kpiLabel}>Defaulters (Yesterday)</div>
+          <div className={styles.kpiValue} style={{ color: 'var(--danger-color)' }}>{stats.defaulters}</div>
         </div>
       </div>
 
