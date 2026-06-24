@@ -1,0 +1,129 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 1.5rem;
+    align-items: start;
+  }
+}
+
+.card {
+  padding: 1.5rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.dayHeader {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  padding-bottom: 0.5rem;
+}
+
+.dayCell {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  min-height: 80px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dayCell:hover {
+  border-color: var(--text-secondary);
+  background-color: var(--bg-page);
+  transform: translateY(-2px);
+}
+
+.dayCell.selected {
+  border-color: var(--accent-color);
+  background-color: rgba(37, 99, 235, 0.05);
+}
+
+[data-theme='dark'] .dayCell.selected {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.dayCell.disabled {
+  background-color: transparent;
+  border-color: transparent;
+  opacity: 0.3;
+  cursor: default;
+}
+.dayCell.disabled:hover {
+  transform: none;
+  background-color: transparent;
+}
+
+.dayCell.today {
+  border-bottom: 3px solid var(--accent-color);
+}
+
+.dayNumber {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.statusDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dayCell .statusDot {
+  align-self: flex-end;
+}
+
+.dot-completed { background-color: var(--success-color); }
+.dot-partial { background-color: var(--warning-color); }
+.dot-leave { background-color: #3B82F6; } /* Blue */
+.dot-week-off { background-color: #14B8A6; } /* Teal */
+.dot-defaulter { background-color: var(--danger-color); }
+
+.summaryStrip {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+}
+
+.summaryItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.detailsPanel {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  height: 100%;
+}
