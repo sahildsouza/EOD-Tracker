@@ -129,7 +129,7 @@ export default function AdminEodLogs() {
       <div className={styles.card}>
         <div className={styles.headerRow}>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 700 }}>EOD Logs</h1>
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div className={styles.headerActions}>
             <input 
               type="date" 
               className="surface" 
@@ -137,19 +137,19 @@ export default function AdminEodLogs() {
               value={date} 
               onChange={(e) => setDate(e.target.value)}
             />
-            <button className="btn-outline" onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <button className="btn-outline" onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
               <Download size={16} /> Export
             </button>
           </div>
         </div>
 
         <div className={styles.filters}>
-          <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border-color)', padding: '0.5rem', backgroundColor: 'var(--bg-page)' }}>
+          <div className={styles.searchBox}>
             <Search size={16} style={{ color: 'var(--text-secondary)', marginRight: '0.5rem' }} />
             <input 
               type="text" 
               placeholder="Search Name or ID..." 
-              style={{ border: 'none', background: 'transparent', outline: 'none' }}
+              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%' }}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
