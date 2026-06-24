@@ -207,11 +207,11 @@ export default function AdminEodLogs() {
                             ) : (
                               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                 {row.logs.map((log: any) => (
-                                  <li key={log.id} style={{ fontSize: '0.875rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                  <li key={log.id} style={{ fontSize: '0.875rem', display: 'grid', gridTemplateColumns: '125px 170px minmax(150px, 250px) 1fr', gap: '1rem', alignItems: 'start', padding: '0.5rem 0', borderBottom: '1px solid var(--border-color)' }}>
                                     <span className={styles.catBadge} style={{ width: '125px', textAlign: 'center', backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>{log.category}</span>
-                                    <span style={{ fontWeight: 600 }}>{format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')} ({log.duration_minutes}m)</span>
-                                    <span>{log.title}</span>
-                                    {log.notes && <span style={{ color: 'var(--text-secondary)' }}>- {log.notes}</span>}
+                                    <span style={{ fontWeight: 600, color: 'var(--text-secondary)', marginTop: '2px' }}>{format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')} <span style={{ fontSize: '0.75rem' }}>({log.duration_minutes}m)</span></span>
+                                    <span style={{ fontWeight: 500, color: 'var(--text-primary)', marginTop: '2px' }}>{log.title}</span>
+                                    {log.notes && <span style={{ color: 'var(--text-secondary)', fontStyle: 'italic', borderLeft: '2px solid var(--border-color)', paddingLeft: '0.75rem', marginTop: '2px' }}>{log.notes}</span>}
                                   </li>
                                 ))}
                               </ul>
