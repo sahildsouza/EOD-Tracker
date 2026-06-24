@@ -12,23 +12,68 @@
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebarTop {
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebarHeader {
-  padding: 1.5rem;
-  border-bottom: 1px solid var(--border-color);
+  padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar.collapsed .sidebarHeader {
+  padding: 1.5rem 0;
+  justify-content: center;
+}
+
+.collapseBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.collapseBtn:hover {
+  color: var(--text-primary);
 }
 
 .brand {
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 0.25rem;
+  white-space: nowrap;
+}
+
+.sidebar.collapsed .brand {
+  display: none;
 }
 
 .userInfo {
+  padding: 0 1.5rem 1.5rem 1.5rem;
   font-size: 0.875rem;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar.collapsed .userInfo {
+  display: none;
 }
 
 .nav {
@@ -44,7 +89,18 @@
   padding: 0.75rem 1.5rem;
   color: var(--text-primary);
   font-weight: 500;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, padding 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar.collapsed .navItem {
+  padding: 0.75rem;
+  justify-content: center;
+}
+
+.sidebar.collapsed .navItem span {
+  display: none;
 }
 
 .navItem:hover {
@@ -66,6 +122,11 @@
   gap: 0.75rem;
 }
 
+.sidebar.collapsed .sidebarFooter {
+  padding: 1rem 0;
+  align-items: center;
+}
+
 .footerButton {
   display: flex;
   align-items: center;
@@ -73,10 +134,16 @@
   color: var(--text-secondary);
   font-size: 0.875rem;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .footerButton:hover {
   color: var(--text-primary);
+}
+
+.sidebar.collapsed .footerButton span {
+  display: none;
 }
 
 .mainArea {

@@ -13,7 +13,9 @@ import {
   User as UserIcon,
   LogOut,
   Moon,
-  Sun
+  Sun,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import styles from './AppLayout.module.css';
 
@@ -45,6 +47,8 @@ export default function AppLayout() {
     navigate('/login');
   };
 
+  const [isCollapsed, setIsCollapsed] = React.useState(false);
+
   return (
     <div className={styles.layout}>
       {/* Mobile Top Header */}
@@ -61,9 +65,14 @@ export default function AppLayout() {
       </div>
 
       {/* Desktop Sidebar */}
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <div className={styles.brand}>EOD Tracker</div>
+      <aside className={`${styles.sidebar} ${isCollapsed ? styles.collapsed : ''}`}>
+        <div className={styles.sidebarTop}>
+          <div className={styles.sidebarHeader}>
+            <div className={styles.brand}>EOD Tracker</div>
+            <button className={styles.collapseBtn} onClick={() => setIsCollapsed(!isCollapsed)} title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}>
+              {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+            </button>
+          </div>
           <div className={styles.userInfo}>
             {profile?.full_name} ({profile?.employee_id})
           </div>
@@ -77,22 +86,23 @@ export default function AppLayout() {
                 key={link.to} 
                 to={link.to} 
                 className={({ isActive }) => `${styles.navItem} ${isActive ? styles.active : ''}`}
+                title={isCollapsed ? link.label : undefined}
               >
                 <Icon size={20} />
-                {link.label}
+                <span>{link.label}</span>
               </NavLink>
             );
           })}
         </nav>
 
         <div className={styles.sidebarFooter}>
-          <button onClick={toggleTheme} className={styles.footerButton}>
+          <button onClick={toggleTheme} className={styles.footerButton} title={isCollapsed ? (theme === 'light' ? 'Dark Mode' : 'Light Mode') : undefined}>
             {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-            {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+            <span>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
           </button>
-          <button onClick={handleSignOut} className={styles.footerButton}>
+          <button onClick={handleSignOut} className={styles.footerButton} title={isCollapsed ? 'Logout' : undefined}>
             <LogOut size={20} />
-            Logout
+            <span>Logout</span>
           </button>
         </div>
       </aside>
