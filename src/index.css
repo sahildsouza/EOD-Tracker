@@ -162,6 +162,11 @@ a:hover {
   }
 }
 
+/* Global Table Styles */
+table th, table td {
+  white-space: nowrap;
+}
+
 /* Toast container positioning */
 #toast-root {
   position: fixed;
