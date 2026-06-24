@@ -110,10 +110,10 @@ export default function AdminDashboard() {
       <div className={styles.grid}>
         <div className={styles.card}>
           <h2 className={styles.title}>Today's Log Breakdown</h2>
-          <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', alignItems: 'center', height: '250px' }}>
-            <div className="pie-chart" style={{ width: '200px', height: '200px', background: conicGradient }} />
+          <div className={styles.pieContainer}>
+            <div className={`pie-chart ${styles.pieElement}`} style={{ background: conicGradient }} />
             {pieData.length > 0 && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <div className={styles.pieLegend}>
                 {pieData.map(d => (
                   <div key={d.category} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
                     <span className="pie-chart" style={{ width: '12px', height: '12px', backgroundColor: d.color }} />

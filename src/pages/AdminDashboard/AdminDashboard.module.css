@@ -57,6 +57,26 @@
   font-weight: 700;
 }
 
+.pieContainer {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+}
+
+.pieElement {
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+}
+
+.pieLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 @media (max-width: 768px) {
   .kpiGrid {
     grid-template-columns: 1fr 1fr;
@@ -75,5 +95,23 @@
   }
   .card {
     padding: 1rem;
+  }
+  
+  .pieContainer {
+    flex-direction: column;
+    height: auto;
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+  
+  .pieElement {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .pieLegend {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
