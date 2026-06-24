@@ -47,6 +47,19 @@ export default function AppLayout() {
 
   return (
     <div className={styles.layout}>
+      {/* Mobile Top Header */}
+      <div className={styles.mobileHeader}>
+        <div className={styles.brand}>EOD Tracker</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <button onClick={toggleTheme} className={styles.mobileHeaderBtn}>
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+          <button onClick={handleSignOut} className={styles.mobileHeaderBtn}>
+            <LogOut size={20} />
+          </button>
+        </div>
+      </div>
+
       {/* Desktop Sidebar */}
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
@@ -86,10 +99,6 @@ export default function AppLayout() {
 
       {/* Main Content Area */}
       <main className={styles.mainArea}>
-        {/* On mobile, we might want a minimal top bar showing brand and theme toggle */}
-        <div className="md:hidden" style={{ display: 'none' /* Will refine mobile top header later */ }}>
-           {/* Mobile header placeholder */}
-        </div>
         <Outlet />
       </main>
 

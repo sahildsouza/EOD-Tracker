@@ -86,6 +86,24 @@
   overflow-y: auto;
 }
 
+.mobileHeader {
+  display: none;
+}
+
+.mobileHeaderBtn {
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.mobileHeaderBtn:hover {
+  color: var(--text-primary);
+}
+
 /* Mobile Nav */
 .mobileNav {
   display: none;
@@ -114,7 +132,16 @@
   }
 
   .sidebar {
-    display: none; /* Actually, we need a header on mobile instead of full sidebar */
+    display: none; 
+  }
+  
+  .mobileHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
   }
 
   .mainArea {

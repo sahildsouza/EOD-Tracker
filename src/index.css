@@ -156,6 +156,12 @@ a:hover {
   flex: 1;
 }
 
+@media (max-width: 768px) {
+  .page-container {
+    padding: 1rem;
+  }
+}
+
 /* Toast container positioning */
 #toast-root {
   position: fixed;

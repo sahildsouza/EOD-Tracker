@@ -25,6 +25,12 @@
   border: 1px solid var(--border-color);
 }
 
+@media (max-width: 768px) {
+  .card {
+    padding: 1rem;
+  }
+}
+
 .ringContainer {
   position: relative;
   display: flex;

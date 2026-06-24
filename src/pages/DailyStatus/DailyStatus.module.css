@@ -19,6 +19,12 @@
   text-align: center;
 }
 
+@media (max-width: 768px) {
+  .card {
+    padding: 1.5rem 1rem;
+  }
+}
+
 .title {
   font-size: 1.5rem;
   font-weight: 700;
