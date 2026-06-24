@@ -67,19 +67,39 @@
 
 .logDetailsRow {
   font-size: 0.875rem;
-  display: grid;
-  grid-template-columns: 125px 170px 1fr 1fr;
-  gap: 1rem;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--border-color);
   white-space: normal;
 }
 
+.logDetailsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logDetailsInfo {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.logExpandedBox {
+  padding: 1rem;
+  background-color: var(--bg-page);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
 .logTitle {
   font-weight: 500;
   color: var(--text-primary);
-  margin-top: 2px;
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -89,10 +109,6 @@
 
 .logNotes {
   color: var(--text-secondary);
-  font-style: italic;
-  border-left: 2px solid var(--border-color);
-  padding-left: 0.75rem;
-  margin-top: 2px;
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -100,19 +116,21 @@
   min-width: 0;
 }
 
-@media (max-width: 1024px) {
-  .logDetailsRow {
-    grid-template-columns: 125px 1fr;
-  }
-  
-  .logTitle, .logNotes {
-    grid-column: 1 / -1;
-  }
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-@media (max-width: 480px) {
-  .logDetailsRow {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
+.iconBtn:hover {
+  background-color: var(--bg-page);
+  border-color: var(--border-color);
+  color: var(--text-primary);
 }

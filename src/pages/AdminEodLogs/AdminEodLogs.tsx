@@ -5,7 +5,7 @@ import { calculateMergedMinutes } from '../../utils/timeUtils';
 import { exportToExcel } from '../../utils/exportUtils';
 import { parseISO, format } from 'date-fns';
 import styles from './AdminEodLogs.module.css';
-import { Search, Download, ChevronDown, ChevronRight } from 'lucide-react';
+import { Search, Download, ChevronDown, ChevronRight, Eye, EyeOff } from 'lucide-react';
 
 const CATEGORY_COLORS: Record<string, string> = {
   Meeting: 'var(--category-meeting)',
@@ -28,6 +28,7 @@ export default function AdminEodLogs() {
   const [designationFilter, setDesignationFilter] = useState('');
   
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+  const [expandedLogs, setExpandedLogs] = useState<Set<string>>(new Set());
 
   const fetchData = async () => {
     setLoading(true);
@@ -99,6 +100,13 @@ export default function AdminEodLogs() {
     if (newSet.has(id)) newSet.delete(id);
     else newSet.add(id);
     setExpandedRows(newSet);
+  };
+
+  const toggleLog = (id: string) => {
+    const newSet = new Set(expandedLogs);
+    if (newSet.has(id)) newSet.delete(id);
+    else newSet.add(id);
+    setExpandedLogs(newSet);
   };
 
   const handleExport = () => {
@@ -208,10 +216,30 @@ export default function AdminEodLogs() {
                               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                 {row.logs.map((log: any) => (
                                   <li key={log.id} className={styles.logDetailsRow}>
-                                    <span className={styles.catBadge} style={{ width: '125px', textAlign: 'center', backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>{log.category}</span>
-                                    <span style={{ fontWeight: 600, color: 'var(--text-secondary)', marginTop: '2px' }}>{format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')} <span style={{ fontSize: '0.75rem' }}>({log.duration_minutes}m)</span></span>
-                                    <span className={styles.logTitle}>{log.title}</span>
-                                    {log.notes && <span className={styles.logNotes}>{log.notes}</span>}
+                                    <div className={styles.logDetailsHeader}>
+                                      <div className={styles.logDetailsInfo}>
+                                        <span className={styles.catBadge} style={{ width: '125px', textAlign: 'center', backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>{log.category}</span>
+                                        <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>{format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')} <span style={{ fontSize: '0.75rem' }}>({log.duration_minutes}m)</span></span>
+                                      </div>
+                                      <button className={styles.iconBtn} onClick={() => toggleLog(log.id)} title="View Title and Notes">
+                                        {expandedLogs.has(log.id) ? <EyeOff size={18} /> : <Eye size={18} />}
+                                      </button>
+                                    </div>
+                                    
+                                    {expandedLogs.has(log.id) && (
+                                      <div className={styles.logExpandedBox}>
+                                        <div>
+                                          <strong style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Title</strong>
+                                          <div className={styles.logTitle}>{log.title}</div>
+                                        </div>
+                                        {log.notes && (
+                                          <div>
+                                            <strong style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Notes</strong>
+                                            <div className={styles.logNotes}>{log.notes}</div>
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
                                   </li>
                                 ))}
                               </ul>
