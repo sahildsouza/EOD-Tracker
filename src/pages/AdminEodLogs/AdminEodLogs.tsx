@@ -127,23 +127,11 @@ export default function AdminEodLogs() {
   return (
     <div className={`page-container ${styles.container}`}>
       <div className={styles.card}>
-        <div className={styles.headerRow}>
+        <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 700 }}>EOD Logs</h1>
-          <div className={styles.headerActions}>
-            <input 
-              type="date" 
-              className="surface" 
-              style={{ padding: '0.5rem', border: '1px solid var(--border-color)' }}
-              value={date} 
-              onChange={(e) => setDate(e.target.value)}
-            />
-            <button className="btn-outline" onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'center' }}>
-              <Download size={16} /> Export
-            </button>
-          </div>
         </div>
 
-        <div className={styles.filters}>
+        <div className={styles.filtersContainer}>
           <div className={styles.searchBox}>
             <Search size={16} style={{ color: 'var(--text-secondary)', marginRight: '0.5rem' }} />
             <input 
@@ -154,21 +142,33 @@ export default function AdminEodLogs() {
               onChange={e => setSearch(e.target.value)}
             />
           </div>
-          
-          <select className="surface" style={{ padding: '0.5rem' }} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
-            <option value="">All Statuses</option>
-            <option value="shift">Shift</option>
-            <option value="leave">Leave</option>
-            <option value="week-off">Week-off</option>
-            <option value="Not Started">Not Started</option>
-          </select>
 
-          <select className="surface" style={{ padding: '0.5rem' }} value={designationFilter} onChange={e => setDesignationFilter(e.target.value)}>
-            <option value="">All Designations</option>
-            {designations.map(d => (
-              <option key={d.id} value={d.id}>{d.name}</option>
-            ))}
-          </select>
+          <div className={styles.controlsRow}>
+            <input 
+              type="date" 
+              className={styles.controlItem} 
+              value={date} 
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <select className={styles.controlItem} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
+              <option value="">All Statuses</option>
+              <option value="shift">Shift</option>
+              <option value="leave">Leave</option>
+              <option value="week-off">Week-off</option>
+              <option value="Not Started">Not Started</option>
+            </select>
+
+            <select className={styles.controlItem} value={designationFilter} onChange={e => setDesignationFilter(e.target.value)}>
+              <option value="">All Designations</option>
+              {designations.map(d => (
+                <option key={d.id} value={d.id}>{d.name}</option>
+              ))}
+            </select>
+
+            <button className={`btn-primary ${styles.controlItem}`} onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', justifyContent: 'center' }}>
+              <Download size={14} /> Export
+            </button>
+          </div>
         </div>
 
         <div className={styles.tableContainer} style={{ marginTop: '1.5rem' }}>
