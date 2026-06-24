@@ -208,7 +208,7 @@ export default function AdminEodLogs() {
                               <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                                 {row.logs.map((log: any) => (
                                   <li key={log.id} style={{ fontSize: '0.875rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                                    <span className={styles.catBadge} style={{ width: '100px', textAlign: 'center', backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>{log.category}</span>
+                                    <span className={styles.catBadge} style={{ width: '125px', textAlign: 'center', backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>{log.category}</span>
                                     <span style={{ fontWeight: 600 }}>{format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')} ({log.duration_minutes}m)</span>
                                     <span>{log.title}</span>
                                     {log.notes && <span style={{ color: 'var(--text-secondary)' }}>- {log.notes}</span>}
