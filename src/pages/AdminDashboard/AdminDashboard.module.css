@@ -27,16 +27,13 @@
 }
 
 .kpiGrid {
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   margin-bottom: 1.5rem;
-  width: 100%;
 }
 
 .kpiCard {
-  flex: 1;
-  min-width: 0;
   align-items: center; 
   text-align: center;
   padding: 1.5rem;
@@ -83,20 +80,20 @@
 
 @media (max-width: 768px) {
   .kpiGrid {
-    gap: 0.5rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
     margin-bottom: 1rem;
   }
   .kpiCard {
-    padding: 0.5rem 0.25rem;
+    padding: 1rem;
     gap: 0.25rem;
   }
   .kpiLabel {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     line-height: 1.2;
-    /* Allows wrapping but keeps it compact */
   }
   .kpiValue {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
   }
   .card {
     padding: 1rem;
