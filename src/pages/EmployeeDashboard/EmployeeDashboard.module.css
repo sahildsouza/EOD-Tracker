@@ -4,6 +4,12 @@
   gap: 1.5rem;
 }
 
+.topSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 @media (min-width: 1024px) {
   .topSection {
     display: grid;
@@ -122,26 +128,110 @@
   gap: 0.75rem;
 }
 
-.tableContainer {
-  overflow-x: auto;
+.logList {
+  display: flex;
+  flex-direction: column;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.table th, .table td {
+.logRow {
+  display: grid;
+  grid-template-columns: 120px 1fr 60px 60px 80px 80px;
+  gap: 1rem;
+  align-items: center;
   padding: 0.75rem 1rem;
-  text-align: left;
   border-bottom: 1px solid var(--border-color);
   font-size: 0.875rem;
+  white-space: normal;
 }
 
-.table th {
+.logHeader {
   font-weight: 600;
   color: var(--text-secondary);
   background-color: var(--bg-page);
+  border-radius: 8px 8px 0 0;
+  border-bottom: none;
+}
+
+.logTitleCol {
+  font-weight: 500;
+  color: var(--text-primary);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+.iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background-color: transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.iconBtn:hover {
+  background-color: var(--bg-page);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.iconBtn.danger:hover {
+  color: var(--danger-color);
+  background-color: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.2);
+}
+
+@media (max-width: 768px) {
+  .logHeader {
+    display: none;
+  }
+  
+  .logRow {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem;
+    padding: 1rem;
+    background-color: var(--bg-page);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .colCategory {
+    grid-column: 1 / 2;
+  }
+
+  .colActions {
+    grid-column: 2 / 3;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .colTitle {
+    grid-column: 1 / -1;
+    font-size: 1rem;
+  }
+
+  .colTimeGroup {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+
+  .desktopTime {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .colTimeGroup {
+    display: none;
+  }
 }
 
 .catBadge {

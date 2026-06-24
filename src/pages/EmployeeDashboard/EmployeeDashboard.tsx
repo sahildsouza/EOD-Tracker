@@ -10,6 +10,7 @@ import LogEntryForm from '../../components/Dashboard/LogEntryForm';
 import styles from './EmployeeDashboard.module.css';
 import { parseISO } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
+import { Edit, Trash2 } from 'lucide-react';
 
 const CATEGORY_COLORS: Record<string, string> = {
   Meeting: 'var(--category-meeting)',
@@ -167,51 +168,57 @@ export default function EmployeeDashboard() {
         </div>
       </div>
 
-      {/* Bottom Section: Table */}
       {status?.status === 'shift' && (
         <div className={styles.card}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem' }}>Today's Log Entries</h2>
           {entries.length === 0 ? (
             <p className="text-secondary">No log entries for today yet.</p>
           ) : (
-            <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>Category</th>
-                    <th>Title</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Duration</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {entries.map(entry => (
-                    <tr key={entry.id}>
-                      <td>
-                        <span className={styles.catBadge} style={{ backgroundColor: CATEGORY_COLORS[entry.category] || CATEGORY_COLORS['Others'] }}>
-                          {entry.category}
-                        </span>
-                      </td>
-                      <td>{entry.title}</td>
-                      <td>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')}</td>
-                      <td>{formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')}</td>
-                      <td>{entry.duration_minutes}m</td>
-                      <td>
-                        {!locked ? (
-                          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                            <button style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', fontWeight: 600 }} onClick={() => { setEditingLogId(entry.id); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Edit</button>
-                            <button style={{ color: 'var(--danger-color)', fontSize: '0.875rem', fontWeight: 600 }} onClick={() => handleDelete(entry.id)}>Delete</button>
-                          </div>
-                        ) : (
-                          <span title="Day is locked">🔒</span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className={styles.logList}>
+              {/* Header for Desktop */}
+              <div className={`${styles.logRow} ${styles.logHeader}`}>
+                <div>Category</div>
+                <div>Title</div>
+                <div>From</div>
+                <div>To</div>
+                <div>Dur</div>
+                <div style={{ textAlign: 'right' }}>Actions</div>
+              </div>
+              
+              {/* Rows */}
+              {entries.map(entry => (
+                <div key={entry.id} className={styles.logRow}>
+                  <div className={styles.colCategory}>
+                    <span className={styles.catBadge} style={{ backgroundColor: CATEGORY_COLORS[entry.category] || CATEGORY_COLORS['Others'] }}>
+                      {entry.category}
+                    </span>
+                  </div>
+                  
+                  <div className={`${styles.logTitleCol} ${styles.colTitle}`}>
+                    {entry.title}
+                  </div>
+                  
+                  <div className={styles.desktopTime}>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')}</div>
+                  <div className={styles.desktopTime}>{formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')}</div>
+                  <div className={styles.desktopTime}>{entry.duration_minutes}m</div>
+                  
+                  <div className={styles.colTimeGroup}>
+                    <div>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')}</div>
+                    <div>({entry.duration_minutes}m)</div>
+                  </div>
+
+                  <div className={styles.colActions}>
+                    {!locked ? (
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <button className={styles.iconBtn} onClick={() => { setEditingLogId(entry.id); window.scrollTo({ top: 0, behavior: 'smooth' }); }} title="Edit"><Edit size={16} /></button>
+                        <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDelete(entry.id)} title="Delete"><Trash2 size={16} /></button>
+                      </div>
+                    ) : (
+                      <span title="Day is locked">🔒</span>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
