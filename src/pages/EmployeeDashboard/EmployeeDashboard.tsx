@@ -103,7 +103,7 @@ export default function EmployeeDashboard() {
         <div className={styles.leftCol}>
           <div className={styles.card}>
             <div className={styles.ringContainer}>
-              <svg className={styles.progressRing}>
+              <svg className={styles.progressRing} viewBox="0 0 160 160">
                 <circle className={styles.progressCircleBg} cx="80" cy="80" r={radius} />
                 <circle 
                   className={styles.progressCircleValue} 
