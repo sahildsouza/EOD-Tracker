@@ -29,6 +29,26 @@
   .card {
     padding: 1rem;
   }
+  
+  .progressRing {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  
+  .ringLogged {
+    font-size: 1rem !important;
+  }
+  
+  .badges {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .badge {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
 }
 
 .ringContainer {
