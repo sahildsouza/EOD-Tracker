@@ -164,23 +164,23 @@ export default function AdminSettings() {
                 </button>
               )}
             </div>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Shift Name</label>
-              <input required className="surface input" placeholder="e.g. Morning Shift" value={newShiftName} onChange={e => setNewShiftName(e.target.value)} />
-            </div>
-            <div className={styles.timeGrid}>
-              <div className={styles.formGroup}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'flex-end' }}>
+              <div className={styles.formGroup} style={{ flex: '1 1 200px' }}>
+                <label className={styles.label}>Shift Name</label>
+                <input required className="surface input" placeholder="e.g. Morning Shift" value={newShiftName} onChange={e => setNewShiftName(e.target.value)} style={{ padding: '0.5rem' }} />
+              </div>
+              <div className={styles.formGroup} style={{ flex: '0 0 110px' }}>
                 <label className={styles.label}>Start Time</label>
-                <input type="time" required className="surface input" value={newShiftStart} onChange={e => setNewShiftStart(e.target.value)} />
+                <input type="time" required className="surface input" value={newShiftStart} onChange={e => setNewShiftStart(e.target.value)} style={{ padding: '0.5rem' }} />
               </div>
-              <div className={styles.formGroup}>
+              <div className={styles.formGroup} style={{ flex: '0 0 110px' }}>
                 <label className={styles.label}>End Time</label>
-                <input type="time" required className="surface input" value={newShiftEnd} onChange={e => setNewShiftEnd(e.target.value)} />
+                <input type="time" required className="surface input" value={newShiftEnd} onChange={e => setNewShiftEnd(e.target.value)} style={{ padding: '0.5rem' }} />
               </div>
+              <button type="submit" className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '36px', padding: '0 1rem' }}>
+                {editingShiftId ? <><Check size={16} /> Save</> : <><Plus size={16} /> Add</>}
+              </button>
             </div>
-            <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              {editingShiftId ? <><Check size={18} /> Save Changes</> : <><Plus size={18} /> Add Shift</>}
-            </button>
           </form>
         </div>
 
@@ -216,13 +216,15 @@ export default function AdminSettings() {
                 </button>
               )}
             </div>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Designation Name</label>
-              <input required className="surface input" placeholder="e.g. Software Engineer" value={newDesigName} onChange={e => setNewDesigName(e.target.value)} />
+            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end' }}>
+              <div className={styles.formGroup} style={{ flex: 1 }}>
+                <label className={styles.label}>Designation Name</label>
+                <input required className="surface input" placeholder="e.g. Software Engineer" value={newDesigName} onChange={e => setNewDesigName(e.target.value)} style={{ padding: '0.5rem' }} />
+              </div>
+              <button type="submit" className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '36px', padding: '0 1rem' }}>
+                {editingDesigId ? <><Check size={16} /> Save</> : <><Plus size={16} /> Add</>}
+              </button>
             </div>
-            <button type="submit" className="btn-primary" style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              {editingDesigId ? <><Check size={18} /> Save Changes</> : <><Plus size={18} /> Add Designation</>}
-            </button>
           </form>
         </div>
       </div>
