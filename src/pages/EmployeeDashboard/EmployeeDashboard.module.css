@@ -176,8 +176,9 @@
 .logTitleCol {
   font-weight: 500;
   color: var(--text-primary);
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   min-width: 0;
 }
 
@@ -280,6 +281,9 @@
     font-weight: 600;
     margin-top: 0.2rem;
     color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .colTimeGroup {
