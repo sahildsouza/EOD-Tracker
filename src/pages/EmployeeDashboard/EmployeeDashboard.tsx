@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { useDailyStatus } from '../../hooks/useDailyStatus';
 import { getCurrentDateIST } from '../../utils/dateUtils';
-import { calculateMergedMinutes, isDateLocked } from '../../utils/timeUtils';
+import { calculateMergedMinutes, isDateLocked, formatDuration } from '../../utils/timeUtils';
 import type { LogEntry } from '../../utils/timeUtils';
 import VisualTimeline from '../../components/Dashboard/VisualTimeline';
 import LogEntryForm from '../../components/Dashboard/LogEntryForm';
@@ -214,11 +214,11 @@ export default function EmployeeDashboard() {
                       
                       <div className={styles.desktopTime}>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')}</div>
                       <div className={styles.desktopTime}>{formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')}</div>
-                      <div className={styles.desktopTime} style={{ fontWeight: 700, color: 'var(--accent-color)' }}>{entry.duration_minutes}m</div>
+                      <div className={styles.desktopTime} style={{ fontWeight: 700, color: 'var(--accent-color)' }}>{formatDuration(entry.duration_minutes)}</div>
                       
                       <div className={styles.colTimeGroup}>
                         <div>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')}</div>
-                        <div>({entry.duration_minutes}m)</div>
+                        <div>({formatDuration(entry.duration_minutes)})</div>
                       </div>
 
                       <div className={styles.colActions}>

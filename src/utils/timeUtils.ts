@@ -58,3 +58,12 @@ export function isDateLocked(targetDate: string): boolean {
   
   return isAfter(new Date(), exactCutoff);
 }
+
+export function formatDuration(minutes: number): string {
+  if (!minutes || isNaN(minutes)) return '0m';
+  if (minutes < 60) {
+    return `${minutes}m`;
+  }
+  const hrs = parseFloat((minutes / 60).toFixed(2));
+  return `${hrs} hr`;
+}

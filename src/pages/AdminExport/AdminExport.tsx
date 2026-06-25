@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { exportToExcel } from '../../utils/exportUtils';
+import { formatDuration } from '../../utils/timeUtils';
 import styles from '../AdminSettings/AdminSettings.module.css';
 
 export default function AdminExport() {
@@ -27,7 +28,7 @@ export default function AdminExport() {
         Title: l.title,
         'From Time': l.from_time,
         'To Time': l.to_time,
-        'Duration (mins)': l.duration_minutes,
+        'Duration': formatDuration(l.duration_minutes),
         Notes: l.notes,
         'Day Status': l.status?.status
       }));

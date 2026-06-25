@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getCurrentDateIST } from '../../utils/dateUtils';
-import { calculateMergedMinutes } from '../../utils/timeUtils';
+import { calculateMergedMinutes, formatDuration } from '../../utils/timeUtils';
 import { exportToExcel } from '../../utils/exportUtils';
 import { parseISO, format } from 'date-fns';
 import styles from './AdminEodLogs.module.css';
@@ -230,7 +230,7 @@ export default function AdminEodLogs() {
                                     <div className={styles.logDetailsHeader}>
                                       <div className={styles.logDetailsInfo}>
                                         <span className={styles.catBadge} style={{ width: '125px', textAlign: 'center', backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>{log.category}</span>
-                                        <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>{format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')} <span style={{ fontSize: '0.75rem' }}>({log.duration_minutes}m)</span></span>
+                                        <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>{format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')} <span style={{ fontSize: '0.75rem' }}>({formatDuration(log.duration_minutes)})</span></span>
                                       </div>
                                       <button className={styles.iconBtn} onClick={() => toggleLog(log.id)} title="View Title and Notes">
                                         {expandedLogs.has(log.id) ? <EyeOff size={18} /> : <Eye size={18} />}

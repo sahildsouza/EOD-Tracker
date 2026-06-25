@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { getCurrentDateIST } from '../../utils/dateUtils';
-import { calculateMergedMinutes, isDateLocked } from '../../utils/timeUtils';
+import { calculateMergedMinutes, isDateLocked, formatDuration } from '../../utils/timeUtils';
 import styles from './EmployeeCalendar.module.css';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, addMonths, subMonths, isToday, parseISO, isAfter, isSameDay } from 'date-fns';
 import { ChevronLeft, ChevronRight, Eye, EyeOff, Clock, FileText } from 'lucide-react';
@@ -169,7 +169,7 @@ export default function EmployeeCalendar() {
                                       <span className="catBadge" style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, color: '#fff' }}>
                                         {l.category}
                                       </span>
-                                      <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>{l.duration_minutes}m</span>
+                                      <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>{formatDuration(l.duration_minutes)}</span>
                                     </div>
                                     <button style={{ color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                       {isExpanded ? <EyeOff size={18} /> : <Eye size={18} />}
