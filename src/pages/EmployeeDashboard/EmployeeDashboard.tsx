@@ -12,6 +12,7 @@ import styles from './EmployeeDashboard.module.css';
 import { parseISO } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
 import { Edit, Trash2 } from 'lucide-react';
+import Loader from '../../components/Loader/Loader';
 
 const CATEGORY_COLORS: Record<string, string> = {
   Meeting: 'var(--category-meeting)',
@@ -96,7 +97,7 @@ export default function EmployeeDashboard() {
     alert("Copy Yesterday's Template functionality would fetch yesterday's logs and open them.");
   };
 
-  if (loading) return <div className="page-container">Loading Dashboard...</div>;
+  if (loading) return <div className="page-container"><Loader message="Loading your dashboard..." /></div>;
 
   return (
     <div className={`page-container ${styles.container}`}>

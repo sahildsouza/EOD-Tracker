@@ -8,6 +8,7 @@ import { Copy, Download } from 'lucide-react';
 // Reusing some styles from AdminEodLogs
 import styles from '../AdminEodLogs/AdminEodLogs.module.css';
 import Pagination from '../../components/Pagination/Pagination';
+import Loader from '../../components/Loader/Loader';
 
 export default function AdminDefaulters() {
   const [data, setData] = useState<any[]>([]);
@@ -103,7 +104,7 @@ export default function AdminDefaulters() {
         </div>
 
         <div className={styles.tableContainer} style={{ marginTop: '1.5rem' }}>
-          {loading ? <p>Loading data...</p> : (
+          {loading ? <Loader message="Calculating defaulters..." /> : (
             <table className={styles.table}>
               <thead>
                 <tr>

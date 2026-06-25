@@ -7,6 +7,7 @@ import { parseISO, format } from 'date-fns';
 import styles from './AdminEodLogs.module.css';
 import { Search, Download, ChevronDown, ChevronRight, Eye, EyeOff } from 'lucide-react';
 import Pagination from '../../components/Pagination/Pagination';
+import Loader from '../../components/Loader/Loader';
 
 const CATEGORY_COLORS: Record<string, string> = {
   Meeting: 'var(--category-meeting)',
@@ -182,7 +183,7 @@ export default function AdminEodLogs() {
         </div>
 
         <div className={styles.tableContainer} style={{ marginTop: '1.5rem' }}>
-          {loading ? <p>Loading data...</p> : (
+          {loading ? <Loader message="Fetching EOD logs..." /> : (
             <table className={styles.table}>
               <thead>
                 <tr>

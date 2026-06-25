@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase';
 import { getCurrentDateIST } from '../../utils/dateUtils';
 import { calculateMergedMinutes } from '../../utils/timeUtils';
 import styles from './AdminDashboard.module.css';
+import Loader from '../../components/Loader/Loader';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -111,6 +112,8 @@ export default function AdminDashboard() {
   const conicGradient = pieData.length > 0 
     ? `conic-gradient(${gradientStops})` 
     : 'var(--border-color)'; // empty state
+
+  if (loading) return <div className="page-container"><Loader message="Loading dashboard overview..." /></div>;
 
   return (
     <div className={`page-container ${styles.container}`}>

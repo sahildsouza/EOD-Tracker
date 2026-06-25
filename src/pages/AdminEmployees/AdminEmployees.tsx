@@ -4,6 +4,7 @@ import { supabase } from '../../lib/supabase';
 import styles from './AdminEmployees.module.css';
 import { Search, Plus, Edit, Trash2, KeyRound, X } from 'lucide-react';
 import Pagination from '../../components/Pagination/Pagination';
+import Loader from '../../components/Loader/Loader';
 
 export default function AdminEmployees() {
   const [employees, setEmployees] = useState<any[]>([]);
@@ -177,7 +178,7 @@ export default function AdminEmployees() {
         </div>
 
         <div className={styles.tableContainer} style={{ marginTop: '1.5rem' }}>
-          {loading ? <p>Loading...</p> : (
+          {loading ? <Loader message="Fetching employee directory..." /> : (
             <table className={styles.table}>
               <thead>
                 <tr>

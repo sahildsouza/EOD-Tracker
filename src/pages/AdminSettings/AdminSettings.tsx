@@ -3,6 +3,7 @@ import { supabase } from '../../lib/supabase';
 import styles from './AdminSettings.module.css';
 import { Trash2, Edit, Clock, Briefcase, Plus, X, Check } from 'lucide-react';
 import { parseISO, differenceInMinutes } from 'date-fns';
+import Loader from '../../components/Loader/Loader';
 
 export default function AdminSettings() {
   const [shifts, setShifts] = useState<any[]>([]);
@@ -121,7 +122,7 @@ export default function AdminSettings() {
     fetchData();
   };
 
-  if (loading) return <div className="page-container">Loading Settings...</div>;
+  if (loading) return <div className="page-container"><Loader message="Loading system settings..." /></div>;
 
   return (
     <div className={`page-container ${styles.container}`}>
