@@ -11,7 +11,7 @@ import LogEntryForm from '../../components/Dashboard/LogEntryForm';
 import styles from './EmployeeDashboard.module.css';
 import { parseISO } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import Loader from '../../components/Loader/Loader';
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -31,6 +31,14 @@ export default function EmployeeDashboard() {
   const [shift, setShift] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [editingLogId, setEditingLogId] = useState<string | null>(null);
+  const [expandedLogIds, setExpandedLogIds] = useState<Set<string>>(new Set());
+
+  const toggleExpandLog = (id: string) => {
+    const newSet = new Set(expandedLogIds);
+    if (newSet.has(id)) newSet.delete(id);
+    else newSet.add(id);
+    setExpandedLogIds(newSet);
+  };
 
   const today = getCurrentDateIST();
   const locked = isDateLocked(today);
@@ -189,39 +197,62 @@ export default function EmployeeDashboard() {
               </div>
               
               {/* Rows */}
-              {entries.map(entry => (
-                <div key={entry.id} className={styles.logRow}>
-                  <div className={styles.colCategory}>
-                    <span className={styles.catBadge} style={{ backgroundColor: CATEGORY_COLORS[entry.category] || CATEGORY_COLORS['Others'] }}>
-                      {entry.category}
-                    </span>
-                  </div>
-                  
-                  <div className={`${styles.logTitleCol} ${styles.colTitle}`}>
-                    {entry.title}
-                  </div>
-                  
-                  <div className={styles.desktopTime}>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')}</div>
-                  <div className={styles.desktopTime}>{formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')}</div>
-                  <div className={styles.desktopTime}>{entry.duration_minutes}m</div>
-                  
-                  <div className={styles.colTimeGroup}>
-                    <div>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')}</div>
-                    <div>({entry.duration_minutes}m)</div>
-                  </div>
-
-                  <div className={styles.colActions}>
-                    {!locked ? (
-                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                        <button className={styles.iconBtn} onClick={() => { setEditingLogId(entry.id); window.scrollTo({ top: 0, behavior: 'smooth' }); }} title="Edit"><Edit size={16} /></button>
-                        <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDelete(entry.id)} title="Delete"><Trash2 size={16} /></button>
+              {entries.map(entry => {
+                const isExpanded = expandedLogIds.has(entry.id);
+                return (
+                  <div key={entry.id} className={`${styles.logCardWrapper} ${isExpanded ? styles.expandedWrapper : ''}`}>
+                    <div className={styles.logRow}>
+                      <div className={styles.colCategory}>
+                        <span className={styles.catBadge} style={{ backgroundColor: CATEGORY_COLORS[entry.category] || CATEGORY_COLORS['Others'] }}>
+                          {entry.category}
+                        </span>
                       </div>
-                    ) : (
-                      <span title="Day is locked">🔒</span>
+                      
+                      <div className={`${styles.logTitleCol} ${styles.colTitle}`}>
+                        {entry.title}
+                      </div>
+                      
+                      <div className={styles.desktopTime}>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')}</div>
+                      <div className={styles.desktopTime}>{formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')}</div>
+                      <div className={styles.desktopTime} style={{ fontWeight: 700, color: 'var(--accent-color)' }}>{entry.duration_minutes}m</div>
+                      
+                      <div className={styles.colTimeGroup}>
+                        <div>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')}</div>
+                        <div>({entry.duration_minutes}m)</div>
+                      </div>
+
+                      <div className={styles.colActions}>
+                        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', justifyContent: 'flex-end' }}>
+                          <button className={styles.iconBtn} onClick={() => toggleExpandLog(entry.id)} title={isExpanded ? "Hide Notes" : "View Title & Notes"}>
+                            {isExpanded ? <EyeOff size={16} style={{ color: 'var(--accent-color)' }} /> : <Eye size={16} />}
+                          </button>
+                          {!locked ? (
+                            <>
+                              <button className={styles.iconBtn} onClick={() => { setEditingLogId(entry.id); window.scrollTo({ top: 0, behavior: 'smooth' }); }} title="Edit"><Edit size={16} /></button>
+                              <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDelete(entry.id)} title="Delete"><Trash2 size={16} /></button>
+                            </>
+                          ) : (
+                            <span title="Day is locked">🔒</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {isExpanded && (
+                      <div className={styles.expandedDetails}>
+                        <div className={styles.detailItem}>
+                          <span className={styles.detailLabel}>Full Title</span>
+                          <div className={styles.detailContent}>{entry.title}</div>
+                        </div>
+                        <div className={styles.detailItem}>
+                          <span className={styles.detailLabel}>Notes</span>
+                          <div className={styles.detailContent}>{entry.notes ? entry.notes : <span className={styles.noNotes}>No additional notes entered.</span>}</div>
+                        </div>
+                      </div>
                     )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
