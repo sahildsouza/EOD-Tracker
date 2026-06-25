@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { differenceInMinutes, parseISO } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
+import { differenceInMinutes, parseISO, subDays, format } from 'date-fns';
 import { supabase } from '../../lib/supabase';
 import { getCurrentDateIST } from '../../utils/dateUtils';
+import { calculateMergedMinutes } from '../../utils/timeUtils';
 import styles from './AdminDashboard.module.css';
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
   const [stats, setStats] = useState({ employees: 0, loggedToday: 0, offToday: 0, defaulters: 0 });
   const [pieData, setPieData] = useState<{category: string, color: string, percentage: number}[]>([]);
+  const [defaultersList, setDefaultersList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -60,12 +64,36 @@ export default function AdminDashboard() {
       }
       setPieData(pieChart);
 
-      // We would fetch defaulters from yesterday
+      // Fetch defaulters from yesterday
+      const yesterdayStr = format(subDays(parseISO(today), 1), 'yyyy-MM-dd');
+      const { data: profiles } = await supabase.from('profiles').select('id, full_name').eq('role', 'employee');
+      const { data: yestStatuses } = await supabase.from('daily_statuses').select('*, shift:shifts(duration_hours)').eq('date', yesterdayStr).eq('status', 'shift');
+      const { data: yestLogs } = await supabase.from('log_entries').select('*').eq('date', yesterdayStr);
+
+      const defs: any[] = [];
+      if (profiles && yestStatuses) {
+        yestStatuses.forEach(status => {
+          const profile = profiles.find(p => p.id === status.user_id);
+          if (!profile) return;
+          const uLogs = yestLogs?.filter(l => l.user_id === status.user_id) || [];
+          const totalMins = calculateMergedMinutes(uLogs.map(l => ({ from: parseISO(l.from_time), to: parseISO(l.to_time) })));
+          const shiftDurationMins = (status.shift?.duration_hours || 0) * 60;
+          if (totalMins < shiftDurationMins) {
+            defs.push({
+              id: profile.id,
+              full_name: profile.full_name,
+              shortfall_hours: ((shiftDurationMins - totalMins) / 60).toFixed(1)
+            });
+          }
+        });
+      }
+      setDefaultersList(defs);
+
       setStats({
         employees: empCount || 0,
         loggedToday: loggedCount || 0,
         offToday: offCount || 0,
-        defaulters: 2 // Hardcoded for dashboard visual proof, logic exists in Defaulters page
+        defaulters: defs.length
       });
       setLoading(false);
     };
@@ -127,8 +155,19 @@ export default function AdminDashboard() {
         </div>
         <div className={styles.card}>
           <h2 className={styles.title}>Yesterday's Defaulters</h2>
-          <p className="text-secondary">Quick overview of defaulters list...</p>
-          <button className="btn-outline" onClick={() => window.location.href='/admin/defaulters'} style={{ marginTop: 'auto' }}>View Full List</button>
+          {defaultersList.length === 0 ? (
+            <p className="text-secondary">No defaulters found for yesterday! 🎉</p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', overflowY: 'auto', flex: 1, maxHeight: '180px' }}>
+              {defaultersList.slice(0, 5).map(d => (
+                <div key={d.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0.75rem', backgroundColor: 'var(--bg-page)', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+                  <span style={{ fontWeight: 500, fontSize: '0.875rem' }}>{d.full_name}</span>
+                  <span style={{ color: 'var(--danger-color)', fontWeight: 600, fontSize: '0.8rem' }}>-{d.shortfall_hours} hrs</span>
+                </div>
+              ))}
+            </div>
+          )}
+          <button className="btn-outline" onClick={() => navigate('/admin/defaulters')} style={{ marginTop: 'auto' }}>View Full List ({defaultersList.length})</button>
         </div>
       </div>
     </div>
