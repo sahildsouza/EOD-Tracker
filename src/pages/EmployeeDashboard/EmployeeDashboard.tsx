@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { useDailyStatus } from '../../hooks/useDailyStatus';
@@ -22,6 +23,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 export default function EmployeeDashboard() {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const { status } = useDailyStatus();
   const [entries, setEntries] = useState<LogEntry[]>([]);
@@ -130,7 +132,7 @@ export default function EmployeeDashboard() {
 
             <div className={styles.actions}>
               {!locked && (
-                <button className="btn-outline" onClick={() => window.location.href = '/daily-status'}>Change Today's Status</button>
+                <button className="btn-outline" onClick={() => navigate('/daily-status')}>Change Today's Status</button>
               )}
               {status?.status === 'shift' && !locked && (
                 <button className="btn-outline" onClick={handleCopyYesterday}>Use Yesterday's Template</button>

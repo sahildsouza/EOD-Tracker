@@ -15,9 +15,12 @@ export default function DailyStatus() {
 
   useEffect(() => {
     if (!isLoading && status) {
-      navigate('/dashboard', { replace: true });
+      setSelectedStatus(status.status as any);
+      if (status.shift_id) {
+        setSelectedShift(status.shift_id);
+      }
     }
-  }, [status, isLoading, navigate]);
+  }, [status, isLoading]);
 
   useEffect(() => {
     const fetchShifts = async () => {
