@@ -241,7 +241,7 @@ export default function EmployeeDashboard() {
                     {isExpanded && (
                       <div className={styles.expandedDetails}>
                         <div className={styles.detailItem}>
-                          <span className={styles.detailLabel}>Full Title</span>
+                          <span className={styles.detailLabel}>Title</span>
                           <div className={styles.detailContent}>{entry.title}</div>
                         </div>
                         <div className={styles.detailItem}>
