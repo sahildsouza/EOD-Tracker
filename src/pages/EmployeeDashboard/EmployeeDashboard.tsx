@@ -109,74 +109,70 @@ export default function EmployeeDashboard() {
 
   return (
     <div className={`page-container ${styles.container}`}>
-      <div className={styles.topSection}>
-        {/* Left Column */}
-        <div className={styles.leftCol}>
-          <div className={styles.card}>
-            <div className={styles.ringContainer}>
-              <svg className={styles.progressRing} viewBox="0 0 160 160">
-                <circle className={styles.progressCircleBg} cx="80" cy="80" r={radius} />
-                <circle 
-                  className={styles.progressCircleValue} 
-                  cx="80" cy="80" r={radius} 
-                  strokeDasharray={circumference}
-                  strokeDashoffset={offset}
-                  transform="rotate(-90 80 80)"
-                />
-              </svg>
-              <div className={styles.ringText}>
-                <div className={styles.ringLogged}>{loggedHours}h {loggedMins}m</div>
-                <div className={styles.ringRequired}>of {shift?.duration_hours || 0} hrs</div>
-              </div>
-            </div>
-            
-            <div className={styles.badges}>
-              <div className={styles.badge}>Status: {status?.status.toUpperCase()}</div>
-              {shift && (
-                <div className={styles.badge}>
-                  Shift: {shift.name} ({shift.start_time.slice(0,5)} - {shift.end_time.slice(0,5)})
-                </div>
-              )}
-            </div>
+      {/* Top Full Row: Today's Timeline */}
+      <div className={styles.card}>
+        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem' }}>Today's Timeline</h2>
+        {status?.status !== 'shift' ? (
+          <p className="text-secondary">You are not on a shift today.</p>
+        ) : (
+          <VisualTimeline 
+            entries={entries} 
+            shiftStart={shift?.start_time} 
+            shiftEnd={shift?.end_time} 
+          />
+        )}
+      </div>
 
-            <div className={styles.actions}>
-              {!locked && (
-                <button className="btn-outline" onClick={() => navigate('/daily-status')}>Change Today's Status</button>
-              )}
-              {status?.status === 'shift' && !locked && (
-                <button className="btn-outline" onClick={handleCopyYesterday}>Use Yesterday's Template</button>
-              )}
+      {/* Row 2: Status & Add Log Entry side-by-side */}
+      <div className={styles.modulesGrid}>
+        <div className={styles.card} style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div className={styles.ringContainer}>
+            <svg className={styles.progressRing} viewBox="0 0 160 160">
+              <circle className={styles.progressCircleBg} cx="80" cy="80" r={radius} />
+              <circle 
+                className={styles.progressCircleValue} 
+                cx="80" cy="80" r={radius} 
+                strokeDasharray={circumference}
+                strokeDashoffset={offset}
+                transform="rotate(-90 80 80)"
+              />
+            </svg>
+            <div className={styles.ringText}>
+              <div className={styles.ringLogged}>{loggedHours}h {loggedMins}m</div>
+              <div className={styles.ringRequired}>of {shift?.duration_hours || 0} hrs</div>
             </div>
           </div>
-        </div>
-
-        {/* Right Column */}
-        <div className={styles.rightCol}>
-          <div className={styles.card}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem' }}>Today's Timeline</h2>
-            {status?.status !== 'shift' ? (
-              <p className="text-secondary">You are not on a shift today.</p>
-            ) : (
-              <VisualTimeline 
-                entries={entries} 
-                shiftStart={shift?.start_time} 
-                shiftEnd={shift?.end_time} 
-              />
+          
+          <div className={styles.badges}>
+            <div className={styles.badge}>Status: {status?.status.toUpperCase()}</div>
+            {shift && (
+              <div className={styles.badge}>
+                Shift: {shift.name} ({shift.start_time.slice(0,5)} - {shift.end_time.slice(0,5)})
+              </div>
             )}
           </div>
 
-          {status?.status === 'shift' && (
-            <div className={styles.card}>
-              <LogEntryForm 
-                onSaved={() => { setEditingLogId(null); fetchData(); }} 
-                disabled={locked} 
-                suggestedStartTime={suggestedStartTime}
-                editingLog={entries.find(e => e.id === editingLogId) || null}
-                onCancelEdit={() => setEditingLogId(null)}
-              />
-            </div>
-          )}
+          <div className={styles.actions}>
+            {!locked && (
+              <button className="btn-outline" onClick={() => navigate('/daily-status')}>Change Today's Status</button>
+            )}
+            {status?.status === 'shift' && !locked && (
+              <button className="btn-outline" onClick={handleCopyYesterday}>Use Yesterday's Template</button>
+            )}
+          </div>
         </div>
+
+        {status?.status === 'shift' && (
+          <div className={styles.card} style={{ height: '100%' }}>
+            <LogEntryForm 
+              onSaved={() => { setEditingLogId(null); fetchData(); }} 
+              disabled={locked} 
+              suggestedStartTime={suggestedStartTime}
+              editingLog={entries.find(e => e.id === editingLogId) || null}
+              onCancelEdit={() => setEditingLogId(null)}
+            />
+          </div>
+        )}
       </div>
 
       {status?.status === 'shift' && (

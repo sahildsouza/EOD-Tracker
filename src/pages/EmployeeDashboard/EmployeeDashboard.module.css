@@ -4,25 +4,19 @@
   gap: 1.5rem;
 }
 
-.topSection {
+.modulesGrid {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
 @media (min-width: 1024px) {
-  .topSection {
+  .modulesGrid {
     display: grid;
-    grid-template-columns: 350px 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
-    align-items: start;
+    align-items: stretch;
   }
-}
-
-.leftCol, .rightCol {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
 }
 
 .card {
