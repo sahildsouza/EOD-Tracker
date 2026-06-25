@@ -6,6 +6,7 @@ import { exportToExcel } from '../../utils/exportUtils';
 import { parseISO, format } from 'date-fns';
 import styles from './AdminEodLogs.module.css';
 import { Search, Download, ChevronDown, ChevronRight, Eye, EyeOff } from 'lucide-react';
+import Pagination from '../../components/Pagination/Pagination';
 
 const CATEGORY_COLORS: Record<string, string> = {
   Meeting: 'var(--category-meeting)',
@@ -29,6 +30,11 @@ export default function AdminEodLogs() {
   
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [expandedLogs, setExpandedLogs] = useState<Set<string>>(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, statusFilter, designationFilter, date]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -94,6 +100,10 @@ export default function AdminEodLogs() {
       return matchSearch && matchStatus && matchDesig;
     });
   }, [data, search, statusFilter, designationFilter]);
+
+  const paginatedData = useMemo(() => {
+    return filteredData.slice((currentPage - 1) * 10, currentPage * 10);
+  }, [filteredData, currentPage]);
 
   const toggleRow = (id: string) => {
     const newSet = new Set(expandedRows);
@@ -186,7 +196,7 @@ export default function AdminEodLogs() {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map(row => (
+                {paginatedData.map(row => (
                   <React.Fragment key={row.id}>
                     <tr>
                       <td>
@@ -256,6 +266,12 @@ export default function AdminEodLogs() {
               </tbody>
             </table>
           )}
+          <Pagination 
+            currentPage={currentPage}
+            totalItems={filteredData.length}
+            itemsPerPage={10}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </div>

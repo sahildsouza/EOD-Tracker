@@ -3,12 +3,18 @@ import { createClient } from '@supabase/supabase-js';
 import { supabase } from '../../lib/supabase';
 import styles from './AdminEmployees.module.css';
 import { Search, Plus, Edit, Trash2, KeyRound, X } from 'lucide-react';
+import Pagination from '../../components/Pagination/Pagination';
 
 export default function AdminEmployees() {
   const [employees, setEmployees] = useState<any[]>([]);
   const [designations, setDesignations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -47,6 +53,10 @@ export default function AdminEmployees() {
       e.employee_id.toLowerCase().includes(search.toLowerCase())
     );
   }, [employees, search]);
+
+  const paginatedEmployees = useMemo(() => {
+    return filteredEmployees.slice((currentPage - 1) * 10, currentPage * 10);
+  }, [filteredEmployees, currentPage]);
 
   const openAdd = () => {
     setIsEditing(false);
@@ -180,7 +190,7 @@ export default function AdminEmployees() {
                 </tr>
               </thead>
               <tbody>
-                {filteredEmployees.map(emp => (
+                {paginatedEmployees.map(emp => (
                   <tr key={emp.id}>
                     <td style={{ fontWeight: 600 }}>{emp.full_name}</td>
                     <td>{emp.employee_id}</td>
@@ -199,6 +209,12 @@ export default function AdminEmployees() {
               </tbody>
             </table>
           )}
+          <Pagination 
+            currentPage={currentPage}
+            totalItems={filteredEmployees.length}
+            itemsPerPage={10}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
 

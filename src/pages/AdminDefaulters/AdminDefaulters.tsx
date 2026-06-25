@@ -7,11 +7,13 @@ import { parseISO, subDays, format } from 'date-fns';
 import { Copy, Download } from 'lucide-react';
 // Reusing some styles from AdminEodLogs
 import styles from '../AdminEodLogs/AdminEodLogs.module.css';
+import Pagination from '../../components/Pagination/Pagination';
 
 export default function AdminDefaulters() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Defaulters list is explicitly for "yesterday"
   const yesterdayStr = format(subDays(parseISO(getCurrentDateIST()), 1), 'yyyy-MM-dd');
@@ -114,7 +116,7 @@ export default function AdminDefaulters() {
                 </tr>
               </thead>
               <tbody>
-                {data.map(row => (
+                {data.slice((currentPage - 1) * 10, currentPage * 10).map(row => (
                   <tr key={row.id}>
                     <td style={{ fontWeight: 600 }}>{row.full_name}</td>
                     <td>{row.employee_id}</td>
@@ -130,6 +132,12 @@ export default function AdminDefaulters() {
               </tbody>
             </table>
           )}
+          <Pagination 
+            currentPage={currentPage}
+            totalItems={data.length}
+            itemsPerPage={10}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </div>
