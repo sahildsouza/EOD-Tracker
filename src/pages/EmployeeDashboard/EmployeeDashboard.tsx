@@ -241,10 +241,6 @@ export default function EmployeeDashboard() {
                     {isExpanded && (
                       <div className={styles.expandedDetails}>
                         <div className={styles.detailItem}>
-                          <span className={styles.detailLabel}>Full Title</span>
-                          <div className={styles.detailContent}>{entry.title}</div>
-                        </div>
-                        <div className={styles.detailItem}>
                           <span className={styles.detailLabel}>Notes</span>
                           <div className={styles.detailContent}>{entry.notes ? entry.notes : <span className={styles.noNotes}>No additional notes entered.</span>}</div>
                         </div>

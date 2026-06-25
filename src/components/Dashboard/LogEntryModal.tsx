@@ -88,7 +88,7 @@ export default function LogEntryModal({ isOpen, onClose, onSaved }: LogEntryModa
 
           <div style={{ marginBottom: '1rem' }}>
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Title</label>
-            <input required maxLength={100} style={{ width: '100%', padding: '0.75rem' }} value={title} onChange={e => setTitle(e.target.value)} />
+            <input required style={{ width: '100%', padding: '0.75rem' }} value={title} onChange={e => setTitle(e.target.value)} />
           </div>
 
           <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
@@ -104,7 +104,7 @@ export default function LogEntryModal({ isOpen, onClose, onSaved }: LogEntryModa
 
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Notes (Optional)</label>
-            <textarea maxLength={300} style={{ width: '100%', padding: '0.75rem', minHeight: '80px', resize: 'vertical' }} value={notes} onChange={e => setNotes(e.target.value)} />
+            <textarea style={{ width: '100%', padding: '0.75rem', minHeight: '80px', resize: 'vertical' }} value={notes} onChange={e => setNotes(e.target.value)} />
           </div>
 
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>

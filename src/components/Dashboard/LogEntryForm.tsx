@@ -120,7 +120,7 @@ export default function LogEntryForm({ onSaved, disabled, suggestedStartTime, ed
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Title</label>
-            <input disabled={disabled || saving} required maxLength={100} style={{ width: '100%', padding: '0.75rem' }} value={title} onChange={e => setTitle(e.target.value)} />
+            <input disabled={disabled || saving} required style={{ width: '100%', padding: '0.75rem' }} value={title} onChange={e => setTitle(e.target.value)} />
           </div>
         </div>
 
@@ -137,7 +137,7 @@ export default function LogEntryForm({ onSaved, disabled, suggestedStartTime, ed
 
         <div style={{ marginBottom: '1rem' }}>
           <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Notes (Optional)</label>
-          <input disabled={disabled || saving} maxLength={300} style={{ width: '100%', padding: '0.75rem' }} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Any specific details..." />
+          <input disabled={disabled || saving} style={{ width: '100%', padding: '0.75rem' }} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Any specific details..." />
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
