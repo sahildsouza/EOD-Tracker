@@ -146,9 +146,14 @@ export default function AdminEmployees() {
   const handleDelete = async (empId: string) => {
     if (!confirm('Are you sure you want to permanently delete this user? This will also delete their logs.')) return;
     
-    // Deleting from auth.users requires Admin API.
-    // Deleting from profiles will work if we have RLS setup or if we do it via RPC.
-    alert('User deletion requires Admin API (Edge Function). Prototype limitation.');
+    setLoading(true);
+    const { error: rpcError } = await supabase.rpc('admin_delete_user', { target_user_id: empId });
+    if (rpcError) {
+      alert(`Failed to delete employee: ${rpcError.message}`);
+    } else {
+      await fetchData();
+    }
+    setLoading(false);
   };
 
   const handleResetPassword = async (empId: string) => {
