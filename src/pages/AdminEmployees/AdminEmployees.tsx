@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { supabase } from '../../lib/supabase';
 import styles from './AdminEmployees.module.css';
-import { Search, Plus, Edit, Trash2, KeyRound, X } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, KeyRound, X, Users, Briefcase, MapPin } from 'lucide-react';
 import Pagination from '../../components/Pagination/Pagination';
 import Loader from '../../components/Loader/Loader';
 
@@ -163,62 +163,128 @@ export default function AdminEmployees() {
 
   return (
     <div className={`page-container ${styles.container}`}>
+      {/* Hero Header */}
+      <div className={styles.heroCard}>
+        <div className={styles.heroIconBadge}>
+          <Users size={32} />
+        </div>
+        <div className={styles.heroInfo}>
+          <h2 className={styles.heroTitle}>Employee Directory & Management</h2>
+          <p className={styles.heroSubtitle}>Manage team profiles, assign organizational designations, configure role permissions, and maintain directory records.</p>
+        </div>
+        <div className={styles.heroActions}>
+          <button className="btn-primary" onClick={openAdd} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', padding: '0.65rem 1.25rem', fontSize: '0.9rem', fontWeight: 600 }}>
+            <Plus size={18} /> Create New User
+          </button>
+        </div>
+      </div>
+
       <div className={styles.card}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '0.5rem 0.75rem', backgroundColor: 'var(--bg-page)', width: '300px' }}>
-            <Search size={16} style={{ color: 'var(--text-secondary)', marginRight: '0.5rem' }} />
+        <div className={styles.toolbar}>
+          <div className={styles.searchBox}>
+            <Search size={18} style={{ color: 'var(--text-secondary)', marginRight: '0.65rem', flexShrink: 0 }} />
             <input 
               type="text" 
-              placeholder="Search Name or ID..." 
-              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'var(--text-primary)' }}
+              placeholder="Search by Employee Name or ID..." 
+              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'var(--text-primary)', fontSize: '0.9rem' }}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
-          <button className="btn-primary" onClick={openAdd} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Plus size={16} /> Create User
-          </button>
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+            Showing <strong>{paginatedEmployees.length}</strong> of <strong>{filteredEmployees.length}</strong> team members
+          </div>
         </div>
 
-        <div className={styles.tableContainer} style={{ marginTop: '1.5rem' }}>
-          {loading ? <Loader message="Fetching employee directory..." /> : (
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>ID</th>
-                  <th>Role</th>
-                  <th>Designation</th>
-                  <th>Location</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedEmployees.map(emp => (
-                  <tr key={emp.id}>
-                    <td style={{ fontWeight: 600 }}>{emp.full_name}</td>
-                    <td>{emp.employee_id}</td>
-                    <td style={{ textTransform: 'capitalize' }}>{emp.role}</td>
-                    <td>{emp.designation?.name || '-'}</td>
-                    <td>{emp.work_location || '-'}</td>
-                    <td>
-                      <div className={styles.actions}>
-                        <button title="Edit" onClick={() => openEdit(emp)}><Edit size={16} style={{ color: 'var(--accent-color)' }} /></button>
-                        <button title="Reset Password" onClick={() => handleResetPassword(emp.id)}><KeyRound size={16} style={{ color: 'var(--warning-color)' }} /></button>
-                        <button title="Delete" onClick={() => handleDelete(emp.id)}><Trash2 size={16} style={{ color: 'var(--danger-color)' }} /></button>
-                      </div>
-                    </td>
+        <div className={styles.tableContainer}>
+          {loading ? <Loader message="Fetching employee directory..." /> : filteredEmployees.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-secondary)' }}>
+              <Users size={48} style={{ opacity: 0.3, margin: '0 auto 1rem' }} />
+              <p style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: 'var(--text-primary)' }}>No employees found</p>
+              <p style={{ fontSize: '0.85rem', margin: '0.25rem 0 0' }}>Try adjusting your search query.</p>
+            </div>
+          ) : (
+            <>
+              {/* Desktop View */}
+              <table className={styles.desktopTable}>
+                <thead>
+                  <tr>
+                    <th>Employee Name</th>
+                    <th>Employee ID</th>
+                    <th>Role</th>
+                    <th>Designation</th>
+                    <th>Work Location</th>
+                    <th style={{ textAlign: 'center' }}>Actions</th>
                   </tr>
+                </thead>
+                <tbody>
+                  {paginatedEmployees.map(emp => (
+                    <tr key={emp.id}>
+                      <td style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{emp.full_name}</td>
+                      <td><span style={{ fontFamily: 'monospace', background: 'var(--bg-page)', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{emp.employee_id}</span></td>
+                      <td><span className={`${styles.roleBadge} ${styles[emp.role] || styles.employee}`}>{emp.role}</span></td>
+                      <td style={{ fontWeight: 500 }}>{emp.designation?.name || <span style={{ opacity: 0.5 }}>-</span>}</td>
+                      <td>{emp.work_location || <span style={{ opacity: 0.5 }}>Remote / Unassigned</span>}</td>
+                      <td>
+                        <div className={styles.actionBtns} style={{ justifyContent: 'center' }}>
+                          <button className={styles.iconBtn} title="Edit Profile" onClick={() => openEdit(emp)}><Edit size={16} style={{ color: 'var(--accent-color)' }} /></button>
+                          <button className={styles.iconBtn} title="Reset Password" onClick={() => handleResetPassword(emp.id)}><KeyRound size={16} style={{ color: '#F59E0B' }} /></button>
+                          <button className={styles.iconBtn} title="Delete User" onClick={() => handleDelete(emp.id)}><Trash2 size={16} style={{ color: '#EF4444' }} /></button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {/* Mobile View */}
+              <div className={styles.mobileList}>
+                {paginatedEmployees.map(emp => (
+                  <div key={emp.id} className={styles.empCard}>
+                    <div className={styles.empCardTop}>
+                      <div>
+                        <div className={styles.empName}>{emp.full_name}</div>
+                        <div className={styles.empIdBadge}>ID: {emp.employee_id}</div>
+                      </div>
+                      <span className={`${styles.roleBadge} ${styles[emp.role] || styles.employee}`}>{emp.role}</span>
+                    </div>
+                    <div className={styles.empCardDetails}>
+                      <div className={styles.detailItem}>
+                        <Briefcase size={15} style={{ color: 'var(--accent-color)' }} /> 
+                        <span>{emp.designation?.name || 'No Designation Assigned'}</span>
+                      </div>
+                      <div className={styles.detailItem}>
+                        <MapPin size={15} style={{ color: '#8B5CF6' }} /> 
+                        <span>{emp.work_location || 'Remote / Unassigned'}</span>
+                      </div>
+                    </div>
+                    <div className={styles.empCardActions}>
+                      <button className="btn-outline" onClick={() => openEdit(emp)} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontSize: '0.85rem', padding: '0.55rem', fontWeight: 600 }}>
+                        <Edit size={16} style={{ color: 'var(--accent-color)' }} /> Edit Profile
+                      </button>
+                      <button className="btn-outline" onClick={() => handleResetPassword(emp.id)} title="Reset Password" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.55rem 0.85rem' }}>
+                        <KeyRound size={16} style={{ color: '#F59E0B' }} />
+                      </button>
+                      <button className="btn-outline" onClick={() => handleDelete(emp.id)} title="Delete User" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.55rem 0.85rem', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+                        <Trash2 size={16} style={{ color: '#EF4444' }} />
+                      </button>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </>
           )}
-          <Pagination 
-            currentPage={currentPage}
-            totalItems={filteredEmployees.length}
-            itemsPerPage={10}
-            onPageChange={setCurrentPage}
-          />
+          
+          {filteredEmployees.length > 10 && (
+            <div style={{ marginTop: '1.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+              <Pagination 
+                currentPage={currentPage}
+                totalItems={filteredEmployees.length}
+                itemsPerPage={10}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          )}
         </div>
       </div>
 
