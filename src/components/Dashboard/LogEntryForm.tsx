@@ -124,7 +124,7 @@ export default function LogEntryForm({ onSaved, disabled, suggestedStartTime, ed
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
           <div>
             <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>From Time</label>
             <input disabled={disabled || saving} type="time" required style={{ width: '100%', padding: '0.75rem' }} value={fromTime} onChange={e => setFromTime(e.target.value)} />
