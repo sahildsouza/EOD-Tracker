@@ -40,15 +40,16 @@ export default function VisualTimeline({ entries, shiftStart, shiftEnd }: Visual
   const totalWindowMinutes = Math.max(1, differenceInMinutes(windowEnd, windowStart));
 
   return (
-    <div style={{ marginTop: '1.5rem' }}>
-      <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '0.75rem' }}>Daily Timeline</h3>
+    <div style={{ marginTop: '0.5rem' }}>
       <div 
         style={{ 
-          height: '40px', 
+          height: '44px', 
           backgroundColor: 'var(--bg-page)', 
           border: '1px solid var(--border-color)',
+          borderRadius: '10px',
           position: 'relative',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
         }}
       >
         {entries.map(entry => {

@@ -1,40 +1,43 @@
 .container {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: var(--bg-page);
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  animation: fadeIn 0.2s ease;
 }
 
 .card {
   width: 100%;
   max-width: 500px;
-  background-color: var(--bg-surface);
+  background: var(--bg-surface);
   border: 1px solid var(--border-color);
+  border-radius: 16px;
   padding: 2.5rem 2rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
   text-align: center;
 }
 
 @media (max-width: 768px) {
   .card {
-    padding: 1.5rem 1rem;
+    padding: 1.75rem 1.25rem;
   }
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
 }
 
 .subtitle {
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   margin-bottom: 2rem;
 }
 
@@ -46,35 +49,47 @@
 }
 
 .optionBtn {
-  padding: 1rem;
-  border: 2px solid var(--border-color);
-  background-color: transparent;
+  padding: 1.1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: var(--bg-page);
   color: var(--text-primary);
   font-size: 1rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.03);
 }
 
 .optionBtn:hover {
-  border-color: var(--text-secondary);
-  background-color: var(--bg-page);
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.12);
 }
 
 .optionBtn.selected {
   border-color: var(--accent-color);
-  background-color: var(--accent-color);
+  background: linear-gradient(135deg, var(--accent-color) 0%, #2563EB 100%);
   color: #fff;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
 }
 
 .shiftSelect {
   width: 100%;
-  padding: 0.75rem;
-  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--accent-color);
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.95rem;
   margin-bottom: 1.5rem;
+  outline: none;
 }
 
 .error {
   color: var(--danger-color);
   font-size: 0.875rem;
+  font-weight: 600;
   margin-top: 1rem;
 }

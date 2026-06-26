@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDailyStatus } from '../../hooks/useDailyStatus';
 import { supabase } from '../../lib/supabase';
 import styles from './DailyStatus.module.css';
+import { Briefcase, Palmtree, Coffee, Sparkles, CheckCircle2 } from 'lucide-react';
 
 export default function DailyStatus() {
   const navigate = useNavigate();
@@ -58,27 +59,41 @@ export default function DailyStatus() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75rem' }}>
+          <div style={{ background: 'rgba(59, 130, 246, 0.15)', padding: '0.85rem', borderRadius: '50%', color: 'var(--accent-color)', display: 'flex' }}>
+            <Sparkles size={32} />
+          </div>
+        </div>
         <h1 className={styles.title}>Good Morning!</h1>
-        <p className={styles.subtitle}>Please select your work status for today.</p>
+        <p className={styles.subtitle}>Please select your attendance status for today.</p>
 
         <div className={styles.optionsGrid}>
           <button 
+            type="button"
             className={`${styles.optionBtn} ${selectedStatus === 'shift' ? styles.selected : ''}`}
             onClick={() => setSelectedStatus('shift')}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}
           >
-            Working on a Shift
+            <Briefcase size={20} />
+            <span>Working on a Shift</span>
           </button>
           <button 
+            type="button"
             className={`${styles.optionBtn} ${selectedStatus === 'leave' ? styles.selected : ''}`}
             onClick={() => setSelectedStatus('leave')}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}
           >
-            On Leave
+            <Palmtree size={20} />
+            <span>On Leave</span>
           </button>
           <button 
+            type="button"
             className={`${styles.optionBtn} ${selectedStatus === 'week-off' ? styles.selected : ''}`}
             onClick={() => setSelectedStatus('week-off')}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}
           >
-            Week-off
+            <Coffee size={20} />
+            <span>Week-off</span>
           </button>
         </div>
 
@@ -88,7 +103,7 @@ export default function DailyStatus() {
             value={selectedShift} 
             onChange={(e) => setSelectedShift(e.target.value)}
           >
-            <option value="">-- Select your Shift --</option>
+            <option value="">-- Select Assigned Shift Window --</option>
             {shifts.map(s => (
               <option key={s.id} value={s.id}>{s.name}</option>
             ))}
@@ -97,11 +112,12 @@ export default function DailyStatus() {
 
         <button 
           className="btn-primary" 
-          style={{ width: '100%', padding: '1rem', fontSize: '1rem' }}
+          style={{ width: '100%', padding: '1rem', fontSize: '1rem', fontWeight: 700, borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem' }}
           onClick={handleSubmit}
           disabled={submitting || !selectedStatus}
         >
-          {submitting ? 'Saving...' : 'Confirm Status'}
+          <CheckCircle2 size={20} />
+          <span>{submitting ? 'Confirming Status...' : 'Confirm Daily Status'}</span>
         </button>
 
         {error && <div className={styles.error}>{error}</div>}
