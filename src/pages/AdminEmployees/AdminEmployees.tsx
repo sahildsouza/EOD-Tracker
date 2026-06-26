@@ -163,136 +163,207 @@ export default function AdminEmployees() {
 
   return (
     <div className={`page-container ${styles.container}`}>
-      {/* Hero Header */}
-      <div className={styles.heroCard}>
-        <div className={styles.heroIconBadge}>
-          <Users size={32} />
+      {/* Hero Header Card */}
+      <div style={{
+        background: 'linear-gradient(135deg, var(--bg-surface) 0%, rgba(59, 130, 246, 0.05) 100%)',
+        border: '1px solid var(--border-color)',
+        borderRadius: '16px',
+        padding: '1.5rem 1.75rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1.25rem',
+        marginBottom: '0.5rem',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
+      }}>
+        <div style={{
+          width: '56px', height: '56px', borderRadius: '14px',
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          color: 'var(--accent-color)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0, border: '1px solid rgba(59, 130, 246, 0.2)'
+        }}>
+          <Users size={28} />
         </div>
-        <div className={styles.heroInfo}>
-          <h2 className={styles.heroTitle}>Employee Directory & Management</h2>
-          <p className={styles.heroSubtitle}>Manage team profiles, assign organizational designations, configure role permissions, and maintain directory records.</p>
-        </div>
-        <div className={styles.heroActions}>
-          <button className="btn-primary" onClick={openAdd} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', padding: '0.65rem 1.25rem', fontSize: '0.9rem', fontWeight: 600 }}>
-            <Plus size={18} /> Create New User
-          </button>
+        <div>
+          <h1 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 0.35rem 0', letterSpacing: '-0.01em' }}>Employee Directory & Management</h1>
+          <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.45 }}>Configure employee profiles, assign organizational designations, and manage system role permissions.</p>
         </div>
       </div>
 
-      <div className={styles.card}>
-        <div className={styles.toolbar}>
-          <div className={styles.searchBox}>
-            <Search size={18} style={{ color: 'var(--text-secondary)', marginRight: '0.65rem', flexShrink: 0 }} />
+      {/* Main List Container Card */}
+      <div style={{
+        background: 'var(--bg-surface)',
+        border: '1px solid var(--border-color)',
+        borderRadius: '16px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)',
+        overflow: 'hidden'
+      }}>
+        {/* Toolbar */}
+        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', background: 'var(--bg-page)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.55rem 0.95rem', width: '340px', maxWidth: '100%' }}>
+            <Search size={16} style={{ color: 'var(--text-secondary)' }} />
             <input 
               type="text" 
-              placeholder="Search by Employee Name or ID..." 
-              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'var(--text-primary)', fontSize: '0.9rem' }}
+              placeholder="Search by name or employee ID..." 
+              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'var(--text-primary)', fontSize: '0.88rem' }}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
-          <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
-            Showing <strong>{paginatedEmployees.length}</strong> of <strong>{filteredEmployees.length}</strong> team members
-          </div>
+          <button className="btn-primary" onClick={openAdd} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.25rem', fontSize: '0.88rem', fontWeight: 600 }}>
+            <Plus size={18} /> Add Employee
+          </button>
         </div>
 
-        <div className={styles.tableContainer}>
-          {loading ? <Loader message="Fetching employee directory..." /> : filteredEmployees.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-secondary)' }}>
-              <Users size={48} style={{ opacity: 0.3, margin: '0 auto 1rem' }} />
-              <p style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: 'var(--text-primary)' }}>No employees found</p>
-              <p style={{ fontSize: '0.85rem', margin: '0.25rem 0 0' }}>Try adjusting your search query.</p>
-            </div>
-          ) : (
-            <>
-              {/* Desktop View */}
-              <table className={styles.desktopTable}>
-                <thead>
-                  <tr>
-                    <th>Employee Name</th>
-                    <th>Employee ID</th>
-                    <th>Role</th>
-                    <th>Designation</th>
-                    <th>Work Location</th>
-                    <th style={{ textAlign: 'center' }}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedEmployees.map(emp => (
-                    <tr key={emp.id}>
-                      <td style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{emp.full_name}</td>
-                      <td><span style={{ fontFamily: 'monospace', background: 'var(--bg-page)', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{emp.employee_id}</span></td>
-                      <td><span className={`${styles.roleBadge} ${styles[emp.role] || styles.employee}`}>{emp.role}</span></td>
-                      <td style={{ fontWeight: 500 }}>{emp.designation?.name || <span style={{ opacity: 0.5 }}>-</span>}</td>
-                      <td>{emp.work_location || <span style={{ opacity: 0.5 }}>Remote / Unassigned</span>}</td>
-                      <td>
-                        <div className={styles.actionBtns} style={{ justifyContent: 'center' }}>
-                          <button className={styles.iconBtn} title="Edit Profile" onClick={() => openEdit(emp)}><Edit size={16} style={{ color: 'var(--accent-color)' }} /></button>
-                          <button className={styles.iconBtn} title="Reset Password" onClick={() => handleResetPassword(emp.id)}><KeyRound size={16} style={{ color: '#F59E0B' }} /></button>
-                          <button className={styles.iconBtn} title="Delete User" onClick={() => handleDelete(emp.id)}><Trash2 size={16} style={{ color: '#EF4444' }} /></button>
+        {/* Sleek Premium Directory Table */}
+        {loading ? <Loader message="Fetching employee directory..." /> : filteredEmployees.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '4rem 1rem', color: 'var(--text-secondary)' }}>
+            <Users size={48} style={{ opacity: 0.3, margin: '0 auto 1rem' }} />
+            <p style={{ fontSize: '1.05rem', fontWeight: 600, margin: 0, color: 'var(--text-primary)' }}>No employees found</p>
+            <p style={{ fontSize: '0.85rem', margin: '0.25rem 0 0' }}>Try adjusting your search query.</p>
+          </div>
+        ) : (
+          <div style={{ width: '100%', overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '720px' }}>
+              <thead>
+                <tr style={{ background: 'var(--bg-page)', borderBottom: '1px solid var(--border-color)' }}>
+                  <th style={{ padding: '0.9rem 1.5rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)' }}>Team Member</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)' }}>Employee ID</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)' }}>System Role</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)' }}>Designation</th>
+                  <th style={{ padding: '0.9rem 1.25rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)' }}>Work Location</th>
+                  <th style={{ padding: '0.9rem 1.5rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-secondary)', textAlign: 'center' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedEmployees.map((emp, idx) => {
+                  const roleColor = emp.role === 'admin' ? '#EF4444' : emp.role === 'manager' ? '#F59E0B' : '#3B82F6';
+                  const roleBg = emp.role === 'admin' ? 'rgba(239, 68, 68, 0.12)' : emp.role === 'manager' ? 'rgba(245, 158, 11, 0.12)' : 'rgba(59, 130, 246, 0.12)';
+                  const roleBorder = emp.role === 'admin' ? 'rgba(239, 68, 68, 0.25)' : emp.role === 'manager' ? 'rgba(245, 158, 11, 0.25)' : 'rgba(59, 130, 246, 0.25)';
+
+                  return (
+                    <tr 
+                      key={emp.id}
+                      style={{
+                        borderBottom: idx === paginatedEmployees.length - 1 ? 'none' : '1px solid var(--border-color)',
+                        transition: 'background-color 0.15s ease',
+                        backgroundColor: 'var(--bg-surface)'
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.03)'}
+                      onMouseLeave={e => e.currentTarget.style.backgroundColor = 'var(--bg-surface)'}
+                    >
+                      <td style={{ padding: '1rem 1.5rem', verticalAlign: 'middle' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
+                          <div style={{
+                            width: '40px', height: '40px', borderRadius: '10px',
+                            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%)',
+                            color: 'var(--accent-color)', border: '1px solid rgba(59, 130, 246, 0.2)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontWeight: 700, fontSize: '0.95rem', flexShrink: 0
+                          }}>
+                            {emp.full_name ? emp.full_name.charAt(0).toUpperCase() : 'U'}
+                          </div>
+                          <div>
+                            <div style={{ fontWeight: 700, fontSize: '0.94rem', color: 'var(--text-primary)' }}>{emp.full_name}</div>
+                            {emp.email && <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '0.1rem' }}>{emp.email}</div>}
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ padding: '1rem 1.25rem', verticalAlign: 'middle' }}>
+                        <span style={{
+                          fontFamily: 'monospace', fontSize: '0.82rem', fontWeight: 600,
+                          backgroundColor: 'var(--bg-page)', color: 'var(--text-secondary)',
+                          padding: '0.25rem 0.6rem', borderRadius: '6px', border: '1px solid var(--border-color)'
+                        }}>
+                          {emp.employee_id}
+                        </span>
+                      </td>
+                      <td style={{ padding: '1rem 1.25rem', verticalAlign: 'middle' }}>
+                        <span style={{
+                          padding: '0.22rem 0.65rem', borderRadius: '6px',
+                          fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em',
+                          backgroundColor: roleBg, color: roleColor, border: `1px solid ${roleBorder}`
+                        }}>
+                          {emp.role}
+                        </span>
+                      </td>
+                      <td style={{ padding: '1rem 1.25rem', verticalAlign: 'middle', fontSize: '0.88rem', color: 'var(--text-primary)', fontWeight: 500 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <Briefcase size={15} style={{ color: 'var(--accent-color)', flexShrink: 0, opacity: emp.designation?.name ? 1 : 0.4 }} />
+                          <span>{emp.designation?.name || <span style={{ opacity: 0.4, fontStyle: 'italic' }}>Unassigned</span>}</span>
+                        </div>
+                      </td>
+                      <td style={{ padding: '1rem 1.25rem', verticalAlign: 'middle', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <MapPin size={15} style={{ color: '#8B5CF6', flexShrink: 0, opacity: emp.work_location ? 1 : 0.4 }} />
+                          <span>{emp.work_location || <span style={{ opacity: 0.4, fontStyle: 'italic' }}>Remote</span>}</span>
+                        </div>
+                      </td>
+                      <td style={{ padding: '1rem 1.5rem', verticalAlign: 'middle', textAlign: 'center' }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                          <button 
+                            onClick={() => openEdit(emp)} 
+                            title="Edit Profile"
+                            style={{ background: 'transparent', border: 'none', padding: '0.45rem', borderRadius: '6px', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', transition: 'all 0.15s ease' }}
+                            onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'var(--bg-page)'; e.currentTarget.style.color = 'var(--accent-color)'; }}
+                            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+                          >
+                            <Edit size={16} />
+                          </button>
+                          <button 
+                            onClick={() => handleResetPassword(emp.id)} 
+                            title="Reset Password"
+                            style={{ background: 'transparent', border: 'none', padding: '0.45rem', borderRadius: '6px', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', transition: 'all 0.15s ease' }}
+                            onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'var(--bg-page)'; e.currentTarget.style.color = '#F59E0B'; }}
+                            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+                          >
+                            <KeyRound size={16} />
+                          </button>
+                          <button 
+                            onClick={() => handleDelete(emp.id)} 
+                            title="Delete User"
+                            style={{ background: 'transparent', border: 'none', padding: '0.45rem', borderRadius: '6px', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', transition: 'all 0.15s ease' }}
+                            onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)'; e.currentTarget.style.color = '#EF4444'; }}
+                            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+                          >
+                            <Trash2 size={16} />
+                          </button>
                         </div>
                       </td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
 
-              {/* Mobile View */}
-              <div className={styles.mobileList}>
-                {paginatedEmployees.map(emp => (
-                  <div key={emp.id} className={styles.empCard}>
-                    <div className={styles.empCardTop}>
-                      <div>
-                        <div className={styles.empName}>{emp.full_name}</div>
-                        <div className={styles.empIdBadge}>ID: {emp.employee_id}</div>
-                      </div>
-                      <span className={`${styles.roleBadge} ${styles[emp.role] || styles.employee}`}>{emp.role}</span>
-                    </div>
-                    <div className={styles.empCardDetails}>
-                      <div className={styles.detailItem}>
-                        <Briefcase size={15} style={{ color: 'var(--accent-color)' }} /> 
-                        <span>{emp.designation?.name || 'No Designation Assigned'}</span>
-                      </div>
-                      <div className={styles.detailItem}>
-                        <MapPin size={15} style={{ color: '#8B5CF6' }} /> 
-                        <span>{emp.work_location || 'Remote / Unassigned'}</span>
-                      </div>
-                    </div>
-                    <div className={styles.empCardActions}>
-                      <button className="btn-outline" onClick={() => openEdit(emp)} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', fontSize: '0.85rem', padding: '0.55rem', fontWeight: 600 }}>
-                        <Edit size={16} style={{ color: 'var(--accent-color)' }} /> Edit Profile
-                      </button>
-                      <button className="btn-outline" onClick={() => handleResetPassword(emp.id)} title="Reset Password" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.55rem 0.85rem' }}>
-                        <KeyRound size={16} style={{ color: '#F59E0B' }} />
-                      </button>
-                      <button className="btn-outline" onClick={() => handleDelete(emp.id)} title="Delete User" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.55rem 0.85rem', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
-                        <Trash2 size={16} style={{ color: '#EF4444' }} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-          
-          {filteredEmployees.length > 10 && (
-            <div style={{ marginTop: '1.5rem', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
-              <Pagination 
-                currentPage={currentPage}
-                totalItems={filteredEmployees.length}
-                itemsPerPage={10}
-                onPageChange={setCurrentPage}
-              />
-            </div>
-          )}
-        </div>
+        {filteredEmployees.length > 10 && (
+          <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--border-color)', background: 'var(--bg-page)' }}>
+            <Pagination 
+              currentPage={currentPage}
+              totalItems={filteredEmployees.length}
+              itemsPerPage={10}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        )}
       </div>
 
+      {/* Slide-over Form Panel */}
       {isPanelOpen && (
-        <div className={styles.overlay}>
-          <div className={styles.slidePanel}>
-            <div className={styles.panelHeader}>
-              <div className={styles.panelTitle}>{isEditing ? 'Edit User' : 'Create User'}</div>
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
+          zIndex: 2000, display: 'flex', justifyContent: 'flex-end'
+        }}>
+          <div style={{
+            width: '100%', maxWidth: '480px', backgroundColor: 'var(--bg-surface)',
+            height: '100vh', padding: '2rem', display: 'flex', flexDirection: 'column',
+            boxShadow: '-8px 0 30px rgba(0,0,0,0.15)', overflowY: 'auto'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.75rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+              <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)' }}>{isEditing ? 'Edit User' : 'Create User'}</div>
               <button 
                 type="button" 
                 onClick={() => setIsPanelOpen(false)} 
@@ -306,44 +377,45 @@ export default function AdminEmployees() {
             {error && <div style={{ color: 'var(--danger-color)', marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Full Name</label>
-                <input required className="surface input" value={fullName} onChange={e => setFullName(e.target.value)} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Full Name</label>
+                <input required style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={fullName} onChange={e => setFullName(e.target.value)} />
               </div>
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Employee ID</label>
-                <input required disabled={isEditing} className="surface input" value={employeeId} onChange={e => setEmployeeId(e.target.value.toUpperCase())} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Employee ID</label>
+                <input required disabled={isEditing} style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none', opacity: isEditing ? 0.7 : 1 }} value={employeeId} onChange={e => setEmployeeId(e.target.value.toUpperCase())} />
               </div>
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Email Address</label>
-                <input type="email" required disabled={isEditing} className="surface input" value={email} onChange={e => setEmail(e.target.value)} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Email Address</label>
+                <input type="email" required disabled={isEditing} style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none', opacity: isEditing ? 0.7 : 1 }} value={email} onChange={e => setEmail(e.target.value)} />
               </div>
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Phone Number</label>
-                <input className="surface input" value={phone} onChange={e => setPhone(e.target.value)} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Phone Number</label>
+                <input style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={phone} onChange={e => setPhone(e.target.value)} />
               </div>
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Role</label>
-                <select className="surface input" value={role} onChange={e => setRole(e.target.value)}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>System Role</label>
+                <select style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={role} onChange={e => setRole(e.target.value)}>
                   <option value="employee">Employee</option>
+                  <option value="manager">Manager</option>
                   <option value="admin">Admin</option>
                 </select>
               </div>
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Designation</label>
-                <select className="surface input" value={designationId} onChange={e => setDesignationId(e.target.value)}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Designation</label>
+                <select style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={designationId} onChange={e => setDesignationId(e.target.value)}>
                   <option value="">-- None --</option>
                   {designations.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
                 </select>
               </div>
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Work Location</label>
-                <input className="surface input" value={workLocation} onChange={e => setWorkLocation(e.target.value)} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
+                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Work Location</label>
+                <input style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={workLocation} onChange={e => setWorkLocation(e.target.value)} placeholder="e.g. Headquarters / Remote" />
               </div>
 
               <div style={{ flex: 1 }} />
-              <button type="submit" className="btn-primary" disabled={saving} style={{ padding: '1rem', marginTop: '1.5rem' }}>
-                {saving ? 'Saving...' : 'Save User'}
+              <button type="submit" className="btn-primary" disabled={saving} style={{ padding: '1rem', marginTop: '1.5rem', fontSize: '1rem', fontWeight: 700 }}>
+                {saving ? 'Saving User...' : 'Save User Profile'}
               </button>
             </form>
           </div>
