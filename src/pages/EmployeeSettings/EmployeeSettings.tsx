@@ -55,12 +55,12 @@ export default function EmployeeSettings() {
             </div>
 
             <div className={styles.settingRow}>
-              <div>
-                <div style={{ fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  {theme === 'light' ? <Sun size={18} style={{ color: '#F59E0B' }} /> : <Moon size={18} style={{ color: '#60A5FA' }} />}
+              <div style={{ minWidth: 0, flex: 1, paddingRight: '0.4rem' }}>
+                <div style={{ fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {theme === 'light' ? <Sun size={17} style={{ color: '#F59E0B', flexShrink: 0 }} /> : <Moon size={17} style={{ color: '#60A5FA', flexShrink: 0 }} />}
                   <span>Interface Theme</span>
                 </div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>
+                <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '0.15rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   Currently using <strong style={{ textTransform: 'capitalize' }}>{theme}</strong> mode
                 </div>
               </div>
@@ -69,9 +69,9 @@ export default function EmployeeSettings() {
                 type="button" 
                 className={theme === 'light' ? 'btn-primary' : 'btn-outline'} 
                 onClick={toggleTheme}
-                style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', whiteSpace: 'nowrap', padding: '0.55rem 0.8rem', fontSize: '0.825rem', flexShrink: 0 }}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', whiteSpace: 'nowrap', padding: '0.5rem 0.75rem', fontSize: '0.78rem', flexShrink: 0 }}
               >
-                {theme === 'light' ? <><Moon size={16} /> Switch to Dark</> : <><Sun size={16} /> Switch to Light</>}
+                {theme === 'light' ? <><Moon size={15} /> Switch to Dark</> : <><Sun size={15} /> Switch to Light</>}
               </button>
             </div>
 
