@@ -226,5 +226,6 @@ export default function EmployeeCalendar() {
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 }
