@@ -202,7 +202,6 @@ export default function EmployeeCalendar() {
                                         <span style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.25rem 0.65rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.03em', boxShadow: '0 2px 6px rgba(0,0,0,0.1)' }}>
                                           {l.category}
                                         </span>
-                                        <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>{formatDuration(l.duration_minutes)}</span>
                                       </div>
                                       <div style={{ color: isExpanded ? 'var(--accent-color)' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s ease', transform: isExpanded ? 'scale(1.1)' : 'none' }}>
                                         {isExpanded ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -210,9 +209,15 @@ export default function EmployeeCalendar() {
                                     </div>
 
                                     {!isExpanded && (
-                                      <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%', paddingTop: '0.1rem' }}>
-                                        {l.title}
-                                      </div>
+                                      <>
+                                        <div style={{ fontSize: '0.875rem', color: 'var(--text-primary)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%', paddingTop: '0.1rem' }}>
+                                          {l.title}
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)', fontSize: '0.8rem', fontWeight: 500 }}>
+                                          <Clock size={13} style={{ color: 'var(--accent-color)' }} />
+                                          <span>{formatInTimeZone(parseISO(l.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(l.to_time), 'Asia/Kolkata', 'HH:mm')} ({formatDuration(l.duration_minutes)})</span>
+                                        </div>
+                                      </>
                                     )}
                                   </div>
                                   
@@ -224,7 +229,7 @@ export default function EmployeeCalendar() {
                                       </div>
                                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-color)', fontSize: '0.85rem', fontWeight: 600, background: 'rgba(59, 130, 246, 0.08)', padding: '0.4rem 0.75rem', borderRadius: '6px', width: 'fit-content' }}>
                                         <Clock size={15} />
-                                        <span>{formatInTimeZone(parseISO(l.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(l.to_time), 'Asia/Kolkata', 'HH:mm')} IST</span>
+                                        <span>{formatInTimeZone(parseISO(l.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(l.to_time), 'Asia/Kolkata', 'HH:mm')} ({formatDuration(l.duration_minutes)})</span>
                                       </div>
                                       {l.notes && (
                                         <div style={{ background: 'var(--bg-page)', borderLeft: '3px solid var(--accent-color)', padding: '0.75rem 1rem', borderRadius: '4px 8px 8px 4px', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
