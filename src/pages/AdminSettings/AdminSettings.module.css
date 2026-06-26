@@ -168,13 +168,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
   margin-top: 0.5rem;
-  padding: 0.65rem 0.75rem;
+  padding: 0.75rem 0.85rem;
   background: var(--bg-page);
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -264,9 +264,9 @@
     padding: 0.85rem 0.75rem;
   }
   .sectionHeading {
-    font-size: 0.7rem;
-    letter-spacing: 0px;
-    padding: 0.6rem 0.5rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.2px;
+    padding: 0.7rem 0.65rem;
   }
 }
 
