@@ -25,7 +25,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 export default function EmployeeDashboard() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { status } = useDailyStatus();
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [shift, setShift] = useState<any>(null);
@@ -116,7 +116,7 @@ export default function EmployeeDashboard() {
             <LayoutDashboard size={32} />
           </div>
           <div className={styles.heroInfo}>
-            <h2 className={styles.heroTitle}>Welcome back, {user?.email?.split('@')[0] || 'Employee'}</h2>
+            <h2 className={styles.heroTitle}>Welcome back, {profile?.full_name || user?.email?.split('@')[0] || 'Employee'}</h2>
             <p className={styles.heroSubtitle}>Here is your real-time attendance overview, shift timer ring, and daily activity logs.</p>
           </div>
         </div>
