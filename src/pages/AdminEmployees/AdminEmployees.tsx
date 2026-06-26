@@ -164,21 +164,20 @@ export default function AdminEmployees() {
   return (
     <div className={`page-container ${styles.container}`}>
       <div className={styles.card}>
-        <div className={styles.headerRow} style={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '0.5rem 0.75rem', backgroundColor: 'var(--bg-page)', width: '300px' }}>
+            <Search size={16} style={{ color: 'var(--text-secondary)', marginRight: '0.5rem' }} />
+            <input 
+              type="text" 
+              placeholder="Search Name or ID..." 
+              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'var(--text-primary)' }}
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+          </div>
           <button className="btn-primary" onClick={openAdd} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Plus size={16} /> Create User
           </button>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border-color)', padding: '0.5rem', backgroundColor: 'var(--bg-page)', width: '300px' }}>
-          <Search size={16} style={{ color: 'var(--text-secondary)', marginRight: '0.5rem' }} />
-          <input 
-            type="text" 
-            placeholder="Search Name or ID..." 
-            style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%' }}
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
         </div>
 
         <div className={styles.tableContainer} style={{ marginTop: '1.5rem' }}>
