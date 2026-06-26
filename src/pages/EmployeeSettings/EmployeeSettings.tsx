@@ -69,7 +69,7 @@ export default function EmployeeSettings() {
                 type="button" 
                 className={theme === 'light' ? 'btn-primary' : 'btn-outline'} 
                 onClick={toggleTheme}
-                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}
+                style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', whiteSpace: 'nowrap', padding: '0.55rem 0.8rem', fontSize: '0.825rem', flexShrink: 0 }}
               >
                 {theme === 'light' ? <><Moon size={16} /> Switch to Dark</> : <><Sun size={16} /> Switch to Light</>}
               </button>

@@ -92,7 +92,7 @@
   background: var(--bg-page);
   border: 1px solid var(--border-color);
   border-radius: 10px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 @media (max-width: 640px) {
@@ -109,8 +109,11 @@
     font-size: 1.25rem;
   }
   .settingRow {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.85rem;
   }
 }
 
