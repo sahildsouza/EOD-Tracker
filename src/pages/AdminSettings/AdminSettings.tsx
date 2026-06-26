@@ -192,11 +192,11 @@ export default function AdminSettings() {
 
           {/* Configured List Section */}
           <div className={styles.sectionHeading} onClick={() => setShowShiftsList(!showShiftsList)}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <span>Configured Shifts Schedule</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', overflow: 'hidden' }}>
+              <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Configured Shifts Schedule</span>
               <span className={styles.countBadge}>{shifts.length}</span>
             </div>
-            <ChevronDown size={18} style={{ transform: showShiftsList ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s ease' }} />
+            <ChevronDown size={18} style={{ transform: showShiftsList ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s ease', flexShrink: 0 }} />
           </div>
 
           {showShiftsList && (
@@ -265,11 +265,11 @@ export default function AdminSettings() {
 
           {/* Configured List Section */}
           <div className={styles.sectionHeading} onClick={() => setShowDesigList(!showDesigList)}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-              <span>Configured Designations Directory</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', overflow: 'hidden' }}>
+              <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Configured Designations Directory</span>
               <span className={styles.countBadge}>{designations.length}</span>
             </div>
-            <ChevronDown size={18} style={{ transform: showDesigList ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s ease' }} />
+            <ChevronDown size={18} style={{ transform: showDesigList ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s ease', flexShrink: 0 }} />
           </div>
 
           {showDesigList && (
