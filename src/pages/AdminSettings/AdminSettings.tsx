@@ -179,11 +179,11 @@ export default function AdminSettings() {
             </div>
 
             <div className={styles.formActions}>
-              <button type="submit" className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '42px', fontWeight: 700 }}>
-                {editingShiftId ? <><Check size={18} /> Update Shift Schedule</> : <><Plus size={18} /> Add New Shift</>}
+              <button type="submit" className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', height: '42px', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                {editingShiftId ? <><Check size={18} /> Update Shift</> : <><Plus size={18} /> Add New Shift</>}
               </button>
               {editingShiftId && (
-                <button type="button" className="btn-outline" onClick={handleCancelShiftEdit} style={{ padding: '0 1.25rem', height: '42px', borderRadius: '8px' }}>
+                <button type="button" className="btn-outline" onClick={handleCancelShiftEdit} style={{ padding: '0 1rem', height: '42px', borderRadius: '8px' }}>
                   Cancel
                 </button>
               )}
@@ -234,7 +234,7 @@ export default function AdminSettings() {
           <form className={`${styles.formBox} ${editingDesigId ? styles.editing : ''}`} onSubmit={handleSaveDesignation}>
             <div className={styles.formHeader}>
               <h3 className={styles.formHeaderTitle}>
-                {editingDesigId ? <><Edit size={16} /> Editing Role Designation</> : <><PlusCircle size={16} /> Create New Designation</>}
+                {editingDesigId ? <><Edit size={16} /> Editing Designation</> : <><PlusCircle size={16} /> Create New Designation</>}
               </h3>
               {editingDesigId && (
                 <button type="button" className={styles.iconBtn} onClick={handleCancelDesigEdit} title="Cancel Edit" style={{ padding: '0.35rem', height: 'auto' }}>
@@ -249,11 +249,11 @@ export default function AdminSettings() {
             </div>
 
             <div className={styles.formActions}>
-              <button type="submit" className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '42px', fontWeight: 700 }}>
-                {editingDesigId ? <><Check size={18} /> Update Role Designation</> : <><Plus size={18} /> Add New Designation</>}
+              <button type="submit" className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', height: '42px', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                {editingDesigId ? <><Check size={18} /> Update Designation</> : <><Plus size={18} /> Add New Designation</>}
               </button>
               {editingDesigId && (
-                <button type="button" className="btn-outline" onClick={handleCancelDesigEdit} style={{ padding: '0 1.25rem', height: '42px', borderRadius: '8px' }}>
+                <button type="button" className="btn-outline" onClick={handleCancelDesigEdit} style={{ padding: '0 1rem', height: '42px', borderRadius: '8px' }}>
                   Cancel
                 </button>
               )}
