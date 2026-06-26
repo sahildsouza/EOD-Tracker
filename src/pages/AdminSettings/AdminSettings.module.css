@@ -79,8 +79,9 @@
   border-radius: 6px;
   border: 1px solid transparent;
   background-color: transparent;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .iconBtn:hover {

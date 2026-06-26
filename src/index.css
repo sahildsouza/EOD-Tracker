@@ -200,3 +200,24 @@ table th, table td {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* Ensure all popup modal close buttons and X icons are crisp & visible in dark mode */
+[class*="panelHeader"] button,
+[class*="modal"] button:not([class*="btn-"]),
+[class*="overlay"] button:not([class*="btn-"]),
+button:has(svg.lucide-x) {
+  color: var(--text-primary) !important;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+[class*="panelHeader"] button:hover,
+[class*="modal"] button:not([class*="btn-"]):hover,
+[class*="overlay"] button:not([class*="btn-"]):hover,
+button:has(svg.lucide-x):hover {
+  opacity: 1;
+  background-color: var(--bg-page);
+}

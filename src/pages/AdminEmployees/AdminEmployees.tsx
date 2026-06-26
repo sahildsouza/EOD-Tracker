@@ -228,7 +228,14 @@ export default function AdminEmployees() {
           <div className={styles.slidePanel}>
             <div className={styles.panelHeader}>
               <div className={styles.panelTitle}>{isEditing ? 'Edit User' : 'Create User'}</div>
-              <button onClick={() => setIsPanelOpen(false)}><X size={24} /></button>
+              <button 
+                type="button" 
+                onClick={() => setIsPanelOpen(false)} 
+                style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem', borderRadius: '6px' }}
+                title="Close"
+              >
+                <X size={24} />
+              </button>
             </div>
 
             {error && <div style={{ color: 'var(--danger-color)', marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
