@@ -73,9 +73,6 @@ export default function AppLayout() {
               {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
             </button>
           </div>
-          <div className={styles.userInfo}>
-            {profile?.full_name} ({profile?.employee_id})
-          </div>
         </div>
 
         <nav className={styles.nav}>
@@ -96,6 +93,9 @@ export default function AppLayout() {
         </nav>
 
         <div className={styles.sidebarFooter}>
+          <div className={styles.userInfo} style={{ padding: 0, marginBottom: '0.25rem', fontWeight: 600, color: 'var(--text-primary)' }} title={`${profile?.full_name} (${profile?.employee_id})`}>
+            {profile?.full_name} ({profile?.employee_id})
+          </div>
           <button onClick={toggleTheme} className={styles.footerButton} title={isCollapsed ? (theme === 'light' ? 'Dark Mode' : 'Light Mode') : undefined}>
             {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
             <span>{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
