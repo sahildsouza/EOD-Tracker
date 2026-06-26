@@ -146,34 +146,36 @@ export default function EmployeeDashboard() {
               <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>Shift Progress & Control</h3>
             </div>
 
-            <div className={styles.ringContainer}>
-              <svg className={styles.progressRing} viewBox="0 0 160 160">
-                <circle className={styles.progressCircleBg} cx="80" cy="80" r={radius} />
-                <circle 
-                  className={styles.progressCircleValue} 
-                  cx="80" cy="80" r={radius} 
-                  strokeDasharray={circumference}
-                  strokeDashoffset={offset}
-                  transform="rotate(-90 80 80)"
-                />
-              </svg>
-              <div className={styles.ringText}>
-                <div className={styles.ringLogged}>{loggedHours}h {loggedMins}m</div>
-                <div className={styles.ringRequired}>of {shift?.duration_hours || 0} hrs</div>
-              </div>
-            </div>
-            
-            <div className={styles.badges}>
-              <div className={styles.badge}>
-                <BadgeCheck size={16} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
-                <span>Status: <strong style={{ textTransform: 'uppercase' }}>{status?.status || 'NOT SET'}</strong></span>
-              </div>
-              {shift && (
-                <div className={styles.badge}>
-                  <Calendar size={16} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
-                  <span>Shift: <strong>{shift.name}</strong> ({shift.start_time.slice(0,5)} - {shift.end_time.slice(0,5)})</span>
+            <div className={styles.progressRow}>
+              <div className={styles.ringContainer}>
+                <svg className={styles.progressRing} viewBox="0 0 160 160">
+                  <circle className={styles.progressCircleBg} cx="80" cy="80" r={radius} />
+                  <circle 
+                    className={styles.progressCircleValue} 
+                    cx="80" cy="80" r={radius} 
+                    strokeDasharray={circumference}
+                    strokeDashoffset={offset}
+                    transform="rotate(-90 80 80)"
+                  />
+                </svg>
+                <div className={styles.ringText}>
+                  <div className={styles.ringLogged}>{loggedHours}h {loggedMins}m</div>
+                  <div className={styles.ringRequired}>of {shift?.duration_hours || 0} hrs</div>
                 </div>
-              )}
+              </div>
+              
+              <div className={styles.badges}>
+                <div className={styles.badge}>
+                  <BadgeCheck size={16} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
+                  <span>Status: <strong style={{ textTransform: 'uppercase' }}>{status?.status || 'NOT SET'}</strong></span>
+                </div>
+                {shift && (
+                  <div className={styles.badge}>
+                    <Calendar size={16} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
+                    <span>Shift: <strong>{shift.name}</strong> ({shift.start_time.slice(0,5)} - {shift.end_time.slice(0,5)})</span>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className={styles.actions}>
