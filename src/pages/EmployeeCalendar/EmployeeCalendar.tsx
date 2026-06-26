@@ -190,23 +190,30 @@ export default function EmployeeCalendar() {
                                   {/* Log Header */}
                                   <div 
                                     style={{ 
-                                      display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
+                                      display: 'flex', flexDirection: 'column', gap: '0.4rem',
                                       padding: '0.85rem 1rem', 
                                       cursor: 'pointer',
                                       userSelect: 'none'
                                     }}
                                     onClick={() => setExpandedLogId(isExpanded ? null : l.id)}
                                   >
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                                      <span style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.25rem 0.65rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.03em', boxShadow: '0 2px 6px rgba(0,0,0,0.1)' }}>
-                                        {l.category}
-                                      </span>
-                                      <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>{formatDuration(l.duration_minutes)}</span>
-                                      {!isExpanded && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '180px' }}>• {l.title}</span>}
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                                        <span style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.25rem 0.65rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.03em', boxShadow: '0 2px 6px rgba(0,0,0,0.1)' }}>
+                                          {l.category}
+                                        </span>
+                                        <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>{formatDuration(l.duration_minutes)}</span>
+                                      </div>
+                                      <div style={{ color: isExpanded ? 'var(--accent-color)' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s ease', transform: isExpanded ? 'scale(1.1)' : 'none' }}>
+                                        {isExpanded ? <EyeOff size={18} /> : <Eye size={18} />}
+                                      </div>
                                     </div>
-                                    <div style={{ color: isExpanded ? 'var(--accent-color)' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s ease', transform: isExpanded ? 'scale(1.1)' : 'none' }}>
-                                      {isExpanded ? <EyeOff size={18} /> : <Eye size={18} />}
-                                    </div>
+
+                                    {!isExpanded && (
+                                      <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%', paddingTop: '0.1rem' }}>
+                                        {l.title}
+                                      </div>
+                                    )}
                                   </div>
                                   
                                   {/* Log Details */}
