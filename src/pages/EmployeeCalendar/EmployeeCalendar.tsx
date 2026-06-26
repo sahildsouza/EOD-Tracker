@@ -5,7 +5,7 @@ import { getCurrentDateIST } from '../../utils/dateUtils';
 import { calculateMergedMinutes, isDateLocked, formatDuration } from '../../utils/timeUtils';
 import styles from './EmployeeCalendar.module.css';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, addMonths, subMonths, isToday, parseISO, isAfter, isSameDay } from 'date-fns';
-import { ChevronLeft, ChevronRight, Eye, EyeOff, Clock, FileText, Calendar } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eye, EyeOff, Clock, FileText, Calendar, BadgeCheck } from 'lucide-react';
 import { formatInTimeZone } from 'date-fns-tz';
 import VisualTimeline from '../../components/Dashboard/VisualTimeline';
 
@@ -129,21 +129,30 @@ export default function EmployeeCalendar() {
         <div className={styles.detailsPanel}>
           {selectedDate ? (
             <>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem' }}>{format(selectedDate, 'dd MMMM yyyy')}</h3>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.85rem', marginBottom: '1.25rem' }}>
+                <Calendar size={22} style={{ color: 'var(--accent-color)' }} />
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>{format(selectedDate, 'dd MMMM yyyy')}</h3>
+              </div>
               {!selectedStatus ? (
                 <p className="text-secondary">No status recorded for this day.</p>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                  <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                    <div style={{ padding: '0.75rem 1rem', backgroundColor: 'var(--bg-page)', borderRadius: '8px', border: '1px solid var(--border-color)', flex: 1 }}>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.25rem', textTransform: 'uppercase' }}>Status</div>
-                      <div style={{ fontSize: '1rem', fontWeight: 600, textTransform: 'capitalize' }}>{selectedStatus.status}</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1rem' }}>
+                    <div style={{ padding: '0.85rem 1rem', background: 'linear-gradient(135deg, var(--bg-page) 0%, rgba(59, 130, 246, 0.06) 100%)', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.35rem', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <BadgeCheck size={14} style={{ color: 'var(--accent-color)' }} />
+                        <span>Status</span>
+                      </div>
+                      <div style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', textTransform: 'capitalize' }}>{selectedStatus.status}</div>
                     </div>
                     {selectedStatus.status === 'shift' && (
-                      <div style={{ padding: '0.75rem 1rem', backgroundColor: 'var(--bg-page)', borderRadius: '8px', border: '1px solid var(--border-color)', flex: 1 }}>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.25rem', textTransform: 'uppercase' }}>Hours Logged</div>
-                        <div style={{ fontSize: '1rem', fontWeight: 600 }}>
-                          {(selectedTotalMins/60).toFixed(2)} <span style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>/ {selectedStatus.shift?.duration_hours} hrs</span>
+                      <div style={{ padding: '0.85rem 1rem', background: 'linear-gradient(135deg, var(--bg-page) 0%, rgba(59, 130, 246, 0.06) 100%)', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.35rem', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <Clock size={14} style={{ color: 'var(--accent-color)' }} />
+                          <span>Hours Logged</span>
+                        </div>
+                        <div style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                          {(selectedTotalMins/60).toFixed(2)} <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: 500 }}>/ {selectedStatus.shift?.duration_hours} hrs</span>
                         </div>
                       </div>
                     )}
@@ -152,12 +161,14 @@ export default function EmployeeCalendar() {
                   {selectedStatus.status === 'shift' && (
                     <>
                       <div>
-                        <h4 style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '1rem', textTransform: 'uppercase' }}>Daily Timeline</h4>
                         <VisualTimeline entries={selectedLogs} shiftStart={selectedStatus.shift?.start_time} shiftEnd={selectedStatus.shift?.end_time} />
                       </div>
                       
                       <div>
-                        <h4 style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '1rem', textTransform: 'uppercase' }}>Logged Activities</h4>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.85rem' }}>
+                          <FileText size={16} style={{ color: 'var(--accent-color)' }} />
+                          <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Logged Activities</h4>
+                        </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                           {selectedLogs.length === 0 ? (
                             <p className="text-secondary" style={{ fontSize: '0.875rem' }}>No activities logged for this day.</p>
