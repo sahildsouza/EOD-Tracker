@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 
@@ -29,6 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const initialLoadDone = useRef(false);
 
   const fetchProfile = async (userId: string) => {
     const { data, error } = await supabase
@@ -56,9 +57,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetchProfile(session.user.id).then(() => setIsLoading(false));
+        fetchProfile(session.user.id).then(() => {
+          setIsLoading(false);
+          initialLoadDone.current = true;
+        });
       } else {
         setIsLoading(false);
+        initialLoadDone.current = true;
       }
     });
 
@@ -67,9 +72,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
-          setIsLoading(true);
-          fetchProfile(session.user.id).then(() => setIsLoading(false));
+          if (!initialLoadDone.current) {
+            setIsLoading(true);
+            fetchProfile(session.user.id).then(() => {
+              setIsLoading(false);
+              initialLoadDone.current = true;
+            });
+          } else {
+            // Background silent token refresh - do NOT set isLoading(true)
+            fetchProfile(session.user.id);
+          }
         } else {
+          initialLoadDone.current = false;
           setProfile(null);
           setIsLoading(false);
         }
@@ -80,6 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signOut = async () => {
+    initialLoadDone.current = false;
     await supabase.auth.signOut();
   };
 
