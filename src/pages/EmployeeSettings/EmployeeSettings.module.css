@@ -95,7 +95,19 @@
   flex-wrap: wrap;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  .heroCard {
+    flex-wrap: nowrap;
+    gap: 1rem;
+    padding: 1.25rem 1rem;
+  }
+  .heroIconBadge {
+    width: 52px;
+    height: 52px;
+  }
+  .heroTitle {
+    font-size: 1.25rem;
+  }
   .settingRow {
     flex-direction: column;
     align-items: flex-start;

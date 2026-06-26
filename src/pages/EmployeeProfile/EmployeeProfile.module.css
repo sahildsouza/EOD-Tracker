@@ -105,12 +105,17 @@
     grid-template-columns: 1fr;
   }
   .heroCard {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    padding: 1.25rem 1rem;
   }
-  .heroRole {
-    margin: 0 auto;
+  .avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  .heroName {
+    font-size: 1.25rem;
   }
 }
 
