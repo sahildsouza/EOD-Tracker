@@ -214,67 +214,72 @@ export default function EmployeeDashboard() {
             {entries.length === 0 ? (
               <p className="text-secondary" style={{ margin: 0 }}>No log entries recorded for today yet.</p>
             ) : (
-              <div className={styles.logList}>
-                {/* Header for Desktop */}
-                <div className={`${styles.logRow} ${styles.logHeader}`}>
-                  <div>Category</div>
-                  <div>Title</div>
-                  <div>From</div>
-                  <div>To</div>
-                  <div>Dur</div>
-                  <div style={{ textAlign: 'center' }}>Actions</div>
-                </div>
-                
-                {/* Rows */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {entries.map(entry => {
                   const isExpanded = expandedLogIds.has(entry.id);
                   return (
-                    <div key={entry.id} className={`${styles.logCardWrapper} ${isExpanded ? styles.expandedWrapper : ''}`}>
-                      <div className={styles.logRow}>
-                        <div className={styles.colCategory}>
-                          <span className={styles.catBadge} style={{ backgroundColor: CATEGORY_COLORS[entry.category] || CATEGORY_COLORS['Others'] }}>
-                            {entry.category}
-                          </span>
-                        </div>
-                        
-                        <div className={`${styles.logTitleCol} ${styles.colTitle}`}>
-                          {entry.title}
-                        </div>
-                        
-                        <div className={styles.desktopTime}>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')}</div>
-                        <div className={styles.desktopTime}>{formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')}</div>
-                        <div className={styles.desktopTime} style={{ fontWeight: 700, color: 'var(--accent-color)' }}>{formatDuration(entry.duration_minutes)}</div>
-                        
-                        <div className={styles.colTimeGroup}>
-                          <Clock size={14} style={{ color: 'var(--accent-color)' }} />
-                          <span>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')} ({formatDuration(entry.duration_minutes)})</span>
-                        </div>
-
-                        <div className={styles.colActions}>
-                          <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', justifyContent: 'center' }}>
-                            <button className={styles.iconBtn} onClick={() => toggleExpandLog(entry.id)} title={isExpanded ? "Hide Notes" : "View Title & Notes"}>
-                              {isExpanded ? <EyeOff size={16} style={{ color: 'var(--accent-color)' }} /> : <Eye size={16} />}
-                            </button>
-                            {!locked ? (
+                    <div 
+                      key={entry.id} 
+                      style={{ 
+                        border: isExpanded ? '1px solid var(--accent-color)' : '1px solid var(--border-color)', 
+                        borderRadius: '10px', 
+                        overflow: 'hidden',
+                        background: isExpanded ? 'linear-gradient(135deg, var(--bg-surface) 0%, rgba(59, 130, 246, 0.04) 100%)' : 'var(--bg-surface)',
+                        transition: 'all 0.2s ease',
+                        boxShadow: isExpanded ? '0 4px 12px rgba(59, 130, 246, 0.08)' : '0 1px 3px rgba(0,0,0,0.02)'
+                      }}
+                    >
+                      {/* Log Header */}
+                      <div 
+                        style={{ 
+                          display: 'flex', flexDirection: 'column', gap: '0.4rem',
+                          padding: '0.85rem 1rem', 
+                          cursor: 'pointer',
+                          userSelect: 'none'
+                        }}
+                        onClick={() => toggleExpandLog(entry.id)}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                            <span style={{ backgroundColor: CATEGORY_COLORS[entry.category] || CATEGORY_COLORS['Others'], padding: '0.25rem 0.65rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.03em', boxShadow: '0 2px 6px rgba(0,0,0,0.1)' }}>
+                              {entry.category}
+                            </span>
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <div style={{ color: isExpanded ? 'var(--accent-color)' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s ease', transform: isExpanded ? 'scale(1.1)' : 'none' }}>
+                              {isExpanded ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </div>
+                            {!locked && (
                               <>
-                                <button className={styles.iconBtn} onClick={() => { setEditingLogId(entry.id); window.scrollTo({ top: 0, behavior: 'smooth' }); }} title="Edit"><Edit size={16} /></button>
-                                <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDelete(entry.id)} title="Delete"><Trash2 size={16} /></button>
+                                <button className={styles.iconBtn} onClick={(e) => { e.stopPropagation(); setEditingLogId(entry.id); window.scrollTo({ top: 0, behavior: 'smooth' }); }} title="Edit"><Edit size={16} /></button>
+                                <button className={`${styles.iconBtn} ${styles.danger}`} onClick={(e) => { e.stopPropagation(); handleDelete(entry.id); }} title="Delete"><Trash2 size={16} /></button>
                               </>
-                            ) : (
-                              <span title="Day is locked">🔒</span>
                             )}
                           </div>
                         </div>
+
+                        {!isExpanded && (
+                          <>
+                            <div style={{ fontSize: '0.875rem', color: 'var(--text-primary)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%', paddingTop: '0.1rem' }}>
+                              {entry.title}
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)', fontSize: '0.8rem', fontWeight: 500 }}>
+                              <Clock size={13} style={{ color: 'var(--accent-color)' }} />
+                              <span>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')} ({formatDuration(entry.duration_minutes)})</span>
+                            </div>
+                          </>
+                        )}
                       </div>
 
+                      {/* Log Details */}
                       {isExpanded && (
-                        <div className={styles.expandedDetails}>
+                        <div style={{ padding: '1.25rem 1rem 1rem', borderTop: '1px dashed var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
                           <div>
-                            <h5 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>{entry.title}</h5>
+                            <h5 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, lineHeight: 1.4 }}>{entry.title}</h5>
                           </div>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-color)', fontSize: '0.85rem', fontWeight: 600, background: 'rgba(59, 130, 246, 0.08)', padding: '0.4rem 0.75rem', borderRadius: '6px', width: 'fit-content' }}>
-                            <Clock size={14} />
-                            <span>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')} IST</span>
+                            <Clock size={15} />
+                            <span>{formatInTimeZone(parseISO(entry.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(entry.to_time), 'Asia/Kolkata', 'HH:mm')} ({formatDuration(entry.duration_minutes)})</span>
                           </div>
                           {entry.notes && (
                             <div style={{ background: 'var(--bg-page)', borderLeft: '3px solid var(--accent-color)', padding: '0.75rem 1rem', borderRadius: '4px 8px 8px 4px', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
@@ -282,7 +287,7 @@ export default function EmployeeDashboard() {
                                 <FileText size={13} style={{ color: 'var(--accent-color)' }} />
                                 <span>Entry Notes</span>
                               </div>
-                              <div style={{ fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>{entry.notes}</div>
+                              <div style={{ fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>{entry.notes}</div>
                             </div>
                           )}
                         </div>
