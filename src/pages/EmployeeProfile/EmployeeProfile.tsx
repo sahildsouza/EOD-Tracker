@@ -41,7 +41,7 @@ export default function EmployeeProfile() {
             {getInitials(profile?.full_name)}
           </div>
           <div className={styles.heroInfo}>
-            <h1 className={styles.heroName}>{profile?.full_name || 'Employee Profile'}</h1>
+            <h2 className={styles.heroName}>{profile?.full_name || 'Employee Profile'}</h2>
             <div className={styles.heroRole}>
               <BadgeCheck size={16} />
               <span>{profile?.role || 'Employee'} • ID: {profile?.employee_id || 'N/A'}</span>

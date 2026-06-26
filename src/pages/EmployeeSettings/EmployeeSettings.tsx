@@ -35,13 +35,13 @@ export default function EmployeeSettings() {
     <div className="page-container">
       <div className={styles.settingsRoot}>
         {/* Hero Settings Banner */}
-        <div className={styles.heroCard}>
+        <div className={styles.heroCard} style={{ justifyContent: 'space-between' }}>
+          <div className={styles.heroInfo} style={{ flex: '1 1 300px' }}>
+            <h2 className={styles.heroTitle}>Preferences & Security</h2>
+            <p className={styles.heroSubtitle}>Customize your interface appearance and safeguard your account credentials.</p>
+          </div>
           <div className={styles.heroIconBadge}>
             <Settings size={32} />
-          </div>
-          <div className={styles.heroInfo}>
-            <h1 className={styles.heroTitle}>Preferences & Security</h1>
-            <p className={styles.heroSubtitle}>Customize your interface appearance and safeguard your account credentials.</p>
           </div>
         </div>
 
