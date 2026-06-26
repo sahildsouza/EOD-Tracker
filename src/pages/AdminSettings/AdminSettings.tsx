@@ -11,8 +11,8 @@ export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
 
   // Accordion toggle states
-  const [showShiftsList, setShowShiftsList] = useState(true);
-  const [showDesigList, setShowDesigList] = useState(true);
+  const [showShiftsList, setShowShiftsList] = useState(false);
+  const [showDesigList, setShowDesigList] = useState(false);
 
   // Form states
   const [newShiftName, setNewShiftName] = useState('');
