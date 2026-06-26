@@ -21,7 +21,6 @@ import AdminEodLogs from './pages/AdminEodLogs/AdminEodLogs';
 import AdminDefaulters from './pages/AdminDefaulters/AdminDefaulters';
 import AdminEmployees from './pages/AdminEmployees/AdminEmployees';
 import AdminSettings from './pages/AdminSettings/AdminSettings';
-import AdminExport from './pages/AdminExport/AdminExport';
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) {
   const { user, profile, isLoading } = useAuth();
@@ -82,7 +81,6 @@ function App() {
           <Route path="admin/defaulters" element={<ProtectedRoute allowedRoles={['admin']}><AdminDefaulters /></ProtectedRoute>} />
           <Route path="admin/employees" element={<ProtectedRoute allowedRoles={['admin']}><AdminEmployees /></ProtectedRoute>} />
           <Route path="admin/settings" element={<ProtectedRoute allowedRoles={['admin']}><AdminSettings /></ProtectedRoute>} />
-          <Route path="admin/export" element={<ProtectedRoute allowedRoles={['admin']}><AdminExport /></ProtectedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>

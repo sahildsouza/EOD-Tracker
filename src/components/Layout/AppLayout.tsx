@@ -25,7 +25,6 @@ const adminLinks = [
   { to: '/admin/defaulters', label: 'Defaulters', icon: AlertTriangle },
   { to: '/admin/employees', label: 'Employees', icon: Users },
   { to: '/admin/settings', label: 'Settings', icon: Settings },
-  { to: '/admin/export', label: 'Export', icon: Download },
 ];
 
 const employeeLinks = [
@@ -49,7 +48,6 @@ export default function AppLayout() {
     if (pathname.includes('/admin/defaulters')) return "Yesterday's Defaulters";
     if (pathname.includes('/admin/employees')) return 'Employees';
     if (pathname.includes('/admin/settings')) return 'System Settings';
-    if (pathname.includes('/admin/export')) return 'Data Export';
     if (pathname.includes('/calendar')) return 'Calendar History';
     if (pathname.includes('/profile')) return 'My Profile';
     if (pathname.includes('/settings')) return 'Settings';
