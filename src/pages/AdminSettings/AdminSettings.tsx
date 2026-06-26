@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import styles from './AdminSettings.module.css';
-import { Trash2, Edit, Clock, Briefcase, Plus, X, Check, Settings, PlusCircle, Sparkles, Layers, ShieldCheck, Tag } from 'lucide-react';
+import { Trash2, Edit, Clock, Briefcase, Plus, X, Check, Settings, PlusCircle, Sparkles, Layers, ShieldCheck, Tag, ChevronDown } from 'lucide-react';
 import { parseISO, differenceInMinutes } from 'date-fns';
 import Loader from '../../components/Loader/Loader';
 
@@ -9,6 +9,10 @@ export default function AdminSettings() {
   const [shifts, setShifts] = useState<any[]>([]);
   const [designations, setDesignations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Accordion toggle states
+  const [showShiftsList, setShowShiftsList] = useState(true);
+  const [showDesigList, setShowDesigList] = useState(true);
 
   // Form states
   const [newShiftName, setNewShiftName] = useState('');
@@ -187,34 +191,39 @@ export default function AdminSettings() {
           </form>
 
           {/* Configured List Section */}
-          <div className={styles.sectionHeading}>
-            <span>Configured Shifts Schedule</span>
-            <span className={styles.countBadge}>{shifts.length}</span>
+          <div className={styles.sectionHeading} onClick={() => setShowShiftsList(!showShiftsList)}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <span>Configured Shifts Schedule</span>
+              <span className={styles.countBadge}>{shifts.length}</span>
+            </div>
+            <ChevronDown size={18} style={{ transform: showShiftsList ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s ease' }} />
           </div>
 
-          <div className={styles.list}>
-            {shifts.map(s => (
-              <div key={s.id} className={`${styles.listItem} ${editingShiftId === s.id ? styles.activeEdit : ''}`}>
-                <div className={styles.itemInfo}>
-                  <div className={styles.itemName}>{s.name}</div>
-                  <div className={styles.itemDesc}>
-                    <Clock size={14} style={{ color: 'var(--accent-color)' }} />
-                    <span>{s.start_time.slice(0,5)} - {s.end_time.slice(0,5)}</span>
-                    <span style={{ color: 'var(--text-secondary)', fontWeight: 400 }}>• ({s.duration_hours} hrs required)</span>
+          {showShiftsList && (
+            <div className={styles.list}>
+              {shifts.map(s => (
+                <div key={s.id} className={`${styles.listItem} ${editingShiftId === s.id ? styles.activeEdit : ''}`}>
+                  <div className={styles.itemInfo}>
+                    <div className={styles.itemName}>{s.name}</div>
+                    <div className={styles.itemDesc}>
+                      <Clock size={14} style={{ color: 'var(--accent-color)' }} />
+                      <span>{s.start_time.slice(0,5)} - {s.end_time.slice(0,5)}</span>
+                      <span style={{ color: 'var(--text-secondary)', fontWeight: 400 }}>• ({s.duration_hours} hrs required)</span>
+                    </div>
+                  </div>
+                  <div className={styles.itemActions}>
+                    <button type="button" className={styles.iconBtn} onClick={() => handleEditShiftClick(s)} title="Edit Shift">
+                      <Edit size={17} />
+                    </button>
+                    <button type="button" className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDeleteShift(s.id)} title="Delete Shift">
+                      <Trash2 size={17} />
+                    </button>
                   </div>
                 </div>
-                <div className={styles.itemActions}>
-                  <button type="button" className={styles.iconBtn} onClick={() => handleEditShiftClick(s)} title="Edit Shift">
-                    <Edit size={17} />
-                  </button>
-                  <button type="button" className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDeleteShift(s.id)} title="Delete Shift">
-                    <Trash2 size={17} />
-                  </button>
-                </div>
-              </div>
-            ))}
-            {shifts.length === 0 && <div className={styles.emptyState}>No shift windows configured yet. Add one above.</div>}
-          </div>
+              ))}
+              {shifts.length === 0 && <div className={styles.emptyState}>No shift windows configured yet. Add one above.</div>}
+            </div>
+          )}
         </div>
 
         {/* Designations Hierarchy Column */}
@@ -255,33 +264,38 @@ export default function AdminSettings() {
           </form>
 
           {/* Configured List Section */}
-          <div className={styles.sectionHeading}>
-            <span>Configured Designations Directory</span>
-            <span className={styles.countBadge}>{designations.length}</span>
+          <div className={styles.sectionHeading} onClick={() => setShowDesigList(!showDesigList)}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <span>Configured Designations Directory</span>
+              <span className={styles.countBadge}>{designations.length}</span>
+            </div>
+            <ChevronDown size={18} style={{ transform: showDesigList ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.25s ease' }} />
           </div>
 
-          <div className={styles.list}>
-            {designations.map(d => (
-              <div key={d.id} className={`${styles.listItem} ${editingDesigId === d.id ? styles.activeEdit : ''}`}>
-                <div className={styles.itemInfo}>
-                  <div className={styles.itemName}>{d.name}</div>
-                  <div className={styles.itemDesc} style={{ fontSize: '0.8rem', color: 'var(--accent-color)' }}>
-                    <ShieldCheck size={14} />
-                    <span>Active Organization Role</span>
+          {showDesigList && (
+            <div className={styles.list}>
+              {designations.map(d => (
+                <div key={d.id} className={`${styles.listItem} ${editingDesigId === d.id ? styles.activeEdit : ''}`}>
+                  <div className={styles.itemInfo}>
+                    <div className={styles.itemName}>{d.name}</div>
+                    <div className={styles.itemDesc} style={{ fontSize: '0.8rem', color: 'var(--accent-color)' }}>
+                      <ShieldCheck size={14} />
+                      <span>Active Organization Role</span>
+                    </div>
+                  </div>
+                  <div className={styles.itemActions}>
+                    <button type="button" className={styles.iconBtn} onClick={() => handleEditDesigClick(d)} title="Edit Designation">
+                      <Edit size={17} />
+                    </button>
+                    <button type="button" className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDeleteDesignation(d.id)} title="Delete Designation">
+                      <Trash2 size={17} />
+                    </button>
                   </div>
                 </div>
-                <div className={styles.itemActions}>
-                  <button type="button" className={styles.iconBtn} onClick={() => handleEditDesigClick(d)} title="Edit Designation">
-                    <Edit size={17} />
-                  </button>
-                  <button type="button" className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDeleteDesignation(d.id)} title="Delete Designation">
-                    <Trash2 size={17} />
-                  </button>
-                </div>
-              </div>
-            ))}
-            {designations.length === 0 && <div className={styles.emptyState}>No role designations configured yet. Add one above.</div>}
-          </div>
+              ))}
+              {designations.length === 0 && <div className={styles.emptyState}>No role designations configured yet. Add one above.</div>}
+            </div>
+          )}
         </div>
       </div>
     </div>
