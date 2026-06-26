@@ -47,8 +47,6 @@ export default function AdminExport() {
 
   return (
     <div className={`page-container ${styles.container}`}>
-      <h1 className={styles.title} style={{ marginBottom: '0.5rem' }}>Data Export</h1>
-      
       <div className={styles.grid}>
         <div className={styles.card}>
           <h2 className={styles.title}>Export EOD Logs</h2>

@@ -116,12 +116,7 @@ export default function AdminDashboard() {
   if (loading) return <div className="page-container"><Loader message="Loading dashboard overview..." /></div>;
 
   return (
-    <div className={styles.dashboardRoot}>
-      <div className={styles.pageHeader}>
-        <h1 className={styles.headerTitle}>Dashboard Overview</h1>
-      </div>
-      <div className={`page-container ${styles.container}`}>
-      
+    <div className={`page-container ${styles.container}`}>
       <div className={styles.kpiGrid}>
         <div className={styles.kpiCard}>
           <div className={styles.kpiLabel}>Active Employees</div>
@@ -177,6 +172,5 @@ export default function AdminDashboard() {
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 }

@@ -164,8 +164,7 @@ export default function AdminEmployees() {
   return (
     <div className={`page-container ${styles.container}`}>
       <div className={styles.card}>
-        <div className={styles.headerRow}>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Employees</h1>
+        <div className={styles.headerRow} style={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
           <button className="btn-primary" onClick={openAdd} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Plus size={16} /> Create User
           </button>

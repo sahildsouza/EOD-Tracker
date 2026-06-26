@@ -88,8 +88,7 @@ export default function AdminDefaulters() {
       <div className={styles.card}>
         <div className={styles.headerRow}>
           <div>
-            <h1 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Yesterday's Defaulters</h1>
-            <p className="text-secondary" style={{ fontSize: '0.875rem', marginTop: '0.25rem' }}>
+            <p className="text-secondary" style={{ fontSize: '0.875rem', margin: 0 }}>
               Date: {yesterdayStr} {isLocked ? '(Finalized)' : '(Not yet locked - edits still possible until 10 AM)'}
             </p>
           </div>

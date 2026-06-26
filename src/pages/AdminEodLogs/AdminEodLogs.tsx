@@ -138,10 +138,6 @@ export default function AdminEodLogs() {
   return (
     <div className={`page-container ${styles.container}`}>
       <div className={styles.card}>
-        <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1 style={{ fontSize: '1.5rem', fontWeight: 700 }}>EOD Logs</h1>
-        </div>
-
         <div className={styles.filtersContainer}>
           <div className={styles.searchBox}>
             <Search size={16} style={{ color: 'var(--text-secondary)', marginRight: '0.5rem' }} />

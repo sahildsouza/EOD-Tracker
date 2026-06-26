@@ -126,8 +126,6 @@ export default function AdminSettings() {
 
   return (
     <div className={`page-container ${styles.container}`}>
-      <h1 className={styles.title} style={{ marginBottom: '0.5rem' }}>System Settings</h1>
-      
       <div className={styles.grid}>
         {/* Shifts */}
         <div className={styles.card}>

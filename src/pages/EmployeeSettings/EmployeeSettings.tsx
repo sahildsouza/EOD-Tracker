@@ -32,8 +32,6 @@ export default function EmployeeSettings() {
 
   return (
     <div className={`page-container ${styles.container}`}>
-      <h1 className={styles.title} style={{ marginBottom: '0.5rem' }}>Settings</h1>
-      
       <div className={styles.grid}>
         <div className={styles.card}>
           <h2 className={styles.title}>Appearance</h2>

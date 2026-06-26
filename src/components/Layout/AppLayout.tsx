@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { 
@@ -39,8 +39,25 @@ export default function AppLayout() {
   const { profile, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const links = profile?.role === 'admin' ? adminLinks : employeeLinks;
+
+  const getPageTitle = (pathname: string) => {
+    if (pathname.includes('/admin/dashboard')) return 'Dashboard Overview';
+    if (pathname.includes('/admin/eod-logs')) return 'EOD Logs';
+    if (pathname.includes('/admin/defaulters')) return "Yesterday's Defaulters";
+    if (pathname.includes('/admin/employees')) return 'Employees';
+    if (pathname.includes('/admin/settings')) return 'System Settings';
+    if (pathname.includes('/admin/export')) return 'Data Export';
+    if (pathname.includes('/calendar')) return 'Calendar History';
+    if (pathname.includes('/profile')) return 'My Profile';
+    if (pathname.includes('/settings')) return 'Settings';
+    if (pathname.includes('/dashboard')) return 'Dashboard Overview';
+    return 'EOD Tracker';
+  };
+
+  const pageTitle = getPageTitle(location.pathname);
 
   const handleSignOut = async () => {
     await signOut();
@@ -109,7 +126,12 @@ export default function AppLayout() {
 
       {/* Main Content Area */}
       <main className={styles.mainArea}>
-        <Outlet />
+        <div className={styles.pageHeader}>
+          <h1 className={styles.headerTitle}>{pageTitle}</h1>
+        </div>
+        <div className={styles.contentScroll}>
+          <Outlet />
+        </div>
       </main>
 
       {/* Mobile Bottom Nav */}

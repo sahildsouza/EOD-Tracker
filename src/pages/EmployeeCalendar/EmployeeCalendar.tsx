@@ -74,8 +74,6 @@ export default function EmployeeCalendar() {
   
   return (
     <div className={`page-container ${styles.container}`}>
-      <h1 className={styles.title} style={{ marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: 700 }}>Calendar History</h1>
-      
       <div className={styles.summaryStrip}>
         <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-completed']}`} /> Completed</div>
         <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-partial']}`} /> Partial</div>
