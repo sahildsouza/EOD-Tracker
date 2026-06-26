@@ -176,46 +176,56 @@ export default function EmployeeCalendar() {
                             selectedLogs.map(l => {
                               const isExpanded = expandedLogId === l.id;
                               return (
-                                <div key={l.id} style={{ border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden' }}>
-                                  {/* Log Header (Always visible) */}
+                                <div 
+                                  key={l.id} 
+                                  style={{ 
+                                    border: isExpanded ? '1px solid var(--accent-color)' : '1px solid var(--border-color)', 
+                                    borderRadius: '10px', 
+                                    overflow: 'hidden',
+                                    background: isExpanded ? 'linear-gradient(135deg, var(--bg-surface) 0%, rgba(59, 130, 246, 0.04) 100%)' : 'var(--bg-surface)',
+                                    transition: 'all 0.2s ease',
+                                    boxShadow: isExpanded ? '0 4px 12px rgba(59, 130, 246, 0.08)' : '0 1px 3px rgba(0,0,0,0.02)'
+                                  }}
+                                >
+                                  {/* Log Header */}
                                   <div 
                                     style={{ 
                                       display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
-                                      padding: '0.75rem 1rem', backgroundColor: isExpanded ? 'var(--bg-page)' : 'transparent',
-                                      cursor: 'pointer', transition: 'background-color 0.2s ease'
+                                      padding: '0.85rem 1rem', 
+                                      cursor: 'pointer',
+                                      userSelect: 'none'
                                     }}
                                     onClick={() => setExpandedLogId(isExpanded ? null : l.id)}
                                   >
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                      <span className="catBadge" style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, color: '#fff' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                                      <span style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.25rem 0.65rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.03em', boxShadow: '0 2px 6px rgba(0,0,0,0.1)' }}>
                                         {l.category}
                                       </span>
-                                      <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>{formatDuration(l.duration_minutes)}</span>
+                                      <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>{formatDuration(l.duration_minutes)}</span>
+                                      {!isExpanded && <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '180px' }}>• {l.title}</span>}
                                     </div>
-                                    <button style={{ color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <div style={{ color: isExpanded ? 'var(--accent-color)' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s ease', transform: isExpanded ? 'scale(1.1)' : 'none' }}>
                                       {isExpanded ? <EyeOff size={18} /> : <Eye size={18} />}
-                                    </button>
+                                    </div>
                                   </div>
                                   
-                                  {/* Log Details (Expandable) */}
+                                  {/* Log Details */}
                                   {isExpanded && (
-                                    <div style={{ padding: '1rem', borderTop: '1px solid var(--border-color)', backgroundColor: 'var(--bg-surface)' }}>
-                                      <div style={{ marginBottom: '0.75rem' }}>
-                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.25rem' }}>Title</div>
-                                        <div style={{ fontSize: '0.875rem', fontWeight: 500 }}>{l.title}</div>
+                                    <div style={{ padding: '1.25rem 1rem 1rem', borderTop: '1px dashed var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+                                      <div>
+                                        <h5 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, lineHeight: 1.4 }}>{l.title}</h5>
                                       </div>
-                                      <div style={{ display: 'flex', gap: '2rem', marginBottom: l.notes ? '0.75rem' : '0' }}>
-                                        <div>
-                                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Clock size={12}/> Time</div>
-                                          <div style={{ fontSize: '0.875rem' }}>
-                                            {formatInTimeZone(parseISO(l.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(l.to_time), 'Asia/Kolkata', 'HH:mm')}
-                                          </div>
-                                        </div>
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-color)', fontSize: '0.85rem', fontWeight: 600, background: 'rgba(59, 130, 246, 0.08)', padding: '0.4rem 0.75rem', borderRadius: '6px', width: 'fit-content' }}>
+                                        <Clock size={15} />
+                                        <span>{formatInTimeZone(parseISO(l.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(l.to_time), 'Asia/Kolkata', 'HH:mm')} IST</span>
                                       </div>
                                       {l.notes && (
-                                        <div>
-                                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}><FileText size={12}/> Notes</div>
-                                          <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', background: 'var(--bg-page)', padding: '0.5rem', borderRadius: '4px' }}>{l.notes}</div>
+                                        <div style={{ background: 'var(--bg-page)', borderLeft: '3px solid var(--accent-color)', padding: '0.75rem 1rem', borderRadius: '4px 8px 8px 4px', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                                            <FileText size={13} style={{ color: 'var(--accent-color)' }} />
+                                            <span>Activity Notes</span>
+                                          </div>
+                                          <div style={{ fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>{l.notes}</div>
                                         </div>
                                       )}
                                     </div>
