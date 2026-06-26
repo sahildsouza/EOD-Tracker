@@ -5,7 +5,7 @@ import { getCurrentDateIST } from '../../utils/dateUtils';
 import { calculateMergedMinutes, isDateLocked, formatDuration } from '../../utils/timeUtils';
 import styles from './EmployeeCalendar.module.css';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, addMonths, subMonths, isToday, parseISO, isAfter, isSameDay } from 'date-fns';
-import { ChevronLeft, ChevronRight, Eye, EyeOff, Clock, FileText } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eye, EyeOff, Clock, FileText, Calendar } from 'lucide-react';
 import { formatInTimeZone } from 'date-fns-tz';
 import VisualTimeline from '../../components/Dashboard/VisualTimeline';
 
@@ -73,14 +73,26 @@ export default function EmployeeCalendar() {
   const selectedTotalMins = calculateMergedMinutes(selectedLogs.map(l => ({ from: parseISO(l.from_time), to: parseISO(l.to_time) })));
   
   return (
-    <div className={`page-container ${styles.container}`}>
-      <div className={styles.summaryStrip}>
-        <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-completed']}`} /> Completed</div>
-        <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-partial']}`} /> Partial</div>
-        <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-leave']}`} /> Leave</div>
-        <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-week-off']}`} /> Week-off</div>
-        <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-defaulter']}`} /> Defaulter</div>
-      </div>
+    <div className="page-container">
+      <div className={styles.calendarRoot}>
+        {/* Hero Calendar Banner */}
+        <div className={styles.heroCard}>
+          <div className={styles.heroIconBadge}>
+            <Calendar size={32} />
+          </div>
+          <div className={styles.heroInfo}>
+            <h2 className={styles.heroTitle}>Monthly Attendance & Logs</h2>
+            <p className={styles.heroSubtitle}>Track your daily work hours, shift statuses, and detailed activity timelines.</p>
+          </div>
+        </div>
+
+        <div className={styles.summaryStrip}>
+          <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-completed']}`} /> Completed</div>
+          <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-partial']}`} /> Partial</div>
+          <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-leave']}`} /> Leave</div>
+          <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-week-off']}`} /> Week-off</div>
+          <div className={styles.summaryItem}><div className={`${styles.statusDot} ${styles['dot-defaulter']}`} /> Defaulter</div>
+        </div>
 
       <div className={styles.grid}>
         <div className={styles.card}>
