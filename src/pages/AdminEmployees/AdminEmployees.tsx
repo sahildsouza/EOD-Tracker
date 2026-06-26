@@ -11,11 +11,13 @@ export default function AdminEmployees() {
   const [designations, setDesignations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [filterDesignation, setFilterDesignation] = useState('');
+  const [filterLocation, setFilterLocation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [search]);
+  }, [search, filterDesignation, filterLocation]);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -37,9 +39,14 @@ export default function AdminEmployees() {
     const { data: d } = await supabase.from('designations').select('*');
     if (d) setDesignations(d);
 
-    const { data: e, error: eErr } = await supabase.from('profiles').select('*, designation:designations(name)');
-    if (eErr) console.error("Error fetching profiles:", eErr);
-    if (e) setEmployees(e);
+    const { data: e, error: eErr } = await supabase.rpc('admin_list_users');
+    if (eErr) {
+      console.error("Error fetching users via RPC:", eErr);
+      const { data: fb } = await supabase.from('profiles').select('*, designation:designations(name)');
+      if (fb) setEmployees(fb);
+    } else if (e) {
+      setEmployees(e);
+    }
     
     setLoading(false);
   };
@@ -48,12 +55,19 @@ export default function AdminEmployees() {
     fetchData();
   }, []);
 
+  const uniqueLocations = useMemo(() => {
+    return Array.from(new Set(employees.map(e => e.work_location).filter(Boolean)));
+  }, [employees]);
+
   const filteredEmployees = useMemo(() => {
-    return employees.filter(e => 
-      e.full_name.toLowerCase().includes(search.toLowerCase()) || 
-      e.employee_id.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [employees, search]);
+    return employees.filter(e => {
+      const matchSearch = (e.full_name?.toLowerCase() || '').includes(search.toLowerCase()) || 
+                          (e.employee_id?.toLowerCase() || '').includes(search.toLowerCase());
+      const matchDesig = filterDesignation ? e.designation_id === filterDesignation : true;
+      const matchLoc = filterLocation ? e.work_location === filterLocation : true;
+      return matchSearch && matchDesig && matchLoc;
+    });
+  }, [employees, search, filterDesignation, filterLocation]);
 
   const paginatedEmployees = useMemo(() => {
     return filteredEmployees.slice((currentPage - 1) * 10, currentPage * 10);
@@ -71,13 +85,7 @@ export default function AdminEmployees() {
     setId(emp.id); setFullName(emp.full_name); setPhone(emp.phone || '');
     setEmployeeId(emp.employee_id); setRole(emp.role); setDesignationId(emp.designation_id || '');
     setWorkLocation(emp.work_location || '');
-    
-    // Auth users email isn't easily accessible via standard PostgREST join depending on schema,
-    // so we might just leave email blank to preserve unless an edge function fetches it.
-    // However, if we do a direct update on Profiles, that's fine. We cannot update Email easily
-    // without Supabase Admin API. For this exercise, we will just update Profile fields.
-    setEmail('admin-cannot-edit-email@local.internal'); // Placeholder
-    
+    setEmail(emp.email || '');
     setError(''); setIsPanelOpen(true);
   };
 
@@ -87,7 +95,7 @@ export default function AdminEmployees() {
 
     try {
       if (isEditing) {
-        // Update Profile only
+        // Update Profile fields
         const { error: pErr } = await supabase.from('profiles').update({
           full_name: fullName,
           phone: phone,
@@ -96,6 +104,15 @@ export default function AdminEmployees() {
           work_location: workLocation
         }).eq('id', id);
         if (pErr) throw pErr;
+
+        // Update Auth Email
+        if (email) {
+          const { error: eErr } = await supabase.rpc('admin_update_user_email', {
+            target_user_id: id,
+            new_email: email
+          });
+          if (eErr) throw eErr;
+        }
       } else {
         // Create secondary client to avoid logging out the admin
         const adminAuthClient = createClient(
@@ -199,20 +216,52 @@ export default function AdminEmployees() {
         overflow: 'hidden'
       }}>
         {/* Toolbar */}
-        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', background: 'var(--bg-page)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.55rem 0.95rem', width: '340px', maxWidth: '100%' }}>
-            <Search size={16} style={{ color: 'var(--text-secondary)' }} />
+        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1rem', background: 'var(--bg-page)' }}>
+          {/* Top Row: Search Input */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.65rem 1rem', width: '100%' }}>
+            <Search size={18} style={{ color: 'var(--text-secondary)' }} />
             <input 
               type="text" 
-              placeholder="Search by name or employee ID..." 
-              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'var(--text-primary)', fontSize: '0.88rem' }}
+              placeholder="Search directory by name or employee ID..." 
+              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'var(--text-primary)', fontSize: '0.9rem' }}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
-          <button className="btn-primary" onClick={openAdd} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.25rem', fontSize: '0.88rem', fontWeight: 600 }}>
-            <Plus size={18} /> Add Employee
-          </button>
+
+          {/* Bottom Row: All 3 controls exactly equal width (33.3% each) across desktop & mobile */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', flexWrap: 'nowrap' }}>
+            {/* Designation Filter */}
+            <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: '0.3rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0 0.5rem' }}>
+              <Briefcase size={14} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
+              <select 
+                style={{ border: 'none', background: 'transparent', padding: '0.55rem 0', color: 'var(--text-primary)', fontSize: '0.82rem', outline: 'none', cursor: 'pointer', width: '100%', textOverflow: 'ellipsis' }}
+                value={filterDesignation}
+                onChange={e => setFilterDesignation(e.target.value)}
+              >
+                <option value="">Designation</option>
+                {designations.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+              </select>
+            </div>
+
+            {/* Work Location Filter */}
+            <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: '0.3rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0 0.5rem' }}>
+              <MapPin size={14} style={{ color: '#8B5CF6', flexShrink: 0 }} />
+              <select 
+                style={{ border: 'none', background: 'transparent', padding: '0.55rem 0', color: 'var(--text-primary)', fontSize: '0.82rem', outline: 'none', cursor: 'pointer', width: '100%', textOverflow: 'ellipsis' }}
+                value={filterLocation}
+                onChange={e => setFilterLocation(e.target.value)}
+              >
+                <option value="">Location</option>
+                {uniqueLocations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
+              </select>
+            </div>
+
+            {/* Add Employee Button */}
+            <button className="btn-primary" onClick={openAdd} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', padding: '0.55rem 0.4rem', fontSize: '0.82rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', borderRadius: '8px' }}>
+              <Plus size={16} style={{ flexShrink: 0 }} /> <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>Add Employee</span>
+            </button>
+          </div>
         </div>
 
         {/* Sleek Premium Directory Table */}
@@ -387,7 +436,7 @@ export default function AdminEmployees() {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Email Address</label>
-                <input type="email" required disabled={isEditing} style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none', opacity: isEditing ? 0.7 : 1 }} value={email} onChange={e => setEmail(e.target.value)} />
+                <input type="email" required style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={email} onChange={e => setEmail(e.target.value)} />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
                 <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Phone Number</label>
