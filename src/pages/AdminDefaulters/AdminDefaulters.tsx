@@ -86,17 +86,12 @@ export default function AdminDefaulters() {
   return (
     <div className={`page-container ${styles.container}`}>
       <div className={styles.card}>
-        <div className={styles.headerRow}>
-          <div>
-            <p className="text-secondary" style={{ fontSize: '0.875rem', margin: 0 }}>
-              Date: {yesterdayStr} {isLocked ? '(Finalized)' : '(Not yet locked - edits still possible until 10 AM)'}
-            </p>
-          </div>
+        <div className={styles.headerRow} style={{ justifyContent: 'flex-end', marginBottom: '1rem' }}>
           <div style={{ display: 'flex', gap: '1rem' }}>
             <button className="btn-outline" onClick={handleCopyNames} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Copy size={16} /> {copySuccess ? 'Copied!' : 'Copy Names'}
             </button>
-            <button className="btn-outline" onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <button className="btn-primary" onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Download size={16} /> Export
             </button>
           </div>
