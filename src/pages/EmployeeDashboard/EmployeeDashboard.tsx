@@ -220,7 +220,7 @@ export default function EmployeeDashboard() {
                   <div>From</div>
                   <div>To</div>
                   <div>Dur</div>
-                  <div style={{ textAlign: 'right' }}>Actions</div>
+                  <div style={{ textAlign: 'center' }}>Actions</div>
                 </div>
                 
                 {/* Rows */}
@@ -249,7 +249,7 @@ export default function EmployeeDashboard() {
                         </div>
 
                         <div className={styles.colActions}>
-                          <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', justifyContent: 'flex-end' }}>
+                          <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', justifyContent: 'center' }}>
                             <button className={styles.iconBtn} onClick={() => toggleExpandLog(entry.id)} title={isExpanded ? "Hide Notes" : "View Title & Notes"}>
                               {isExpanded ? <EyeOff size={16} style={{ color: 'var(--accent-color)' }} /> : <Eye size={16} />}
                             </button>
