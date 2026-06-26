@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import styles from './AdminSettings.module.css';
-import { Trash2, Edit, Clock, Briefcase, Plus, X, Check } from 'lucide-react';
+import { Trash2, Edit, Clock, Briefcase, Plus, X, Check, Settings, PlusCircle, Sparkles, Layers, ShieldCheck, Tag } from 'lucide-react';
 import { parseISO, differenceInMinutes } from 'date-fns';
 import Loader from '../../components/Loader/Loader';
 
@@ -126,105 +126,162 @@ export default function AdminSettings() {
 
   return (
     <div className={`page-container ${styles.container}`}>
+      {/* Hero Banner Header */}
+      <div className={styles.heroCard}>
+        <div className={styles.heroIconBadge}>
+          <Settings size={32} />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <h2 className={styles.heroTitle}>System Settings & Hierarchy</h2>
+          <p className={styles.heroSubtitle}>Configure organization work shift schedules, time requirements, and role designation directory.</p>
+        </div>
+      </div>
+
       <div className={styles.grid}>
-        {/* Shifts */}
+        {/* Shifts Management Column */}
         <div className={styles.card}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <Clock className="text-secondary" size={24} />
-            <h2 className={styles.title} style={{ margin: 0 }}>Shifts</h2>
+          <div className={styles.cardHeader}>
+            <Clock size={24} style={{ color: 'var(--accent-color)' }} />
+            <h2 className={styles.cardTitle}>Shifts Management</h2>
           </div>
-          
+
+          {/* Top Add/Edit Form Box */}
+          <form className={`${styles.formBox} ${editingShiftId ? styles.editing : ''}`} onSubmit={handleSaveShift}>
+            <div className={styles.formHeader}>
+              <h3 className={styles.formHeaderTitle}>
+                {editingShiftId ? <><Edit size={16} /> Editing Shift Schedule</> : <><PlusCircle size={16} /> Create New Shift</>}
+              </h3>
+              {editingShiftId && (
+                <button type="button" className={styles.iconBtn} onClick={handleCancelShiftEdit} title="Cancel Edit" style={{ padding: '0.35rem', height: 'auto' }}>
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}><Tag size={12} style={{ display: 'inline', marginRight: '4px' }} /> Shift Name</label>
+              <input required className={styles.input} placeholder="e.g. General Shift or Morning Shift" value={newShiftName} onChange={e => setNewShiftName(e.target.value)} />
+            </div>
+
+            <div className={styles.timeGrid}>
+              <div className={styles.formGroup}>
+                <label className={styles.label}><Clock size={12} style={{ display: 'inline', marginRight: '4px' }} /> Start Time</label>
+                <input type="time" required className={styles.input} value={newShiftStart} onChange={e => setNewShiftStart(e.target.value)} />
+              </div>
+              <div className={styles.formGroup}>
+                <label className={styles.label}><Clock size={12} style={{ display: 'inline', marginRight: '4px' }} /> End Time</label>
+                <input type="time" required className={styles.input} value={newShiftEnd} onChange={e => setNewShiftEnd(e.target.value)} />
+              </div>
+            </div>
+
+            <div className={styles.formActions}>
+              <button type="submit" className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '42px', fontWeight: 700 }}>
+                {editingShiftId ? <><Check size={18} /> Update Shift Schedule</> : <><Plus size={18} /> Add New Shift</>}
+              </button>
+              {editingShiftId && (
+                <button type="button" className="btn-outline" onClick={handleCancelShiftEdit} style={{ padding: '0 1.25rem', height: '42px', borderRadius: '8px' }}>
+                  Cancel
+                </button>
+              )}
+            </div>
+          </form>
+
+          {/* Configured List Section */}
+          <div className={styles.sectionHeading}>
+            <span>Configured Shifts Schedule</span>
+            <span className={styles.countBadge}>{shifts.length}</span>
+          </div>
+
           <div className={styles.list}>
             {shifts.map(s => (
-              <div key={s.id} className={styles.listItem} style={{ borderColor: editingShiftId === s.id ? 'var(--accent-color)' : '' }}>
+              <div key={s.id} className={`${styles.listItem} ${editingShiftId === s.id ? styles.activeEdit : ''}`}>
                 <div className={styles.itemInfo}>
                   <div className={styles.itemName}>{s.name}</div>
-                  <div className={styles.itemDesc}>{s.start_time.slice(0,5)} - {s.end_time.slice(0,5)} ({s.duration_hours} hrs required)</div>
+                  <div className={styles.itemDesc}>
+                    <Clock size={14} style={{ color: 'var(--accent-color)' }} />
+                    <span>{s.start_time.slice(0,5)} - {s.end_time.slice(0,5)}</span>
+                    <span style={{ color: 'var(--text-secondary)', fontWeight: 400 }}>• ({s.duration_hours} hrs required)</span>
+                  </div>
                 </div>
                 <div className={styles.itemActions}>
-                  <button className={styles.iconBtn} onClick={() => handleEditShiftClick(s)} title="Edit">
-                    <Edit size={18} />
+                  <button type="button" className={styles.iconBtn} onClick={() => handleEditShiftClick(s)} title="Edit Shift">
+                    <Edit size={17} />
                   </button>
-                  <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDeleteShift(s.id)} title="Delete">
-                    <Trash2 size={18} />
+                  <button type="button" className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDeleteShift(s.id)} title="Delete Shift">
+                    <Trash2 size={17} />
                   </button>
                 </div>
               </div>
             ))}
-            {shifts.length === 0 && <p className="text-secondary" style={{ padding: '1rem', textAlign: 'center', backgroundColor: 'var(--bg-page)', borderRadius: '8px' }}>No shifts configured.</p>}
+            {shifts.length === 0 && <div className={styles.emptyState}>No shift windows configured yet. Add one above.</div>}
           </div>
-
-          <form className={styles.addForm} onSubmit={handleSaveShift}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>{editingShiftId ? 'Edit Shift' : 'Add New Shift'}</h3>
-              {editingShiftId && (
-                <button type="button" className={styles.iconBtn} onClick={handleCancelShiftEdit} title="Cancel Edit">
-                  <X size={18} />
-                </button>
-              )}
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'flex-end' }}>
-              <div className={styles.formGroup} style={{ flex: '1 1 200px' }}>
-                <label className={styles.label}>Shift Name</label>
-                <input required className="surface input" placeholder="e.g. Morning Shift" value={newShiftName} onChange={e => setNewShiftName(e.target.value)} style={{ padding: '0.5rem' }} />
-              </div>
-              <div className={styles.formGroup} style={{ flex: '0 0 110px' }}>
-                <label className={styles.label}>Start Time</label>
-                <input type="time" required className="surface input" value={newShiftStart} onChange={e => setNewShiftStart(e.target.value)} style={{ padding: '0.5rem' }} />
-              </div>
-              <div className={styles.formGroup} style={{ flex: '0 0 110px' }}>
-                <label className={styles.label}>End Time</label>
-                <input type="time" required className="surface input" value={newShiftEnd} onChange={e => setNewShiftEnd(e.target.value)} style={{ padding: '0.5rem' }} />
-              </div>
-              <button type="submit" className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '36px', padding: '0 1rem' }}>
-                {editingShiftId ? <><Check size={16} /> Save</> : <><Plus size={16} /> Add</>}
-              </button>
-            </div>
-          </form>
         </div>
 
-        {/* Designations */}
+        {/* Designations Hierarchy Column */}
         <div className={styles.card}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-            <Briefcase className="text-secondary" size={24} />
-            <h2 className={styles.title} style={{ margin: 0 }}>Designations</h2>
+          <div className={styles.cardHeader}>
+            <Briefcase size={24} style={{ color: 'var(--accent-color)' }} />
+            <h2 className={styles.cardTitle}>Designations Hierarchy</h2>
           </div>
+
+          {/* Top Add/Edit Form Box */}
+          <form className={`${styles.formBox} ${editingDesigId ? styles.editing : ''}`} onSubmit={handleSaveDesignation}>
+            <div className={styles.formHeader}>
+              <h3 className={styles.formHeaderTitle}>
+                {editingDesigId ? <><Edit size={16} /> Editing Role Designation</> : <><PlusCircle size={16} /> Create New Designation</>}
+              </h3>
+              {editingDesigId && (
+                <button type="button" className={styles.iconBtn} onClick={handleCancelDesigEdit} title="Cancel Edit" style={{ padding: '0.35rem', height: 'auto' }}>
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={styles.label}><Briefcase size={12} style={{ display: 'inline', marginRight: '4px' }} /> Designation Name</label>
+              <input required className={styles.input} placeholder="e.g. Implementation Engineer or Lead Developer" value={newDesigName} onChange={e => setNewDesigName(e.target.value)} />
+            </div>
+
+            <div className={styles.formActions}>
+              <button type="submit" className="btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '42px', fontWeight: 700 }}>
+                {editingDesigId ? <><Check size={18} /> Update Role Designation</> : <><Plus size={18} /> Add New Designation</>}
+              </button>
+              {editingDesigId && (
+                <button type="button" className="btn-outline" onClick={handleCancelDesigEdit} style={{ padding: '0 1.25rem', height: '42px', borderRadius: '8px' }}>
+                  Cancel
+                </button>
+              )}
+            </div>
+          </form>
+
+          {/* Configured List Section */}
+          <div className={styles.sectionHeading}>
+            <span>Configured Designations Directory</span>
+            <span className={styles.countBadge}>{designations.length}</span>
+          </div>
+
           <div className={styles.list}>
             {designations.map(d => (
-              <div key={d.id} className={styles.listItem} style={{ borderColor: editingDesigId === d.id ? 'var(--accent-color)' : '' }}>
-                <div className={styles.itemName}>{d.name}</div>
+              <div key={d.id} className={`${styles.listItem} ${editingDesigId === d.id ? styles.activeEdit : ''}`}>
+                <div className={styles.itemInfo}>
+                  <div className={styles.itemName}>{d.name}</div>
+                  <div className={styles.itemDesc} style={{ fontSize: '0.8rem', color: 'var(--accent-color)' }}>
+                    <ShieldCheck size={14} />
+                    <span>Active Organization Role</span>
+                  </div>
+                </div>
                 <div className={styles.itemActions}>
-                  <button className={styles.iconBtn} onClick={() => handleEditDesigClick(d)} title="Edit">
-                    <Edit size={18} />
+                  <button type="button" className={styles.iconBtn} onClick={() => handleEditDesigClick(d)} title="Edit Designation">
+                    <Edit size={17} />
                   </button>
-                  <button className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDeleteDesignation(d.id)} title="Delete">
-                    <Trash2 size={18} />
+                  <button type="button" className={`${styles.iconBtn} ${styles.danger}`} onClick={() => handleDeleteDesignation(d.id)} title="Delete Designation">
+                    <Trash2 size={17} />
                   </button>
                 </div>
               </div>
             ))}
-            {designations.length === 0 && <p className="text-secondary" style={{ padding: '1rem', textAlign: 'center', backgroundColor: 'var(--bg-page)', borderRadius: '8px' }}>No designations configured.</p>}
+            {designations.length === 0 && <div className={styles.emptyState}>No role designations configured yet. Add one above.</div>}
           </div>
-
-          <form className={styles.addForm} onSubmit={handleSaveDesignation}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>{editingDesigId ? 'Edit Designation' : 'Add New Designation'}</h3>
-              {editingDesigId && (
-                <button type="button" className={styles.iconBtn} onClick={handleCancelDesigEdit} title="Cancel Edit">
-                  <X size={18} />
-                </button>
-              )}
-            </div>
-            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end' }}>
-              <div className={styles.formGroup} style={{ flex: 1 }}>
-                <label className={styles.label}>Designation Name</label>
-                <input required className="surface input" placeholder="e.g. Software Engineer" value={newDesigName} onChange={e => setNewDesigName(e.target.value)} style={{ padding: '0.5rem' }} />
-              </div>
-              <button type="submit" className="btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', height: '36px', padding: '0 1rem' }}>
-                {editingDesigId ? <><Check size={16} /> Save</> : <><Plus size={16} /> Add</>}
-              </button>
-            </div>
-          </form>
         </div>
       </div>
     </div>
