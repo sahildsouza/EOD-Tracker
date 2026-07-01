@@ -145,12 +145,13 @@ export default function AdminDashboard() {
                 className={`donut ${styles.pieElement}`} 
                 style={{ 
                   background: 'conic-gradient(from 0deg, rgba(59, 130, 246, 0.15) 0deg, rgba(255, 255, 255, 0.03) 360deg)',
-                  border: '2px dashed var(--border-color)' 
+                  border: '2px dashed var(--border-color)',
+                  position: 'relative'
                 }}
               >
-                <div className="donutCutout" style={{ width: '114px', height: '114px', background: 'var(--bg-surface)', display: 'flex', flexDirection: 'column', alignItems: 'center', justify: 'center' }}>
-                  <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-secondary)' }}>0</span>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Logs Today</span>
+                <div className="donutCutout" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '116px', height: '116px', background: 'var(--bg-surface)', borderRadius: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-secondary)', lineHeight: 1.1 }}>0</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>Logs Today</span>
                 </div>
               </div>
               <div className={styles.pieLegend}>
@@ -162,10 +163,10 @@ export default function AdminDashboard() {
             </div>
           ) : (
             <div className={styles.pieContainer}>
-              <div className={`donut ${styles.pieElement}`} style={{ background: conicGradient }}>
-                <div className="donutCutout" style={{ width: '114px', height: '114px', background: 'var(--bg-surface)', display: 'flex', flexDirection: 'column', alignItems: 'center', justify: 'center' }}>
-                  <span style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)' }}>{pieData.length}</span>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Categories</span>
+              <div className={`donut ${styles.pieElement}`} style={{ background: conicGradient, position: 'relative' }}>
+                <div className="donutCutout" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '116px', height: '116px', background: 'var(--bg-surface)', borderRadius: '50%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.1 }}>{pieData.length}</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>{pieData.length === 1 ? 'Category' : 'Categories'}</span>
                 </div>
               </div>
               <div className={styles.pieLegend}>
