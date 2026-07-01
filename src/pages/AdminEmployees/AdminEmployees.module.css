@@ -101,6 +101,85 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+.controlsBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filterBox {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0 0.85rem;
+  min-width: 170px;
+}
+
+.filterSelect {
+  border: none;
+  background: transparent;
+  padding: 0.55rem 0;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .controlsBar {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+  }
+  .filterGroup {
+    flex: 2;
+    min-width: 0;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+  }
+  .filterBox {
+    flex: 1;
+    min-width: 0;
+    padding: 0 0.4rem;
+    min-width: 0;
+  }
+  .filterSelect {
+    font-size: 0.8rem;
+  }
+  .addBtn {
+    flex: 1;
+    min-width: 0;
+    padding: 0.55rem 0.3rem;
+    font-size: 0.8rem;
+  }
+}
+
 .tableContainer {
   width: 100%;
 }
@@ -263,10 +342,18 @@
 
 @media (max-width: 768px) {
   .heroCard {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1.5rem;
-    gap: 1.25rem;
+    flex-direction: row;
+    align-items: center;
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+  }
+  .heroIconBadge {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
+  .heroTitle {
+    font-size: 1.25rem;
   }
   .heroActions {
     width: 100%;

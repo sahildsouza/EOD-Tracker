@@ -30,19 +30,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const initialLoadDone = useRef(false);
+  const profileRef = useRef<Profile | null>(null);
 
   const fetchProfile = async (userId: string) => {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
-    
-    if (data) {
-      setProfile(data as Profile);
-    }
-    if (error) {
-      console.error('Error fetching profile:', error);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (data) {
+        profileRef.current = data as Profile;
+        setProfile(data as Profile);
+      }
+      if (error) {
+        console.error('Error fetching profile:', error);
+      }
+    } catch (err) {
+      console.error('Profile fetch exception:', err);
     }
   };
 
@@ -57,7 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        fetchProfile(session.user.id).then(() => {
+        fetchProfile(session.user.id).finally(() => {
           setIsLoading(false);
           initialLoadDone.current = true;
         });
@@ -72,9 +78,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
-          if (!initialLoadDone.current) {
+          if (!initialLoadDone.current || !profileRef.current) {
             setIsLoading(true);
-            fetchProfile(session.user.id).then(() => {
+            fetchProfile(session.user.id).finally(() => {
               setIsLoading(false);
               initialLoadDone.current = true;
             });
@@ -84,6 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
         } else {
           initialLoadDone.current = false;
+          profileRef.current = null;
           setProfile(null);
           setIsLoading(false);
         }
@@ -95,6 +102,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     initialLoadDone.current = false;
+    profileRef.current = null;
     await supabase.auth.signOut();
   };
 

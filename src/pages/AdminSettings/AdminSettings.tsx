@@ -130,15 +130,14 @@ export default function AdminSettings() {
 
   return (
     <div className={`page-container ${styles.container}`}>
-      {/* Hero Banner Header */}
-      <div className={styles.heroCard}>
-        <div className={styles.heroIconBadge}>
-          <Settings size={32} />
+      {/* Hero Banner Card matching Image 1 */}
+      <div className="bannerCard" style={{ '--banner-accent': '#3B82F6' } as React.CSSProperties}>
+        <div className="bannerIconBox" style={{ background: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', color: '#3B82F6' }}>
+          <Settings size={24} />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          <h2 className={styles.heroTitle}>System Settings & Hierarchy</h2>
-          <p className={styles.heroSubtitle}>Configure organization work shift schedules, time requirements, and role designation directory.</p>
-        </div>
+        <p className="bannerText">
+          Configure organization work shift schedules, time requirements, and role designation directory.
+        </p>
       </div>
 
       <div className={styles.grid}>

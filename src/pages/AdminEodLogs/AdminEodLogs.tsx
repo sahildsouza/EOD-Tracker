@@ -5,7 +5,7 @@ import { calculateMergedMinutes, formatDuration } from '../../utils/timeUtils';
 import { exportToExcel } from '../../utils/exportUtils';
 import { parseISO, format } from 'date-fns';
 import styles from './AdminEodLogs.module.css';
-import { Search, Download, ChevronDown, ChevronRight, Eye, EyeOff } from 'lucide-react';
+import { Search, Download, ChevronDown, ChevronRight, Eye, EyeOff, FileText } from 'lucide-react';
 import Pagination from '../../components/Pagination/Pagination';
 import Loader from '../../components/Loader/Loader';
 
@@ -137,6 +137,16 @@ export default function AdminEodLogs() {
 
   return (
     <div className={`page-container ${styles.container}`}>
+      {/* Hero Banner Card matching Image 1 */}
+      <div className="bannerCard" style={{ '--banner-accent': '#10B981' } as React.CSSProperties}>
+        <div className="bannerIconBox" style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.25)', color: '#10B981' }}>
+          <FileText size={24} />
+        </div>
+        <p className="bannerText">
+          Review daily end-of-day task logs, monitor employee working statuses, and track detailed time allocations.
+        </p>
+      </div>
+
       <div className={styles.card}>
         <div className={styles.filtersContainer}>
           <div className={styles.searchBox}>
@@ -178,9 +188,9 @@ export default function AdminEodLogs() {
           </div>
         </div>
 
-        <div className={styles.tableContainer} style={{ marginTop: '1.5rem' }}>
+        <div style={{ width: '100%', overflowX: 'auto' }}>
           {loading ? <Loader message="Fetching EOD logs..." /> : (
-            <table className={styles.table}>
+            <table>
               <thead>
                 <tr>
                   <th style={{ width: '40px' }}></th>
@@ -201,8 +211,19 @@ export default function AdminEodLogs() {
                           {expandedRows.has(row.id) ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
                         </button>
                       </td>
-                      <td style={{ fontWeight: 600 }}>{row.full_name}</td>
-                      <td>{row.employee_id}</td>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                          <div className="avatarBadge">
+                            {row.full_name ? row.full_name.charAt(0).toUpperCase() : 'U'}
+                          </div>
+                          <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+                            {row.full_name}
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="idBadge">{row.employee_id}</span>
+                      </td>
                       <td>{row.designation?.name}</td>
                       <td>
                         <span className={styles.catBadge} style={{ backgroundColor: row.daily_status === 'shift' ? 'var(--success-color)' : (row.daily_status === 'Not Started' ? 'var(--warning-color)' : 'var(--category-break)') }}>
@@ -263,6 +284,9 @@ export default function AdminEodLogs() {
               </tbody>
             </table>
           )}
+        </div>
+
+        <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--border-color)', background: 'var(--bg-page)' }}>
           <Pagination 
             currentPage={currentPage}
             totalItems={filteredData.length}

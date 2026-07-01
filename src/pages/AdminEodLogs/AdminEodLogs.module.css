@@ -65,24 +65,6 @@
   overflow-x: auto;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.table th, .table td {
-  padding: 0.75rem 1rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 0.875rem;
-}
-
-.table th {
-  font-weight: 600;
-  color: var(--text-secondary);
-  background-color: var(--bg-page);
-}
-
 .expandRow {
   background-color: var(--bg-page);
 }

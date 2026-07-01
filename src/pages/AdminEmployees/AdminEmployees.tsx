@@ -181,30 +181,14 @@ export default function AdminEmployees() {
   return (
     <div className={`page-container ${styles.container}`}>
       {/* Hero Header Card */}
-      <div style={{
-        background: 'linear-gradient(135deg, var(--bg-surface) 0%, rgba(59, 130, 246, 0.05) 100%)',
-        border: '1px solid var(--border-color)',
-        borderRadius: '16px',
-        padding: '1.5rem 1.75rem',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1.25rem',
-        marginBottom: '0.5rem',
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)'
-      }}>
-        <div style={{
-          width: '56px', height: '56px', borderRadius: '14px',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
-          color: 'var(--accent-color)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          flexShrink: 0, border: '1px solid rgba(59, 130, 246, 0.2)'
-        }}>
-          <Users size={28} />
+      {/* Hero Banner Card matching Image 1 */}
+      <div className="bannerCard" style={{ '--banner-accent': '#3B82F6' } as React.CSSProperties}>
+        <div className="bannerIconBox" style={{ background: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', color: '#3B82F6' }}>
+          <Users size={24} />
         </div>
-        <div>
-          <h1 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)', margin: '0 0 0.35rem 0', letterSpacing: '-0.01em' }}>Employee Directory & Management</h1>
-          <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.45 }}>Configure employee profiles, assign organizational designations, and manage system role permissions.</p>
-        </div>
+        <p className="bannerText">
+          Configure employee profiles, assign organizational designations, and manage system role permissions.
+        </p>
       </div>
 
       {/* Main List Container Card */}
@@ -229,37 +213,39 @@ export default function AdminEmployees() {
             />
           </div>
 
-          {/* Bottom Row: All 3 controls exactly equal width (33.3% each) across desktop & mobile */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', flexWrap: 'nowrap' }}>
-            {/* Designation Filter */}
-            <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: '0.3rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0 0.5rem' }}>
-              <Briefcase size={14} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
-              <select 
-                style={{ border: 'none', background: 'transparent', padding: '0.55rem 0', color: 'var(--text-primary)', fontSize: '0.82rem', outline: 'none', cursor: 'pointer', width: '100%', textOverflow: 'ellipsis' }}
-                value={filterDesignation}
-                onChange={e => setFilterDesignation(e.target.value)}
-              >
-                <option value="">Designation</option>
-                {designations.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
-              </select>
-            </div>
+          {/* Bottom Row: Responsive Controls Alignment */}
+          <div className={styles.controlsBar}>
+            <div className={styles.filterGroup}>
+              {/* Designation Filter */}
+              <div className={styles.filterBox}>
+                <Briefcase size={14} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
+                <select 
+                  className={styles.filterSelect}
+                  value={filterDesignation}
+                  onChange={e => setFilterDesignation(e.target.value)}
+                >
+                  <option value="">Designation</option>
+                  {designations.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                </select>
+              </div>
 
-            {/* Work Location Filter */}
-            <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: '0.3rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0 0.5rem' }}>
-              <MapPin size={14} style={{ color: '#8B5CF6', flexShrink: 0 }} />
-              <select 
-                style={{ border: 'none', background: 'transparent', padding: '0.55rem 0', color: 'var(--text-primary)', fontSize: '0.82rem', outline: 'none', cursor: 'pointer', width: '100%', textOverflow: 'ellipsis' }}
-                value={filterLocation}
-                onChange={e => setFilterLocation(e.target.value)}
-              >
-                <option value="">Location</option>
-                {uniqueLocations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
-              </select>
+              {/* Work Location Filter */}
+              <div className={styles.filterBox}>
+                <MapPin size={14} style={{ color: '#8B5CF6', flexShrink: 0 }} />
+                <select 
+                  className={styles.filterSelect}
+                  value={filterLocation}
+                  onChange={e => setFilterLocation(e.target.value)}
+                >
+                  <option value="">Location</option>
+                  {uniqueLocations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
+                </select>
+              </div>
             </div>
 
             {/* Add Employee Button */}
-            <button className="btn-primary" onClick={openAdd} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.35rem', padding: '0.55rem 0.4rem', fontSize: '0.82rem', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', borderRadius: '8px' }}>
-              <Plus size={16} style={{ flexShrink: 0 }} /> <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>Add Employee</span>
+            <button className={`btn-primary ${styles.addBtn}`} onClick={openAdd}>
+              <Plus size={16} style={{ flexShrink: 0 }} /> <span>Add Employee</span>
             </button>
           </div>
         </div>
@@ -301,31 +287,19 @@ export default function AdminEmployees() {
                       onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.03)'}
                       onMouseLeave={e => e.currentTarget.style.backgroundColor = 'var(--bg-surface)'}
                     >
-                      <td style={{ padding: '1rem 1.5rem', verticalAlign: 'middle' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
-                          <div style={{
-                            width: '40px', height: '40px', borderRadius: '10px',
-                            background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%)',
-                            color: 'var(--accent-color)', border: '1px solid rgba(59, 130, 246, 0.2)',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontWeight: 700, fontSize: '0.95rem', flexShrink: 0
-                          }}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                          <div className="avatarBadge">
                             {emp.full_name ? emp.full_name.charAt(0).toUpperCase() : 'U'}
                           </div>
                           <div>
-                            <div style={{ fontWeight: 700, fontSize: '0.94rem', color: 'var(--text-primary)' }}>{emp.full_name}</div>
+                            <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>{emp.full_name}</div>
                             {emp.email && <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '0.1rem' }}>{emp.email}</div>}
                           </div>
                         </div>
                       </td>
-                      <td style={{ padding: '1rem 1.25rem', verticalAlign: 'middle' }}>
-                        <span style={{
-                          fontFamily: 'monospace', fontSize: '0.82rem', fontWeight: 600,
-                          backgroundColor: 'var(--bg-page)', color: 'var(--text-secondary)',
-                          padding: '0.25rem 0.6rem', borderRadius: '6px', border: '1px solid var(--border-color)'
-                        }}>
-                          {emp.employee_id}
-                        </span>
+                      <td>
+                        <span className="idBadge">{emp.employee_id}</span>
                       </td>
                       <td style={{ padding: '1rem 1.25rem', verticalAlign: 'middle' }}>
                         <span style={{
@@ -387,7 +361,7 @@ export default function AdminEmployees() {
           </div>
         )}
 
-        {filteredEmployees.length > 10 && (
+        {filteredEmployees.length > 0 && (
           <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--border-color)', background: 'var(--bg-page)' }}>
             <Pagination 
               currentPage={currentPage}
