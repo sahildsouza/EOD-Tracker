@@ -112,7 +112,8 @@
     flex-direction: column;
     height: auto;
     gap: 1.5rem;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
+    align-items: center;
   }
   
   .pieElement {
@@ -121,8 +122,9 @@
   }
   
   .pieLegend {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+    justify-content: flex-start;
   }
 }
