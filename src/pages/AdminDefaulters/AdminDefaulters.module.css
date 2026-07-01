@@ -129,13 +129,14 @@
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 0 0.85rem;
+  height: 38px;
   min-width: 170px;
 }
 
 .filterSelect {
   border: none;
   background: transparent;
-  padding: 0.55rem 0;
+  padding: 0;
   color: var(--text-primary);
   font-size: 0.82rem;
   outline: none;
@@ -148,6 +149,19 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.actionButtons button {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1.15rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 /* Table Container */

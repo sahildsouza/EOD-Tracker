@@ -5,7 +5,7 @@ import { calculateMergedMinutes, formatDuration } from '../../utils/timeUtils';
 import { exportToExcel } from '../../utils/exportUtils';
 import { parseISO, format } from 'date-fns';
 import styles from './AdminEodLogs.module.css';
-import { Search, Download, ChevronDown, ChevronRight, Eye, EyeOff, FileText } from 'lucide-react';
+import { Search, Download, ChevronDown, ChevronRight, Eye, EyeOff, FileText, Calendar, Filter, Briefcase } from 'lucide-react';
 import Pagination from '../../components/Pagination/Pagination';
 import Loader from '../../components/Loader/Loader';
 
@@ -147,44 +147,79 @@ export default function AdminEodLogs() {
         </p>
       </div>
 
-      <div className={styles.card}>
-        <div className={styles.filtersContainer}>
-          <div className={styles.searchBox}>
-            <Search size={16} style={{ color: 'var(--text-secondary)', marginRight: '0.5rem' }} />
+      <div style={{
+        background: 'var(--bg-surface)',
+        border: '1px solid var(--border-color)',
+        borderRadius: '16px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)',
+        overflow: 'hidden'
+      }}>
+        <div className={styles.toolbar}>
+          {/* Top Row: Search Input */}
+          <div className={styles.searchRow}>
+            <Search size={18} style={{ color: 'var(--text-secondary)' }} />
             <input 
               type="text" 
-              placeholder="Search Name or ID..." 
-              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%' }}
+              placeholder="Search directory by name or employee ID..." 
+              className={styles.searchInput}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
 
-          <div className={styles.controlsRow}>
-            <input 
-              type="date" 
-              className={styles.controlItem} 
-              value={date} 
-              onChange={(e) => setDate(e.target.value)}
-            />
-            <select className={styles.controlItem} value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
-              <option value="">All Statuses</option>
-              <option value="shift">Shift</option>
-              <option value="leave">Leave</option>
-              <option value="week-off">Week-off</option>
-              <option value="Not Started">Not Started</option>
-            </select>
+          {/* Bottom Row: Responsive Controls Alignment */}
+          <div className={styles.controlsBar}>
+            <div className={styles.filterGroup}>
+              {/* Date Filter */}
+              <div className={styles.filterBox}>
+                <Calendar size={14} style={{ color: '#3B82F6', flexShrink: 0 }} />
+                <input 
+                  type="date" 
+                  className={styles.filterSelect} 
+                  value={date} 
+                  onChange={(e) => setDate(e.target.value)}
+                  style={{ border: 'none', background: 'transparent', color: 'var(--text-primary)', outline: 'none' }}
+                />
+              </div>
 
-            <select className={styles.controlItem} value={designationFilter} onChange={e => setDesignationFilter(e.target.value)}>
-              <option value="">All Designations</option>
-              {designations.map(d => (
-                <option key={d.id} value={d.id}>{d.name}</option>
-              ))}
-            </select>
+              {/* Status Filter */}
+              <div className={styles.filterBox}>
+                <Filter size={14} style={{ color: '#10B981', flexShrink: 0 }} />
+                <select 
+                  className={styles.filterSelect} 
+                  value={statusFilter} 
+                  onChange={e => setStatusFilter(e.target.value)}
+                >
+                  <option value="">All Statuses</option>
+                  <option value="shift">Shift</option>
+                  <option value="leave">Leave</option>
+                  <option value="week-off">Week-off</option>
+                  <option value="Not Started">Not Started</option>
+                </select>
+              </div>
 
-            <button className={`btn-primary ${styles.controlItem}`} onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', justifyContent: 'center' }}>
-              <Download size={14} /> Export
-            </button>
+              {/* Designation Filter */}
+              <div className={styles.filterBox}>
+                <Briefcase size={14} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
+                <select 
+                  className={styles.filterSelect} 
+                  value={designationFilter} 
+                  onChange={e => setDesignationFilter(e.target.value)}
+                >
+                  <option value="">All Designations</option>
+                  {designations.map(d => (
+                    <option key={d.id} value={d.id}>{d.name}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Export Button */}
+            <div className={styles.actionButtons}>
+              <button className="btn-primary" onClick={handleExport}>
+                <Download size={16} /> Export Logs
+              </button>
+            </div>
           </div>
         </div>
 

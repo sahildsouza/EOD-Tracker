@@ -181,10 +181,10 @@ export default function AdminDefaulters() {
             </div>
 
             <div className={styles.actionButtons}>
-              <button className="btn-outline" onClick={handleCopyNames} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.55rem 1rem', borderRadius: '8px', fontWeight: 600, fontSize: '0.85rem' }}>
+              <button className="btn-outline" onClick={handleCopyNames}>
                 <Copy size={16} /> {copySuccess ? 'Copied!' : 'Copy Names'}
               </button>
-              <button className="btn-primary" onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.55rem 1.15rem', borderRadius: '8px', fontWeight: 600, fontSize: '0.85rem' }}>
+              <button className="btn-primary" onClick={handleExport}>
                 <Download size={16} /> Export Report
               </button>
             </div>

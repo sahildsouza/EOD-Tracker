@@ -10,60 +10,134 @@
   border: 1px solid var(--border-color);
 }
 
-.filtersContainer {
+.toolbar {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  background: var(--bg-page);
 }
 
-.searchBox {
+.searchRow {
   display: flex;
   align-items: center;
+  gap: 0.6rem;
+  background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  padding: 0.5rem 1rem;
-  background-color: var(--bg-page);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
   width: 100%;
-  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
-.controlsRow {
+.searchRow:focus-within {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.searchInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.controlsBar {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   gap: 0.75rem;
   width: 100%;
-  align-items: center;
 }
 
-.controlItem {
-  flex: 1;
-  min-width: 140px;
-  padding: 0.55rem 0.85rem;
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filterBox {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  font-size: 0.85rem;
   border-radius: 8px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  background-color: var(--bg-surface);
+  padding: 0 0.85rem;
+  height: 38px;
+  min-width: 160px;
+}
+
+.filterSelect {
+  border: none;
+  background: transparent;
+  padding: 0;
   color: var(--text-primary);
+  font-size: 0.82rem;
   outline: none;
+  cursor: pointer;
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+.actionButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.actionButtons button {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1.15rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {
-  .controlsRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
+  .toolbar {
+    padding: 1rem;
   }
-  
-  .controlItem {
-    min-width: 0;
+  .controlsBar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+  .filterGroup {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    width: 100%;
+  }
+  .filterBox {
+    flex: 1;
+    min-width: 120px;
+    padding: 0 0.5rem;
+  }
+  .filterSelect {
+    font-size: 0.8rem;
+  }
+  .actionButtons {
+    width: 100%;
+    display: flex;
+    gap: 0.4rem;
+  }
+  .actionButtons button {
+    flex: 1;
+    justify-content: center;
+    padding: 0 0.75rem;
     font-size: 0.82rem;
-    padding: 0.55rem 0.5rem;
-  }
-  
-  .searchBox {
-    padding: 0.6rem 0.8rem;
   }
 }
 

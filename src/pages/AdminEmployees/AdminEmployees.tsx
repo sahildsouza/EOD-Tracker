@@ -200,14 +200,14 @@ export default function AdminEmployees() {
         overflow: 'hidden'
       }}>
         {/* Toolbar */}
-        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1rem', background: 'var(--bg-page)' }}>
+        <div className={styles.toolbar}>
           {/* Top Row: Search Input */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.65rem 1rem', width: '100%' }}>
+          <div className={styles.searchRow}>
             <Search size={18} style={{ color: 'var(--text-secondary)' }} />
             <input 
               type="text" 
               placeholder="Search directory by name or employee ID..." 
-              style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'var(--text-primary)', fontSize: '0.9rem' }}
+              className={styles.searchInput}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -244,9 +244,11 @@ export default function AdminEmployees() {
             </div>
 
             {/* Add Employee Button */}
-            <button className={`btn-primary ${styles.addBtn}`} onClick={openAdd}>
-              <Plus size={16} style={{ flexShrink: 0 }} /> <span>Add Employee</span>
-            </button>
+            <div className={styles.actionButtons}>
+              <button className="btn-primary" onClick={openAdd}>
+                <Plus size={16} /> Add Employee
+              </button>
+            </div>
           </div>
         </div>
 
