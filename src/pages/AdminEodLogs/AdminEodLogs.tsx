@@ -193,7 +193,6 @@ export default function AdminEodLogs() {
             <table>
               <thead>
                 <tr>
-                  <th style={{ width: '40px' }}></th>
                   <th>Employee Name</th>
                   <th>ID</th>
                   <th>Designation</th>
@@ -205,14 +204,17 @@ export default function AdminEodLogs() {
               <tbody>
                 {paginatedData.map(row => (
                   <React.Fragment key={row.id}>
-                    <tr>
+                    <tr onClick={() => toggleRow(row.id)} style={{ cursor: 'pointer' }}>
                       <td>
-                        <button onClick={() => toggleRow(row.id)} style={{ color: 'var(--text-secondary)' }}>
-                          {expandedRows.has(row.id) ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
-                        </button>
-                      </td>
-                      <td>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <button 
+                            type="button" 
+                            onClick={(e) => { e.stopPropagation(); toggleRow(row.id); }} 
+                            style={{ color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', padding: '0.15rem' }}
+                            aria-label="Toggle log details"
+                          >
+                            {expandedRows.has(row.id) ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                          </button>
                           <div className="avatarBadge">
                             {row.full_name ? row.full_name.charAt(0).toUpperCase() : 'U'}
                           </div>
@@ -235,7 +237,7 @@ export default function AdminEodLogs() {
                     </tr>
                     {expandedRows.has(row.id) && (
                       <tr className={styles.expandRow}>
-                        <td colSpan={7}>
+                        <td colSpan={6}>
                           <div className={styles.detailsBox}>
                             <h4 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Log Details</h4>
                             {row.logs.length === 0 ? (
@@ -279,7 +281,7 @@ export default function AdminEodLogs() {
                   </React.Fragment>
                 ))}
                 {filteredData.length === 0 && (
-                  <tr><td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>No data found for selected criteria.</td></tr>
+                  <tr><td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>No data found for selected criteria.</td></tr>
                 )}
               </tbody>
             </table>
