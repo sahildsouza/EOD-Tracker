@@ -354,6 +354,15 @@ button:has(svg.lucide-x):hover {
 }
 
 /* UNIVERSAL SHARP EDGES RULE (OVERRIDE ALL ROUND EDGES ACROSS THE ENTIRE APP) */
-*, *::before, *::after, [class], [style] {
+*:not([class*="donut"]):not([class*="pie-chart"]):not([class*="circular"]):not([class*="pieElement"]):not([class*="donutCutout"]),
+*::before:not([class*="donut"]):not([class*="pie-chart"]):not([class*="circular"]):not([class*="pieElement"]),
+*::after:not([class*="donut"]):not([class*="pie-chart"]):not([class*="circular"]):not([class*="pieElement"]),
+[class]:not([class*="donut"]):not([class*="pie-chart"]):not([class*="circular"]):not([class*="pieElement"]):not([class*="donutCutout"]),
+[style]:not([class*="donut"]):not([class*="pie-chart"]):not([class*="circular"]):not([class*="pieElement"]):not([class*="donutCutout"]) {
   border-radius: 0 !important;
+}
+
+/* DATA VISUALIZATION CIRCLES (Charts MUST be circular) */
+.pie-chart, [class*="pieElement"], [class*="donut"], [class*="circular"], [class*="donutCutout"] {
+  border-radius: 50% !important;
 }

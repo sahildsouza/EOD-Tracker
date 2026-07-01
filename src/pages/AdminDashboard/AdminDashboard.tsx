@@ -139,20 +139,53 @@ export default function AdminDashboard() {
       <div className={styles.grid}>
         <div className={styles.card}>
           <h2 className={styles.title}>Today's Log Breakdown</h2>
-          <div className={styles.pieContainer}>
-            <div className={`pie-chart ${styles.pieElement}`} style={{ background: conicGradient }} />
-            {pieData.length > 0 && (
+          {pieData.length === 0 ? (
+            <div className={styles.pieContainer}>
+              <div 
+                className={`donut ${styles.pieElement}`} 
+                style={{ 
+                  background: 'conic-gradient(from 0deg, rgba(59, 130, 246, 0.15) 0deg, rgba(255, 255, 255, 0.03) 360deg)',
+                  border: '2px dashed var(--border-color)' 
+                }}
+              >
+                <div className="donutCutout" style={{ width: '114px', height: '114px', background: 'var(--bg-surface)', display: 'flex', flexDirection: 'column', alignItems: 'center', justify: 'center' }}>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-secondary)' }}>0</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Logs Today</span>
+                </div>
+              </div>
+              <div className={styles.pieLegend}>
+                <div style={{ padding: '0.85rem 1rem', background: 'var(--bg-page)', border: '1px solid var(--border-color)' }}>
+                  <div style={{ fontWeight: 700, fontSize: '0.88rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>No daily logs recorded yet</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>When team members log their daily shift tasks, the real-time activity distribution donut chart will visualize here.</div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className={styles.pieContainer}>
+              <div className={`donut ${styles.pieElement}`} style={{ background: conicGradient }}>
+                <div className="donutCutout" style={{ width: '114px', height: '114px', background: 'var(--bg-surface)', display: 'flex', flexDirection: 'column', alignItems: 'center', justify: 'center' }}>
+                  <span style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)' }}>{pieData.length}</span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Categories</span>
+                </div>
+              </div>
               <div className={styles.pieLegend}>
                 {pieData.map(d => (
-                  <div key={d.category} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
-                    <span className="pie-chart" style={{ width: '12px', height: '12px', backgroundColor: d.color }} />
-                    <span>{d.category} ({d.percentage.toFixed(1)}%)</span>
+                  <div key={d.category} style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.84rem', fontWeight: 600 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span className="circular" style={{ width: '10px', height: '10px', backgroundColor: d.color, flexShrink: 0 }} />
+                        <span style={{ color: 'var(--text-primary)' }}>{d.category}</span>
+                      </div>
+                      <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{d.percentage.toFixed(1)}%</span>
+                    </div>
+                    <div style={{ width: '100%', height: '6px', background: 'var(--bg-page)', border: '1px solid var(--border-color)' }}>
+                      <div style={{ width: `${d.percentage}%`, height: '100%', backgroundColor: d.color }} />
+                    </div>
                   </div>
                 ))}
               </div>
-            )}
-            {pieData.length === 0 && <p className="text-secondary">No logs recorded yet today.</p>}
-          </div>
+            </div>
+          )}
         </div>
         <div className={styles.card}>
           <h2 className={styles.title}>Yesterday's Defaulters</h2>
