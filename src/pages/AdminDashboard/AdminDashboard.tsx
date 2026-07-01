@@ -10,7 +10,7 @@ import Loader from '../../components/Loader/Loader';
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [stats, setStats] = useState({ employees: 0, loggedToday: 0, offToday: 0, defaulters: 0 });
-  const [pieData, setPieData] = useState<{category: string, color: string, percentage: number}[]>([]);
+  const [pieData, setPieData] = useState<{category: string, color: string, percentage: number, minutes: number, count: number}[]>([]);
   const [defaultersList, setDefaultersList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,6 +32,7 @@ export default function AdminDashboard() {
       if (logErr) console.error("Error fetching logs:", logErr);
 
       const categoryTotals: Record<string, number> = {};
+      const categoryCounts: Record<string, number> = {};
       let totalMins = 0;
 
       if (logData) {
@@ -40,6 +41,7 @@ export default function AdminDashboard() {
           if (mins > 0) {
             const cat = entry.category || 'Others';
             categoryTotals[cat] = (categoryTotals[cat] || 0) + mins;
+            categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
             totalMins += mins;
           }
         });
@@ -59,7 +61,9 @@ export default function AdminDashboard() {
           pieChart.push({
             category: cat,
             color: CATEGORY_COLORS[cat] || 'var(--category-others)',
-            percentage: (mins / totalMins) * 100
+            percentage: (mins / totalMins) * 100,
+            minutes: mins,
+            count: categoryCounts[cat] || 0
           });
         });
       }
@@ -173,9 +177,12 @@ export default function AdminDashboard() {
                 {pieData.map(d => (
                   <div key={d.category} style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.84rem', fontWeight: 600 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <span className="circular" style={{ width: '10px', height: '10px', backgroundColor: d.color, flexShrink: 0 }} />
                         <span style={{ color: 'var(--text-primary)' }}>{d.category}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+                          ({(d.minutes / 60).toFixed(1)} hrs • {d.count} {d.count === 1 ? 'log' : 'logs'})
+                        </span>
                       </div>
                       <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{d.percentage.toFixed(1)}%</span>
                     </div>
