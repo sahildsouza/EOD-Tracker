@@ -28,36 +28,42 @@
 
 .controlsRow {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 0.75rem;
   width: 100%;
+  align-items: center;
 }
 
 .controlItem {
   flex: 1;
-  min-width: 0;
-  padding: 0.5rem;
+  min-width: 140px;
+  padding: 0.55rem 0.85rem;
   border: 1px solid var(--border-color);
-  font-size: 0.875rem;
-  border-radius: 6px;
+  font-size: 0.85rem;
+  border-radius: 8px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   background-color: var(--bg-surface);
+  color: var(--text-primary);
+  outline: none;
 }
 
 @media (max-width: 768px) {
   .controlsRow {
-    gap: 0.25rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
   }
   
   .controlItem {
-    font-size: 0.65rem;
-    padding: 0.5rem 0.25rem;
+    min-width: 0;
+    font-size: 0.82rem;
+    padding: 0.55rem 0.5rem;
   }
   
   .searchBox {
-    padding: 0.5rem;
+    padding: 0.6rem 0.8rem;
   }
 }
 
