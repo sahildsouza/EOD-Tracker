@@ -150,21 +150,9 @@ export default function AdminSettings() {
         <div className="bannerIconBox" style={{ background: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', color: '#3B82F6' }}>
           <Settings size={24} />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-          <p className="bannerText">
-            Manage organization work shift schedules, time requirements, and employee role designation directory.
-          </p>
-          <div className={styles.statsRow}>
-            <span className={styles.statBadge}>
-              <Clock size={14} style={{ color: '#3B82F6' }} />
-              Active Shifts: {shifts.length}
-            </span>
-            <span className={styles.statBadge}>
-              <Briefcase size={14} style={{ color: '#10B981' }} />
-              Active Roles: {designations.length}
-            </span>
-          </div>
-        </div>
+        <p className="bannerText">
+          Manage organization work shift schedules, time requirements, and employee role designation directory.
+        </p>
       </div>
 
       {/* Navigation Tab Bar */}
