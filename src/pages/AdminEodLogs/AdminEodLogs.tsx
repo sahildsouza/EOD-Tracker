@@ -178,7 +178,7 @@ export default function AdminEodLogs() {
                   className={styles.filterSelect} 
                   value={date} 
                   onChange={(e) => setDate(e.target.value)}
-                  style={{ border: 'none', background: 'transparent', color: 'var(--text-primary)', outline: 'none' }}
+                  style={{ border: 'none', background: 'transparent', color: 'var(--text-primary)', outline: 'none', width: '100%', cursor: 'pointer' }}
                 />
               </div>
 
