@@ -298,6 +298,38 @@ table td {
   font-weight: 500;
 }
 
+@media (max-width: 768px) {
+  .bannerCard, [class*="heroCard"] {
+    padding: 1rem !important;
+    gap: 0.85rem !important;
+    align-items: flex-start !important;
+    margin-bottom: 0.75rem;
+  }
+  
+  .bannerIconBox, [class*="heroIconBadge"] {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+  }
+
+  .bannerIconBox svg, [class*="heroIconBadge"] svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .bannerText, [class*="heroSubtitle"], [class*="heroTitle"] {
+    font-size: 0.85rem !important;
+    line-height: 1.4 !important;
+    word-break: break-word;
+  }
+
+  [class*="heroTitle"] {
+    font-size: 1.15rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+}
+
 /* Toast container positioning */
 #toast-root {
   position: fixed;
