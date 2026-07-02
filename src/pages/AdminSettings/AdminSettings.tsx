@@ -82,6 +82,7 @@ export default function AdminSettings() {
     setNewShiftName(shift.name);
     setNewShiftStart(shift.start_time.slice(0, 5));
     setNewShiftEnd(shift.end_time.slice(0, 5));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCancelShiftEdit = () => {
@@ -113,6 +114,7 @@ export default function AdminSettings() {
   const handleEditDesigClick = (desig: any) => {
     setEditingDesigId(desig.id);
     setNewDesigName(desig.name);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCancelDesigEdit = () => {
