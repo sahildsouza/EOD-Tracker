@@ -264,12 +264,14 @@ table td {
   border-radius: 0 !important;
   padding: 1.25rem 1.5rem;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 1.25rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
   position: relative;
   overflow: hidden;
   margin-bottom: 0.5rem;
+  flex-shrink: 0 !important;
+  min-height: 84px;
 }
 
 .bannerCard::before {
@@ -302,8 +304,10 @@ table td {
   .bannerCard, [class*="heroCard"] {
     padding: 1rem !important;
     gap: 0.85rem !important;
-    align-items: flex-start !important;
+    align-items: center !important;
     margin-bottom: 0.75rem;
+    flex-shrink: 0 !important;
+    min-height: 72px;
   }
   
   .bannerIconBox, [class*="heroIconBadge"] {
