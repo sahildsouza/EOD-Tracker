@@ -40,7 +40,7 @@ export default function EmployeeSettings() {
             <Settings size={24} />
           </div>
           <p className="bannerText">
-            Customize your interface appearance theme and safeguard your account security credentials.
+            Customize your interface appearance theme and manage/change your account security credentials.
           </p>
         </div>
 
@@ -64,9 +64,9 @@ export default function EmployeeSettings() {
                 </div>
               </div>
 
-              <button 
-                type="button" 
-                className={theme === 'light' ? 'btn-primary' : 'btn-outline'} 
+              <button
+                type="button"
+                className={theme === 'light' ? 'btn-primary' : 'btn-outline'}
                 onClick={toggleTheme}
                 style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', whiteSpace: 'nowrap', padding: '0.5rem 0.75rem', fontSize: '0.78rem', flexShrink: 0 }}
               >
@@ -90,27 +90,27 @@ export default function EmployeeSettings() {
             <form onSubmit={handleChangePassword} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div className={styles.fieldGroup}>
                 <label className={styles.fieldLabel}><Lock size={14} /> New Password</label>
-                <input 
-                  required 
-                  type="password" 
-                  minLength={6} 
-                  className={styles.fieldInput} 
+                <input
+                  required
+                  type="password"
+                  minLength={6}
+                  className={styles.fieldInput}
                   placeholder="At least 6 characters"
-                  value={password} 
-                  onChange={e => setPassword(e.target.value)} 
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
                 />
               </div>
 
               <div className={styles.fieldGroup}>
                 <label className={styles.fieldLabel}><Lock size={14} /> Confirm New Password</label>
-                <input 
-                  required 
-                  type="password" 
-                  minLength={6} 
-                  className={styles.fieldInput} 
+                <input
+                  required
+                  type="password"
+                  minLength={6}
+                  className={styles.fieldInput}
                   placeholder="Repeat new password"
-                  value={confirm} 
-                  onChange={e => setConfirm(e.target.value)} 
+                  value={confirm}
+                  onChange={e => setConfirm(e.target.value)}
                 />
               </div>
 
