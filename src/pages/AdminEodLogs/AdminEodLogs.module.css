@@ -16,6 +16,7 @@
   box-shadow: var(--shadow-md);
   width: 100%;
   max-width: 100%;
+  overflow: hidden;
 }
 
 /* Unified Sleek Toolbar */
@@ -41,7 +42,7 @@
   height: 38px;
   flex: 1;
   min-width: 240px;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: all var(--transition-normal);
 }
 
 .searchBox:focus-within {
