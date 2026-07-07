@@ -400,6 +400,24 @@
     width: 100%;
   }
 
+  .filterGroup {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .filterBox {
+    width: 100%;
+    height: 36px;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+  }
+
+  .filterText {
+    font-size: 0.82rem;
+  }
+
   .desktopTable {
     display: none;
   }
