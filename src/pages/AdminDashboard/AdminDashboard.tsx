@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { differenceInMinutes, parseISO, subDays, format } from 'date-fns';
+import { Users, UserCheck, CalendarOff, AlertTriangle, TrendingUp, Clock, ShieldAlert, Sparkles } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { getCurrentDateIST } from '../../utils/dateUtils';
 import { calculateMergedMinutes } from '../../utils/timeUtils';
@@ -122,21 +123,82 @@ export default function AdminDashboard() {
   return (
     <div className={`page-container ${styles.container}`}>
       <div className={styles.kpiGrid}>
-        <div className={styles.kpiCard}>
-          <div className={styles.kpiLabel}>Active Employees</div>
-          <div className={styles.kpiValue} style={{ color: 'var(--text-primary)' }}>{stats.employees}</div>
+        {/* Active Employees */}
+        <div className={`${styles.kpiCard} ${styles.kpiBlue}`}>
+          <div className={styles.kpiHeader}>
+            <div className={styles.kpiIconBox}>
+              <Users size={22} />
+            </div>
+            <span className={styles.kpiBadge}>Workforce</span>
+          </div>
+          <div className={styles.kpiBody}>
+            <div className={styles.kpiValue}>{stats.employees}</div>
+            <div className={styles.kpiLabel}>Active Employees</div>
+          </div>
+          <div className={styles.kpiFooter}>
+            <span className={styles.kpiSubtext}>Total registered staff</span>
+            <Sparkles size={14} className={styles.kpiFooterIcon} />
+          </div>
+          <div className={styles.kpiGlow} />
         </div>
-        <div className={styles.kpiCard}>
-          <div className={styles.kpiLabel}>On Shift Today</div>
-          <div className={styles.kpiValue} style={{ color: 'var(--accent-color)' }}>{stats.loggedToday}</div>
+
+        {/* On Shift Today */}
+        <div className={`${styles.kpiCard} ${styles.kpiGreen}`}>
+          <div className={styles.kpiHeader}>
+            <div className={styles.kpiIconBox}>
+              <UserCheck size={22} />
+            </div>
+            <span className={styles.kpiBadge}>Live Status</span>
+          </div>
+          <div className={styles.kpiBody}>
+            <div className={styles.kpiValue}>{stats.loggedToday}</div>
+            <div className={styles.kpiLabel}>On Shift Today</div>
+          </div>
+          <div className={styles.kpiFooter}>
+            <span className={styles.kpiSubtext}>
+              {stats.employees > 0 ? `${Math.round((stats.loggedToday / stats.employees) * 100)}% attendance rate` : '0% attendance rate'}
+            </span>
+            <TrendingUp size={14} className={styles.kpiFooterIcon} />
+          </div>
+          <div className={styles.kpiGlow} />
         </div>
-        <div className={styles.kpiCard}>
-          <div className={styles.kpiLabel}>Leave / Week-off</div>
-          <div className={styles.kpiValue} style={{ color: 'var(--text-primary)' }}>{stats.offToday}</div>
+
+        {/* Leave / Week-off */}
+        <div className={`${styles.kpiCard} ${styles.kpiAmber}`}>
+          <div className={styles.kpiHeader}>
+            <div className={styles.kpiIconBox}>
+              <CalendarOff size={22} />
+            </div>
+            <span className={styles.kpiBadge}>Off Duty</span>
+          </div>
+          <div className={styles.kpiBody}>
+            <div className={styles.kpiValue}>{stats.offToday}</div>
+            <div className={styles.kpiLabel}>Leave / Week-off</div>
+          </div>
+          <div className={styles.kpiFooter}>
+            <span className={styles.kpiSubtext}>Scheduled time off</span>
+            <Clock size={14} className={styles.kpiFooterIcon} />
+          </div>
+          <div className={styles.kpiGlow} />
         </div>
-        <div className={styles.kpiCard}>
-          <div className={styles.kpiLabel}>Defaulters (Yesterday)</div>
-          <div className={styles.kpiValue} style={{ color: 'var(--danger-color)' }}>{stats.defaulters}</div>
+
+        {/* Defaulters Yesterday */}
+        <div className={`${styles.kpiCard} ${styles.kpiRed}`}>
+          <div className={styles.kpiHeader}>
+            <div className={styles.kpiIconBox}>
+              <AlertTriangle size={22} />
+            </div>
+            <span className={styles.kpiBadge}>Attention</span>
+          </div>
+          <div className={styles.kpiBody}>
+            <div className={styles.kpiValue}>{stats.defaulters}</div>
+            <div className={styles.kpiLabel}>Defaulters (Yesterday)</div>
+          </div>
+          <div className={styles.kpiFooter}>
+            <span className={styles.kpiSubtext}>Shortfall in hours</span>
+            <ShieldAlert size={14} className={styles.kpiFooterIcon} />
+          </div>
+          <div className={styles.kpiGlow} />
         </div>
       </div>
 
