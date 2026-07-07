@@ -71,7 +71,7 @@
 }
 
 .filterItem {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.45rem;
   background: var(--bg-surface);
@@ -79,6 +79,8 @@
   border-radius: var(--radius-md);
   padding: 0 0.75rem;
   height: 38px;
+  width: max-content;
+  max-width: 100%;
 }
 
 .filterIconBlue {
@@ -106,6 +108,8 @@
   outline: none;
   cursor: pointer;
   height: 100%;
+  width: auto;
+  max-width: 100%;
 }
 
 .exportBtn {
@@ -422,24 +426,26 @@
     gap: 0.75rem;
   }
   .filterControls {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
     width: 100%;
   }
   .filterItem {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     padding: 0 0.5rem;
     height: 36px;
   }
   .dateInput, .selectInput {
     font-size: 0.78rem;
-    width: 100%;
+    width: auto;
+    max-width: 100%;
   }
   .exportBtn {
-    grid-column: span 2;
     height: 36px;
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     justify-content: center;
   }
   .expandedContainer {
