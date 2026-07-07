@@ -408,7 +408,7 @@
 
 @media (max-width: 768px) {
   .container {
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
   .tabsBar {
@@ -417,7 +417,7 @@
     border-bottom: none;
     padding-bottom: 0;
   }
-  
+
   .tabBtn {
     width: 100%;
     justify-content: space-between;
@@ -426,7 +426,8 @@
     box-sizing: border-box;
   }
 
-  .listPanel, .editorPanel {
+  .listPanel,
+  .editorPanel {
     padding: 1.1rem 1rem;
     border-radius: var(--radius-md);
   }
@@ -436,7 +437,7 @@
     align-items: stretch;
     gap: 0.75rem;
   }
-  
+
   .searchBox {
     max-width: 100%;
     width: 100%;
@@ -490,7 +491,8 @@
     gap: 0.6rem;
   }
 
-  .submitBtn, .cancelBtn {
+  .submitBtn,
+  .cancelBtn {
     width: 100%;
   }
 }
