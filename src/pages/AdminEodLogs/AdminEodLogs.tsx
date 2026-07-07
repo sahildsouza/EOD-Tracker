@@ -143,7 +143,7 @@ export default function AdminEodLogs() {
         {/* Unified Sleek Toolbar */}
         <div className={styles.toolbar}>
           <div className={styles.searchBox}>
-            <Search size={16} className={styles.searchIcon} />
+            <Search size={18} className={styles.searchIcon} />
             <input 
               type="text" 
               placeholder="Search directory by name or employee ID..." 
