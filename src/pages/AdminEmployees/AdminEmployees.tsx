@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { supabase } from '../../lib/supabase';
 import styles from './AdminEmployees.module.css';
-import { Search, Plus, Edit, Trash2, KeyRound, X, Users, Briefcase, MapPin } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, KeyRound, X, Users, Briefcase, MapPin, ChevronDown } from 'lucide-react';
 import Pagination from '../../components/Pagination/Pagination';
 import Loader from '../../components/Loader/Loader';
 
@@ -219,8 +219,12 @@ export default function AdminEmployees() {
               {/* Designation Filter */}
               <div className={styles.filterBox}>
                 <Briefcase size={14} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
+                <span className={styles.filterText}>
+                  {designations.find(d => d.id === filterDesignation)?.name || 'Designation'}
+                </span>
+                <ChevronDown size={14} className={styles.filterArrow} />
                 <select 
-                  className={styles.filterSelect}
+                  className={styles.filterSelectHidden}
                   value={filterDesignation}
                   onChange={e => setFilterDesignation(e.target.value)}
                 >
@@ -232,8 +236,10 @@ export default function AdminEmployees() {
               {/* Work Location Filter */}
               <div className={styles.filterBox}>
                 <MapPin size={14} style={{ color: '#8B5CF6', flexShrink: 0 }} />
+                <span className={styles.filterText}>{filterLocation || 'Location'}</span>
+                <ChevronDown size={14} className={styles.filterArrow} />
                 <select 
-                  className={styles.filterSelect}
+                  className={styles.filterSelectHidden}
                   value={filterLocation}
                   onChange={e => setFilterLocation(e.target.value)}
                 >

@@ -168,8 +168,12 @@ export default function AdminEodLogs() {
             {/* Status Filter */}
             <div className={styles.filterItem}>
               <Filter size={14} className={styles.filterIconGreen} />
+              <span className={styles.filterText}>
+                {statusFilter ? (statusFilter === 'shift' ? 'Shift' : statusFilter === 'leave' ? 'Leave' : statusFilter === 'week-off' ? 'Week-off' : statusFilter) : 'All Statuses'}
+              </span>
+              <ChevronDown size={14} className={styles.filterArrow} />
               <select 
-                className={styles.selectInput} 
+                className={styles.selectInputHidden} 
                 value={statusFilter} 
                 onChange={e => setStatusFilter(e.target.value)}
               >
@@ -184,8 +188,12 @@ export default function AdminEodLogs() {
             {/* Designation Filter */}
             <div className={styles.filterItem}>
               <Briefcase size={14} className={styles.filterIconAmber} />
+              <span className={styles.filterText}>
+                {designations.find(d => d.id === designationFilter)?.name || 'All Designations'}
+              </span>
+              <ChevronDown size={14} className={styles.filterArrow} />
               <select 
-                className={styles.selectInput} 
+                className={styles.selectInputHidden} 
                 value={designationFilter} 
                 onChange={e => setDesignationFilter(e.target.value)}
               >

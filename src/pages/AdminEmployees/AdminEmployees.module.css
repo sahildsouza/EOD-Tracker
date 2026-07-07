@@ -22,7 +22,9 @@
 .heroCard::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
   width: 4px;
   background: linear-gradient(to bottom, var(--accent-color), #8B5CF6);
 }
@@ -133,23 +135,38 @@
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 0 0.85rem;
+  padding: 0 0.75rem;
   height: 38px;
+  position: relative;
+  cursor: pointer;
   width: max-content;
   max-width: 100%;
 }
 
-.filterSelect {
-  border: none;
-  background: transparent;
-  padding: 0;
+.filterText {
   color: var(--text-primary);
   font-size: 0.82rem;
-  outline: none;
-  cursor: pointer;
-  width: auto;
-  max-width: 100%;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.filterArrow {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.filterSelectHidden {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .actionButtons {
@@ -175,35 +192,38 @@
   .toolbar {
     padding: 1rem;
   }
+
   .controlsBar {
     flex-direction: column;
     align-items: stretch;
     gap: 0.6rem;
   }
+
   .filterGroup {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 0.6rem;
     width: 100%;
   }
+
   .filterBox {
-    width: auto;
-    max-width: 100%;
+    width: 100%;
     height: 40px;
     padding: 0 0.85rem;
     box-sizing: border-box;
   }
+
   .filterSelect {
     font-size: 0.88rem;
-    width: auto;
-    max-width: 100%;
+    width: 100%;
   }
+
   .actionButtons {
     width: 100%;
     display: flex;
     gap: 0.4rem;
   }
+
   .actionButtons button {
     flex: 1;
     justify-content: center;
@@ -351,34 +371,43 @@
     padding: 1.25rem 1rem;
     gap: 1rem;
   }
+
   .heroIconBadge {
     width: 48px;
     height: 48px;
     border-radius: var(--radius-sm);
   }
+
   .heroTitle {
     font-size: 1.25rem;
   }
+
   .heroActions {
     width: 100%;
   }
+
   .heroActions button {
     width: 100%;
     justify-content: center;
   }
+
   .toolbar {
     flex-direction: column;
     align-items: stretch;
   }
+
   .searchBox {
     width: 100%;
   }
+
   .desktopTable {
     display: none;
   }
+
   .mobileList {
     display: flex;
   }
+
   .card {
     padding: 1.25rem 1rem;
   }
@@ -387,8 +416,11 @@
 /* Slide-over Form */
 .overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0,0,0,0.6);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   z-index: 2000;
   display: flex;

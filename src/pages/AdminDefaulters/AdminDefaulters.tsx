@@ -4,7 +4,7 @@ import { getCurrentDateIST } from '../../utils/dateUtils';
 import { calculateMergedMinutes, isDateLocked } from '../../utils/timeUtils';
 import { exportToExcel } from '../../utils/exportUtils';
 import { parseISO, subDays, format } from 'date-fns';
-import { Copy, Download, AlertTriangle, Search, Briefcase, Clock, Calendar, MapPin } from 'lucide-react';
+import { Copy, Download, AlertTriangle, Search, Briefcase, Clock, Calendar, MapPin, ChevronDown } from 'lucide-react';
 import styles from './AdminDefaulters.module.css';
 import Pagination from '../../components/Pagination/Pagination';
 import Loader from '../../components/Loader/Loader';
@@ -156,8 +156,10 @@ export default function AdminDefaulters() {
               {/* Designation Filter */}
               <div className={styles.filterBox}>
                 <Briefcase size={14} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
+                <span className={styles.filterText}>{filterDesignation || 'Designation'}</span>
+                <ChevronDown size={14} className={styles.filterArrow} />
                 <select 
-                  className={styles.filterSelect}
+                  className={styles.filterSelectHidden}
                   value={filterDesignation}
                   onChange={e => { setFilterDesignation(e.target.value); setCurrentPage(1); }}
                 >
@@ -169,8 +171,10 @@ export default function AdminDefaulters() {
               {/* Assigned Shift Filter */}
               <div className={styles.filterBox}>
                 <Clock size={14} style={{ color: '#8B5CF6', flexShrink: 0 }} />
+                <span className={styles.filterText}>{filterShift || 'Assigned Shift'}</span>
+                <ChevronDown size={14} className={styles.filterArrow} />
                 <select 
-                  className={styles.filterSelect}
+                  className={styles.filterSelectHidden}
                   value={filterShift}
                   onChange={e => { setFilterShift(e.target.value); setCurrentPage(1); }}
                 >
