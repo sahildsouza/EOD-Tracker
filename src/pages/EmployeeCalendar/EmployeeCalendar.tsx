@@ -75,15 +75,14 @@ export default function EmployeeCalendar() {
   return (
     <div className="page-container">
       <div className={styles.calendarRoot}>
-        {/* Hero Calendar Banner */}
-        <div className={styles.heroCard}>
-          <div className={styles.heroIconBadge}>
-            <Calendar size={32} />
+        {/* Hero Calendar Banner matching Admin pages */}
+        <div className="bannerCard" style={{ '--banner-accent': '#3B82F6' } as React.CSSProperties}>
+          <div className="bannerIconBox" style={{ background: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', color: '#3B82F6' }}>
+            <Calendar size={24} />
           </div>
-          <div className={styles.heroInfo}>
-            <h2 className={styles.heroTitle}>Monthly Attendance & Logs</h2>
-            <p className={styles.heroSubtitle}>Track your daily work hours, shift statuses, and detailed activity timelines.</p>
-          </div>
+          <p className="bannerText">
+            Track your daily work hours, shift statuses, and review detailed activity timelines across the month.
+          </p>
         </div>
 
         <div className={styles.summaryStrip}>

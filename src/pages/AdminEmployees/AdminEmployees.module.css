@@ -9,12 +9,12 @@
 .heroCard {
   background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(59, 130, 246, 0.06) 100%);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: 1.75rem 2rem;
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
 }
@@ -30,7 +30,7 @@
 .heroIconBadge {
   width: 64px;
   height: 64px;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
   display: flex;
   align-items: center;
@@ -71,8 +71,8 @@
   padding: 1.75rem;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .toolbar {
@@ -90,15 +90,15 @@
   gap: 0.6rem;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 0.65rem 1rem;
   width: 100%;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
 }
 
 .searchRow:focus-within {
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: var(--ring-focus);
 }
 
 .searchInput {
@@ -132,7 +132,7 @@
   gap: 0.45rem;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 0 0.85rem;
   height: 38px;
   min-width: 170px;
@@ -163,7 +163,7 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0 1.15rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-weight: 600;
   font-size: 0.85rem;
   white-space: nowrap;
@@ -250,34 +250,6 @@
   background-color: rgba(59, 130, 246, 0.03);
 }
 
-.roleBadge {
-  padding: 0.25rem 0.65rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  display: inline-block;
-}
-
-.roleBadge.admin {
-  background: rgba(239, 68, 68, 0.12);
-  color: #EF4444;
-  border: 1px solid rgba(239, 68, 68, 0.25);
-}
-
-.roleBadge.manager {
-  background: rgba(245, 158, 11, 0.12);
-  color: #F59E0B;
-  border: 1px solid rgba(245, 158, 11, 0.25);
-}
-
-.roleBadge.employee {
-  background: rgba(59, 130, 246, 0.12);
-  color: #3B82F6;
-  border: 1px solid rgba(59, 130, 246, 0.25);
-}
-
 .actionBtns {
   display: flex;
   align-items: center;
@@ -288,12 +260,12 @@
   background: transparent;
   border: none;
   padding: 0.45rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
+  transition: all var(--transition-fast);
   color: var(--text-secondary);
 }
 
@@ -312,7 +284,7 @@
 .empCard {
   background: var(--bg-page);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
@@ -377,7 +349,7 @@
   .heroIconBadge {
     width: 48px;
     height: 48px;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
   }
   .heroTitle {
     font-size: 1.25rem;
@@ -426,7 +398,7 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  box-shadow: -8px 0 30px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-xl);
   overflow-y: auto;
 }
 
@@ -463,11 +435,11 @@
   width: 100%;
   background-color: var(--bg-page);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   color: var(--text-primary);
   font-size: 0.95rem;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-normal);
 }
 
 .input:focus {

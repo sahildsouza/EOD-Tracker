@@ -110,15 +110,14 @@ export default function EmployeeDashboard() {
   return (
     <div className="page-container">
       <div className={styles.dashboardRoot}>
-        {/* Hero Dashboard Greeting Banner */}
-        <div className={styles.heroCard}>
-          <div className={styles.heroIconBadge}>
-            <LayoutDashboard size={32} />
+        {/* Hero Dashboard Banner matching Admin pages */}
+        <div className="bannerCard" style={{ '--banner-accent': '#3B82F6' } as React.CSSProperties}>
+          <div className="bannerIconBox" style={{ background: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', color: '#3B82F6' }}>
+            <LayoutDashboard size={24} />
           </div>
-          <div className={styles.heroInfo}>
-            <h2 className={styles.heroTitle}>Welcome back, {profile?.full_name || user?.email?.split('@')[0] || 'Employee'}</h2>
-            <p className={styles.heroSubtitle}>Here is your real-time attendance overview, shift timer ring, and daily activity logs.</p>
-          </div>
+          <p className="bannerText">
+            Welcome back, {profile?.full_name || user?.email?.split('@')[0] || 'Employee'}! Here is your real-time attendance overview, shift timer ring, and daily activity logs.
+          </p>
         </div>
 
         {/* Top Full Row: Today's Timeline */}

@@ -1,29 +1,79 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* ============================================================
+   DESIGN TOKENS
+   See DESIGN_TOKENS.md for documentation.
+   ============================================================ */
+
 :root {
-  /* Light Mode Variables */
+  /* Core palette */
   --bg-page: #F5F5F5;
   --bg-surface: #FFFFFF;
   --border-color: #E0E0E0;
   --text-primary: #1A1A1A;
   --text-secondary: #6B7280;
+
+  /* Accent & interaction */
   --accent-color: #2563EB;
   --accent-hover: #1D4ED8;
   --danger-color: #DC2626;
   --danger-hover: #B91C1C;
   --success-color: #16A34A;
   --warning-color: #D97706;
-  
+
+  /* Semantic colors (named, for badges/icons/KPIs) */
+  --color-blue: #3B82F6;
+  --color-green: #10B981;
+  --color-amber: #F59E0B;
+  --color-red: #EF4444;
+  --color-purple: #8B5CF6;
+  --color-teal: #14B8A6;
+
+  /* Category colors */
   --category-meeting: #2563EB;
   --category-support: #16A34A;
   --category-troubleshooting: #D97706;
   --category-break: #64748B;
   --category-activity: #7C3AED;
   --category-others: #6B7280;
+
+  /* Spacing scale (4px base) */
+  --space-1: 4px;    /* 0.25rem */
+  --space-2: 8px;    /* 0.5rem  */
+  --space-3: 12px;   /* 0.75rem */
+  --space-4: 16px;   /* 1rem    */
+  --space-5: 20px;   /* 1.25rem */
+  --space-6: 24px;   /* 1.5rem  */
+  --space-8: 32px;   /* 2rem    */
+
+  /* Radius scale */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  /* Shadows (light mode) */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+  --ring-focus: 0 0 0 3px rgba(37, 99, 235, 0.12);
+
+  /* Typography scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.82rem;
+  --text-base: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.15rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+
+  /* Motion */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
 }
 
 [data-theme='dark'] {
-  /* Dark Mode Variables */
   --bg-page: #0A0A0A;
   --bg-surface: #141414;
   --border-color: #2A2A2A;
@@ -35,7 +85,18 @@
   --danger-hover: #F87171;
   --success-color: #22C55E;
   --warning-color: #F59E0B;
+
+  /* Shadows (dark mode — deeper) */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.16);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.24);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.4);
+  --ring-focus: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
 
 * {
   box-sizing: border-box;
@@ -61,6 +122,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ============================================================
+   BASE ELEMENTS
+   ============================================================ */
+
 button {
   cursor: pointer;
   font-family: inherit;
@@ -73,14 +138,16 @@ input, textarea, select {
   color: var(--text-primary);
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-base);
+  border-radius: var(--radius-md);
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: border-color var(--transition-fast);
 }
 
 input:focus, textarea:focus, select:focus {
   border-color: var(--accent-color);
+  box-shadow: var(--ring-focus);
 }
 
 a {
@@ -92,67 +159,113 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Utilities */
-.surface {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-}
-
-.text-secondary {
-  color: var(--text-secondary);
-}
+/* ============================================================
+   BUTTON VARIANTS
+   ============================================================ */
 
 .btn-primary {
   background-color: var(--accent-color);
   color: #FFFFFF;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-  border-radius: 8px;
-  transition: all 0.15s ease;
+  padding: var(--space-2) var(--space-4);
+  font-weight: 600;
+  font-size: var(--text-base);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
 }
 
 .btn-primary:hover {
   background-color: var(--accent-hover);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:focus-visible {
+  box-shadow: var(--ring-focus);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .btn-danger {
   background-color: var(--danger-color);
   color: #FFFFFF;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  font-size: 0.875rem;
-  border-radius: 8px;
-  transition: all 0.15s ease;
+  padding: var(--space-2) var(--space-4);
+  font-weight: 600;
+  font-size: var(--text-base);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
 }
 
 .btn-danger:hover {
   background-color: var(--danger-hover);
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-danger:focus-visible {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+.btn-danger:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .btn-outline {
   background-color: transparent;
   color: var(--text-primary);
   border: 1px solid var(--border-color);
-  padding: 0.5rem 1rem;
+  padding: var(--space-2) var(--space-4);
   font-weight: 500;
-  font-size: 0.875rem;
-  border-radius: 8px;
-  transition: all 0.15s ease;
+  font-size: var(--text-base);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
 }
 
 .btn-outline:hover {
-  border-color: var(--text-primary);
+  border-color: var(--text-secondary);
   background-color: var(--bg-page);
 }
 
-.pie-chart {
-  border-radius: 50% !important;
+.btn-outline:focus-visible {
+  box-shadow: var(--ring-focus);
 }
 
-/* Base layouts */
+.btn-outline:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+
+.surface {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   BASE LAYOUTS
+   ============================================================ */
+
 .app-container {
   display: flex;
   min-height: 100vh;
@@ -170,7 +283,7 @@ a:hover {
 }
 
 .page-container {
-  padding: 1.5rem;
+  padding: var(--space-6);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -183,48 +296,48 @@ a:hover {
 
 @media (max-width: 768px) {
   .page-container {
-    padding: 0.85rem;
+    padding: var(--space-3);
     min-height: 0;
   }
 }
 
-/* Global Table List Styles (100% Consistent across Admin & Employees) */
-.tableContainer, [class*="tableContainer"] {
-  width: 100%;
-  overflow-x: auto;
-}
+/* ============================================================
+   GLOBAL TABLE STYLES
+   Shared base for all data tables across the app.
+   Per-page overrides are allowed in module CSS.
+   ============================================================ */
 
 table {
   width: 100%;
-  border-collapse: collapse !important;
+  border-collapse: collapse;
   text-align: left;
   min-width: 720px;
 }
 
 table thead tr {
-  background: var(--bg-page) !important;
-  border-bottom: 1px solid var(--border-color) !important;
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--border-color);
 }
 
 table th {
-  padding: 0.9rem 1.25rem !important;
-  font-size: 0.75rem !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.06em !important;
-  color: var(--text-secondary) !important;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
   white-space: nowrap;
   vertical-align: middle;
 }
 
 table tbody tr {
-  background-color: var(--bg-surface) !important;
+  background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-color);
-  transition: background-color 0.15s ease;
+  transition: background-color var(--transition-fast);
 }
 
 table tbody tr:hover {
-  background-color: rgba(59, 130, 246, 0.03) !important;
+  background-color: color-mix(in srgb, var(--accent-color) 4%, var(--bg-surface));
 }
 
 table tbody tr:last-child {
@@ -232,19 +345,22 @@ table tbody tr:last-child {
 }
 
 table td {
-  padding: 1rem 1.25rem !important;
-  vertical-align: middle !important;
-  font-size: 0.88rem;
+  padding: var(--space-4) var(--space-5);
+  vertical-align: middle;
+  font-size: var(--text-base);
   color: var(--text-primary);
   white-space: nowrap;
 }
 
-/* Global Directory Badges */
+/* ============================================================
+   GLOBAL DIRECTORY BADGES
+   ============================================================ */
+
 .avatarBadge {
   width: 40px;
   height: 40px;
-  border-radius: 0 !important;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-color) 15%, transparent) 0%, color-mix(in srgb, var(--color-purple) 15%, transparent) 100%);
   color: var(--accent-color);
   font-weight: 700;
   font-size: 0.95rem;
@@ -252,35 +368,39 @@ table td {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid color-mix(in srgb, var(--accent-color) 20%, transparent);
 }
 
 .idBadge {
   font-family: monospace;
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   background-color: var(--bg-page);
   color: var(--text-secondary);
-  padding: 0.25rem 0.6rem;
-  border-radius: 0 !important;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
   display: inline-block;
 }
 
-/* Global Hero Banner Card (100% Consistent with Image 1) */
+/* ============================================================
+   GLOBAL HERO BANNER CARD
+   Used by admin pages (AdminEodLogs, AdminDashboard).
+   ============================================================ */
+
 .bannerCard {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 0 !important;
-  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  gap: var(--space-5);
+  box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
-  margin-bottom: 0.5rem;
-  flex-shrink: 0 !important;
+  margin-bottom: var(--space-2);
+  flex-shrink: 0;
   min-height: 84px;
 }
 
@@ -289,13 +409,13 @@ table td {
   position: absolute;
   top: 0; left: 0; bottom: 0;
   width: 4px;
-  background: var(--banner-accent, #EF4444);
+  background: var(--banner-accent, var(--danger-color));
 }
 
 .bannerIconBox {
   width: 48px;
   height: 48px;
-  border-radius: 0 !important;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -311,51 +431,50 @@ table td {
 }
 
 @media (max-width: 768px) {
-  .bannerCard, [class*="heroCard"] {
-    padding: 1rem !important;
-    gap: 0.85rem !important;
-    align-items: center !important;
-    margin-bottom: 0.75rem;
-    flex-shrink: 0 !important;
+  .bannerCard {
+    padding: var(--space-4);
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
     min-height: 72px;
   }
-  
-  .bannerIconBox, [class*="heroIconBadge"] {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
+
+  .bannerIconBox {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
   }
 
-  .bannerIconBox svg, [class*="heroIconBadge"] svg {
-    width: 20px !important;
-    height: 20px !important;
+  .bannerIconBox svg {
+    width: 20px;
+    height: 20px;
   }
 
-  .bannerText, [class*="heroSubtitle"], [class*="heroTitle"] {
-    font-size: 0.85rem !important;
-    line-height: 1.4 !important;
+  .bannerText {
+    font-size: 0.85rem;
+    line-height: 1.4;
     word-break: break-word;
-  }
-
-  [class*="heroTitle"] {
-    font-size: 1.15rem !important;
-    margin-bottom: 0.2rem !important;
   }
 }
 
-/* Toast container positioning */
+/* ============================================================
+   TOAST CONTAINER
+   ============================================================ */
+
 #toast-root {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  top: var(--space-4);
+  right: var(--space-4);
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
-/* Custom Scrollbar */
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -367,28 +486,37 @@ table td {
 
 ::-webkit-scrollbar-thumb {
   background: var(--border-color);
+  border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-secondary);
 }
 
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* Ensure all popup modal close buttons and X icons are crisp & visible in dark mode */
+/* ============================================================
+   MODAL CLOSE BUTTONS
+   Ensure crisp visibility in both themes.
+   ============================================================ */
+
 [class*="panelHeader"] button,
 [class*="modal"] button:not([class*="btn-"]),
 [class*="overlay"] button:not([class*="btn-"]),
 button:has(svg.lucide-x) {
-  color: var(--text-primary) !important;
+  color: var(--text-primary);
   background: transparent;
   border: none;
   cursor: pointer;
   opacity: 0.85;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  transition: opacity var(--transition-fast), background-color var(--transition-fast);
 }
 
 [class*="panelHeader"] button:hover,
@@ -399,16 +527,15 @@ button:has(svg.lucide-x):hover {
   background-color: var(--bg-page);
 }
 
-/* UNIVERSAL SHARP EDGES RULE (OVERRIDE ALL ROUND EDGES ACROSS THE ENTIRE APP) */
-*:not([class*="donut"]):not([class*="pie-chart"]):not([class*="circular"]):not([class*="pieElement"]):not([class*="donutCutout"]),
-*:not([class*="donut"]):not([class*="pie-chart"]):not([class*="circular"]):not([class*="pieElement"])::before,
-*:not([class*="donut"]):not([class*="pie-chart"]):not([class*="circular"]):not([class*="pieElement"])::after,
-[class]:not([class*="donut"]):not([class*="pie-chart"]):not([class*="circular"]):not([class*="pieElement"]):not([class*="donutCutout"]),
-[style]:not([class*="donut"]):not([class*="pie-chart"]):not([class*="circular"]):not([class*="pieElement"]):not([class*="donutCutout"]) {
-  border-radius: 0 !important;
-}
+/* ============================================================
+   DATA VISUALIZATION CIRCLES
+   Pie/donut charts must remain circular.
+   ============================================================ */
 
-/* DATA VISUALIZATION CIRCLES (Charts MUST be circular) */
-.pie-chart, [class*="pieElement"], [class*="donut"], [class*="circular"], [class*="donutCutout"] {
+.pie-chart,
+[class*="pieElement"],
+[class*="donut"],
+[class*="circular"],
+[class*="donutCutout"] {
   border-radius: 50% !important;
 }

@@ -35,18 +35,14 @@ export default function EmployeeProfile() {
   return (
     <div className="page-container">
       <div className={styles.profileRoot}>
-        {/* Hero Profile Header */}
-        <div className={styles.heroCard}>
-          <div className={styles.avatar}>
-            {getInitials(profile?.full_name)}
+        {/* Hero Profile Banner matching Admin pages */}
+        <div className="bannerCard" style={{ '--banner-accent': '#3B82F6' } as React.CSSProperties}>
+          <div className="bannerIconBox" style={{ background: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', color: '#3B82F6' }}>
+            <User size={24} />
           </div>
-          <div className={styles.heroInfo}>
-            <h2 className={styles.heroName}>{profile?.full_name || 'Employee Profile'}</h2>
-            <div className={styles.heroRole}>
-              <BadgeCheck size={16} />
-              <span>{profile?.role || 'Employee'} • ID: {profile?.employee_id || 'N/A'}</span>
-            </div>
-          </div>
+          <p className="bannerText">
+            View your personal profile details for <strong>{profile?.full_name || 'Employee'}</strong> ({profile?.role || 'Employee'} • ID: {profile?.employee_id || 'N/A'}), and manage account security preferences.
+          </p>
         </div>
 
         {/* Details & Settings Grid */}

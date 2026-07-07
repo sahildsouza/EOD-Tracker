@@ -7,48 +7,6 @@
   width: 100%;
 }
 
-.heroCard {
-  background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(59, 130, 246, 0.08) 100%);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.heroIconBadge {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  background: rgba(59, 130, 246, 0.12);
-  color: var(--accent-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.heroInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.heroTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.heroSubtitle {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin: 0;
-}
 
 .grid {
   display: grid;
@@ -59,12 +17,12 @@
 .card {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-sm);
 }
 
 .cardHeader {
@@ -91,11 +49,11 @@
   padding: 1rem;
   background: var(--bg-page);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   flex-wrap: nowrap;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .heroCard {
     flex-wrap: nowrap;
     gap: 1rem;
@@ -137,7 +95,7 @@
 .fieldInput {
   width: 100%;
   padding: 0.65rem 0.85rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
   background-color: var(--bg-page);
   color: var(--text-primary);

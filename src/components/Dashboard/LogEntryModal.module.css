@@ -1,0 +1,70 @@
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.modal {
+  width: 100%;
+  max-width: 500px;
+  padding: var(--space-6);
+  box-shadow: var(--shadow-xl);
+}
+
+.title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  margin-bottom: var(--space-6);
+  color: var(--text-primary);
+}
+
+.error {
+  color: var(--danger-color);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-base);
+  font-weight: 500;
+}
+
+.formGroup {
+  margin-bottom: var(--space-4);
+}
+
+.label {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+  color: var(--text-primary);
+}
+
+.select, .input, .textarea {
+  width: 100%;
+}
+
+.textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.timeRow {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.timeCol {
+  flex: 1;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: flex-end;
+  margin-top: var(--space-6);
+}

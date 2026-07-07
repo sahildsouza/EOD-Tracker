@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getCurrentDateIST } from '../../utils/dateUtils';
 import { useAuth } from '../../contexts/AuthContext';
+import styles from './LogEntryModal.module.css';
 
 interface LogEntryModalProps {
   isOpen: boolean;
@@ -67,47 +68,42 @@ export default function LogEntryModal({ isOpen, onClose, onSaved }: LogEntryModa
   };
 
   return (
-    <div style={{
-      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 2000,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: '1.5rem'
-    }}>
-      <div className="surface" style={{ width: '100%', maxWidth: '500px', padding: '1.5rem' }}>
-        <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1.5rem' }}>Add Log Entry</h2>
+    <div className={styles.overlay}>
+      <div className={`surface ${styles.modal}`}>
+        <h2 className={styles.title}>Add Log Entry</h2>
         
-        {error && <div style={{ color: 'var(--danger-color)', marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
+        {error && <div className={styles.error}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '1rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Category</label>
-            <select style={{ width: '100%', padding: '0.75rem' }} value={category} onChange={e => setCategory(e.target.value)}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Category</label>
+            <select className={styles.select} value={category} onChange={e => setCategory(e.target.value)}>
               {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
 
-          <div style={{ marginBottom: '1rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Title</label>
-            <input required style={{ width: '100%', padding: '0.75rem' }} value={title} onChange={e => setTitle(e.target.value)} />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Title</label>
+            <input required className={styles.input} value={title} onChange={e => setTitle(e.target.value)} />
           </div>
 
-          <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-            <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>From Time</label>
-              <input type="time" required style={{ width: '100%', padding: '0.75rem' }} value={fromTime} onChange={e => setFromTime(e.target.value)} />
+          <div className={styles.timeRow}>
+            <div className={styles.timeCol}>
+              <label className={styles.label}>From Time</label>
+              <input type="time" required className={styles.input} value={fromTime} onChange={e => setFromTime(e.target.value)} />
             </div>
-            <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>To Time</label>
-              <input type="time" required style={{ width: '100%', padding: '0.75rem' }} value={toTime} onChange={e => setToTime(e.target.value)} />
+            <div className={styles.timeCol}>
+              <label className={styles.label}>To Time</label>
+              <input type="time" required className={styles.input} value={toTime} onChange={e => setToTime(e.target.value)} />
             </div>
           </div>
 
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Notes (Optional)</label>
-            <textarea style={{ width: '100%', padding: '0.75rem', minHeight: '80px', resize: 'vertical' }} value={notes} onChange={e => setNotes(e.target.value)} />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Notes (Optional)</label>
+            <textarea className={styles.textarea} value={notes} onChange={e => setNotes(e.target.value)} />
           </div>
 
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
+          <div className={styles.actions}>
             <button type="button" className="btn-outline" onClick={onClose} disabled={saving}>Cancel</button>
             <button type="submit" className="btn-primary" disabled={saving}>{saving ? 'Saving...' : 'Save Entry'}</button>
           </div>

@@ -7,62 +7,6 @@
   width: 100%;
 }
 
-.heroCard {
-  background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(59, 130, 246, 0.08) 100%);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-wrap: nowrap;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.heroIconBadge {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
-  background: rgba(59, 130, 246, 0.12);
-  color: var(--accent-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.heroInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.heroTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.heroSubtitle {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-@media (max-width: 640px) {
-  .heroCard {
-    gap: 1rem;
-    padding: 1.25rem 1rem;
-  }
-  .heroIconBadge {
-    width: 52px;
-    height: 52px;
-  }
-  .heroTitle {
-    font-size: 1.25rem;
-  }
-}
 
 .grid {
   display: flex;
@@ -83,8 +27,8 @@
   padding: 1.5rem;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .calendarHeader {
@@ -111,11 +55,11 @@
 .dayCell {
   background-color: var(--bg-page);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   min-height: 80px;
   padding: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -124,7 +68,7 @@
 .dayCell:hover {
   border-color: var(--accent-color);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-md);
 }
 
 .dayCell.selected {
@@ -167,8 +111,8 @@
 
 .dot-completed { background-color: var(--success-color); box-shadow: 0 0 8px var(--success-color); }
 .dot-partial { background-color: var(--warning-color); box-shadow: 0 0 8px var(--warning-color); }
-.dot-leave { background-color: #3B82F6; box-shadow: 0 0 8px #3B82F6; }
-.dot-week-off { background-color: #14B8A6; box-shadow: 0 0 8px #14B8A6; }
+.dot-leave { background-color: var(--color-blue); box-shadow: 0 0 8px var(--color-blue); }
+.dot-week-off { background-color: var(--color-teal); box-shadow: 0 0 8px var(--color-teal); }
 .dot-defaulter { background-color: var(--danger-color); box-shadow: 0 0 8px var(--danger-color); }
 
 .summaryStrip {
@@ -179,8 +123,8 @@
   padding: 1rem 1.5rem;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   align-items: center;
   justify-content: space-between;
   scrollbar-width: none;
@@ -202,10 +146,10 @@
 .detailsPanel {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
   height: 100%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-sm);
 }
 
 @media (max-width: 768px) {
@@ -229,7 +173,7 @@
   .dayCell {
     min-height: 56px;
     padding: 0.35rem;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
   }
 
   .dayNumber {

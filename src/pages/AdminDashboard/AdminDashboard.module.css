@@ -16,8 +16,8 @@
   padding: 1.5rem;
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -41,19 +41,20 @@
 .kpiCard {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 0.9rem 1.1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
   gap: 0.45rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-  transition: border-color 0.15s ease;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .kpiCard:hover {
-  border-color: rgba(59, 130, 246, 0.35);
+  border-color: var(--accent-color);
+  box-shadow: var(--shadow-md);
 }
 
 .kpiHeader {
@@ -81,16 +82,16 @@
 }
 
 .kpiIconBlue {
-  color: #3B82F6;
+  color: var(--color-blue);
 }
 .kpiIconGreen {
-  color: #10B981;
+  color: var(--color-green);
 }
 .kpiIconAmber {
-  color: #F59E0B;
+  color: var(--color-amber);
 }
 .kpiIconRed {
-  color: #EF4444;
+  color: var(--color-red);
 }
 
 .pieContainer {
@@ -111,7 +112,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--shadow-lg);
 }
 
 .pieLegend {
@@ -138,7 +139,7 @@
   .kpiCard {
     padding: 0.8rem 0.95rem;
     gap: 0.35rem;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
   }
   .kpiLabel {
     font-size: 0.75rem;

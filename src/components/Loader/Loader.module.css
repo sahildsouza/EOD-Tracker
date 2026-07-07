@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem var(--space-4);
+  gap: var(--space-4);
+  width: 100%;
+  min-height: 220px;
+}
+
+.spinner {
+  color: var(--accent-color);
+  animation: spin 1s linear infinite;
+}
+
+.message {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}

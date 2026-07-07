@@ -11,7 +11,8 @@
 .mainCard {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   width: 100%;
   max-width: 100%;
 }
@@ -34,16 +35,17 @@
   gap: 0.6rem;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   padding: 0.5rem 0.85rem;
   height: 38px;
   flex: 1;
   min-width: 240px;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .searchBox:focus-within {
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: var(--ring-focus);
 }
 
 .searchIcon {
@@ -74,22 +76,23 @@
   gap: 0.45rem;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   padding: 0 0.75rem;
   height: 38px;
 }
 
 .filterIconBlue {
-  color: #3B82F6;
+  color: var(--color-blue);
   flex-shrink: 0;
 }
 
 .filterIconGreen {
-  color: #10B981;
+  color: var(--color-green);
   flex-shrink: 0;
 }
 
 .filterIconAmber {
-  color: #F59E0B;
+  color: var(--color-amber);
   flex-shrink: 0;
 }
 
@@ -115,6 +118,7 @@
   font-weight: 600;
   font-size: 0.82rem;
   white-space: nowrap;
+  border-radius: var(--radius-md);
 }
 
 /* Desktop Table Wrapper */
@@ -138,7 +142,7 @@
 }
 
 .rowClickable:hover {
-  background-color: rgba(59, 130, 246, 0.04) !important;
+  background-color: color-mix(in srgb, var(--accent-color) 4%, var(--bg-surface)) !important;
 }
 
 .expandBtn {
@@ -165,6 +169,7 @@
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+  border-radius: var(--radius-sm);
 }
 
 /* Expanded Drawer (Desktop & Mobile) */
@@ -219,11 +224,12 @@
 .logCard {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   padding: 0.85rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.01);
+  box-shadow: var(--shadow-sm);
 }
 
 .logCardTop {
@@ -280,16 +286,19 @@
 .mobileCard {
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
   padding: 0.9rem;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
   cursor: pointer;
-  transition: border-color 0.15s ease;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .mobileCard:hover {
-  border-color: rgba(59, 130, 246, 0.4);
+  border-color: var(--accent-color);
+  box-shadow: var(--shadow-md);
 }
 
 .mobileCardHeader {

@@ -16,8 +16,8 @@
   display: flex;
   flex-direction: column;
   transition: width 0.3s ease;
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 0;
+  padding: 0;
 }
 
 .sidebar.collapsed {
@@ -33,8 +33,8 @@
   align-items: center;
   align-self: stretch;
   width: 100%;
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 0;
+  padding: 0;
 }
 
 .sidebarHeader {

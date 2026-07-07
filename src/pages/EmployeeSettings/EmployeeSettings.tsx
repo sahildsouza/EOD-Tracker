@@ -34,15 +34,14 @@ export default function EmployeeSettings() {
   return (
     <div className="page-container">
       <div className={styles.settingsRoot}>
-        {/* Hero Settings Banner */}
-        <div className={styles.heroCard}>
-          <div className={styles.heroIconBadge}>
-            <Settings size={32} />
+        {/* Top Hero Banner Card matching Admin pages */}
+        <div className="bannerCard" style={{ '--banner-accent': '#3B82F6' } as React.CSSProperties}>
+          <div className="bannerIconBox" style={{ background: 'rgba(59, 130, 246, 0.12)', border: '1px solid rgba(59, 130, 246, 0.25)', color: '#3B82F6' }}>
+            <Settings size={24} />
           </div>
-          <div className={styles.heroInfo}>
-            <h2 className={styles.heroTitle}>Preferences & Security</h2>
-            <p className={styles.heroSubtitle}>Customize your interface appearance and safeguard your account credentials.</p>
-          </div>
+          <p className="bannerText">
+            Customize your interface appearance theme and safeguard your account security credentials.
+          </p>
         </div>
 
         {/* Settings Grid */}
@@ -129,7 +128,7 @@ export default function EmployeeSettings() {
                 </div>
               )}
 
-              <button type="submit" className="btn-primary" disabled={loading} style={{ height: '42px', marginTop: '0.5rem' }}>
+              <button type="submit" className="btn-primary" disabled={loading} style={{ width: '100%', height: '42px', marginTop: '0.5rem', justifyContent: 'center' }}>
                 {loading ? 'Updating...' : 'Update Account Password'}
               </button>
             </form>
