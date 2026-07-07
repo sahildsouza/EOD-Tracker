@@ -131,6 +131,7 @@
 .filterBox {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.45rem;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
