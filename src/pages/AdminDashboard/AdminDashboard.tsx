@@ -146,7 +146,7 @@ export default function AdminDashboard() {
 
         <div className={styles.kpiCard}>
           <div className={styles.kpiHeader}>
-            <span className={styles.kpiLabel}><AlertTriangle size={16} className={styles.kpiIconRed} /> Defaulters (Yesterday)</span>
+            <span className={styles.kpiLabel}><AlertTriangle size={16} className={styles.kpiIconRed} /> Defaulters</span>
           </div>
           <div className={styles.kpiValue} style={{ color: '#EF4444' }}>{stats.defaulters}</div>
         </div>

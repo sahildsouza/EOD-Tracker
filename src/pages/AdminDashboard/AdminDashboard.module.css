@@ -45,6 +45,8 @@
   padding: 0.9rem 1.1rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
   gap: 0.45rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
   transition: border-color 0.15s ease;
