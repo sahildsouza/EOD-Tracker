@@ -5,7 +5,7 @@ import { calculateMergedMinutes, formatDuration } from '../../utils/timeUtils';
 import { exportToExcel } from '../../utils/exportUtils';
 import { parseISO, format } from 'date-fns';
 import styles from './AdminEodLogs.module.css';
-import { Search, Download, ChevronDown, ChevronRight, Eye, EyeOff, FileText, Calendar, Filter, Briefcase } from 'lucide-react';
+import { Search, Download, ChevronDown, ChevronRight, FileText, Calendar, Filter, Briefcase } from 'lucide-react';
 import Pagination from '../../components/Pagination/Pagination';
 import Loader from '../../components/Loader/Loader';
 
@@ -30,7 +30,6 @@ export default function AdminEodLogs() {
   const [designationFilter, setDesignationFilter] = useState('');
   
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
-  const [expandedLogs, setExpandedLogs] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -113,13 +112,6 @@ export default function AdminEodLogs() {
     setExpandedRows(newSet);
   };
 
-  const toggleLog = (id: string) => {
-    const newSet = new Set(expandedLogs);
-    if (newSet.has(id)) newSet.delete(id);
-    else newSet.add(id);
-    setExpandedLogs(newSet);
-  };
-
   const handleExport = () => {
     const exportData = filteredData.map(d => ({
       'Date': date,
@@ -147,17 +139,11 @@ export default function AdminEodLogs() {
         </p>
       </div>
 
-      <div style={{
-        background: 'var(--bg-surface)',
-        border: '1px solid var(--border-color)',
-        borderRadius: '16px',
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.02)',
-        overflow: 'hidden'
-      }}>
+      <div className={styles.mainCard}>
+        {/* Unified Sleek Toolbar */}
         <div className={styles.toolbar}>
-          {/* Top Row: Search Input */}
-          <div className={styles.searchRow}>
-            <Search size={18} style={{ color: 'var(--text-secondary)' }} />
+          <div className={styles.searchBox}>
+            <Search size={16} className={styles.searchIcon} />
             <input 
               type="text" 
               placeholder="Search directory by name or employee ID..." 
@@ -167,163 +153,233 @@ export default function AdminEodLogs() {
             />
           </div>
 
-          {/* Bottom Row: Responsive Controls Alignment */}
-          <div className={styles.controlsBar}>
-            <div className={styles.filterGroup}>
-              {/* Date Filter */}
-              <div className={styles.filterBox}>
-                <Calendar size={14} style={{ color: '#3B82F6', flexShrink: 0 }} />
-                <input 
-                  type="date" 
-                  className={styles.filterSelect} 
-                  value={date} 
-                  onChange={(e) => setDate(e.target.value)}
-                  style={{ border: 'none', background: 'transparent', color: 'var(--text-primary)', outline: 'none', width: '100%', cursor: 'pointer' }}
-                />
-              </div>
+          <div className={styles.filterControls}>
+            {/* Date Filter */}
+            <div className={styles.filterItem}>
+              <Calendar size={14} className={styles.filterIconBlue} />
+              <input 
+                type="date" 
+                className={styles.dateInput} 
+                value={date} 
+                onChange={(e) => setDate(e.target.value)}
+              />
+            </div>
 
-              {/* Status Filter */}
-              <div className={styles.filterBox}>
-                <Filter size={14} style={{ color: '#10B981', flexShrink: 0 }} />
-                <select 
-                  className={styles.filterSelect} 
-                  value={statusFilter} 
-                  onChange={e => setStatusFilter(e.target.value)}
-                >
-                  <option value="">All Statuses</option>
-                  <option value="shift">Shift</option>
-                  <option value="leave">Leave</option>
-                  <option value="week-off">Week-off</option>
-                  <option value="Not Started">Not Started</option>
-                </select>
-              </div>
+            {/* Status Filter */}
+            <div className={styles.filterItem}>
+              <Filter size={14} className={styles.filterIconGreen} />
+              <select 
+                className={styles.selectInput} 
+                value={statusFilter} 
+                onChange={e => setStatusFilter(e.target.value)}
+              >
+                <option value="">All Statuses</option>
+                <option value="shift">Shift</option>
+                <option value="leave">Leave</option>
+                <option value="week-off">Week-off</option>
+                <option value="Not Started">Not Started</option>
+              </select>
+            </div>
 
-              {/* Designation Filter */}
-              <div className={styles.filterBox}>
-                <Briefcase size={14} style={{ color: 'var(--accent-color)', flexShrink: 0 }} />
-                <select 
-                  className={styles.filterSelect} 
-                  value={designationFilter} 
-                  onChange={e => setDesignationFilter(e.target.value)}
-                >
-                  <option value="">All Designations</option>
-                  {designations.map(d => (
-                    <option key={d.id} value={d.id}>{d.name}</option>
-                  ))}
-                </select>
-              </div>
+            {/* Designation Filter */}
+            <div className={styles.filterItem}>
+              <Briefcase size={14} className={styles.filterIconAmber} />
+              <select 
+                className={styles.selectInput} 
+                value={designationFilter} 
+                onChange={e => setDesignationFilter(e.target.value)}
+              >
+                <option value="">All Designations</option>
+                {designations.map(d => (
+                  <option key={d.id} value={d.id}>{d.name}</option>
+                ))}
+              </select>
             </div>
 
             {/* Export Button */}
-            <div className={styles.actionButtons}>
-              <button className="btn-primary" onClick={handleExport}>
-                <Download size={16} /> Export Logs
-              </button>
-            </div>
+            <button className={`btn-primary ${styles.exportBtn}`} onClick={handleExport}>
+              <Download size={15} /> <span>Export Logs</span>
+            </button>
           </div>
         </div>
 
-        <div style={{ width: '100%', overflowX: 'auto' }}>
-          {loading ? <Loader message="Fetching EOD logs..." /> : (
-            <table>
-              <thead>
-                <tr>
-                  <th>Employee Name</th>
-                  <th>ID</th>
-                  <th>Designation</th>
-                  <th>Status</th>
-                  <th>Shift</th>
-                  <th>Total Hours</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedData.map(row => (
-                  <React.Fragment key={row.id}>
-                    <tr onClick={() => toggleRow(row.id)} style={{ cursor: 'pointer' }}>
-                      <td>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                          <button 
-                            type="button" 
-                            onClick={(e) => { e.stopPropagation(); toggleRow(row.id); }} 
-                            style={{ color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', padding: '0.15rem' }}
-                            aria-label="Toggle log details"
-                          >
-                            {expandedRows.has(row.id) ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-                          </button>
-                          <div className="avatarBadge">
-                            {row.full_name ? row.full_name.charAt(0).toUpperCase() : 'U'}
-                          </div>
-                          <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>
-                            {row.full_name}
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span className="idBadge">{row.employee_id}</span>
-                      </td>
-                      <td>{row.designation?.name}</td>
-                      <td>
-                        <span className={styles.catBadge} style={{ backgroundColor: row.daily_status === 'shift' ? 'var(--success-color)' : (row.daily_status === 'Not Started' ? 'var(--warning-color)' : 'var(--category-break)') }}>
-                          {row.daily_status}
-                        </span>
-                      </td>
-                      <td>{row.shift_name}</td>
-                      <td style={{ fontWeight: 600 }}>{row.total_hours_logged} hrs</td>
-                    </tr>
-                    {expandedRows.has(row.id) && (
-                      <tr className={styles.expandRow}>
-                        <td colSpan={6}>
-                          <div className={styles.detailsBox}>
-                            <h4 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Log Details</h4>
-                            {row.logs.length === 0 ? (
-                              <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>No logs entered.</p>
-                            ) : (
-                              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                {row.logs.map((log: any) => (
-                                  <li key={log.id} className={styles.logDetailsRow}>
-                                    <div className={styles.logDetailsHeader}>
-                                      <div className={styles.logDetailsInfo}>
-                                        <span className={styles.catBadge} style={{ width: '125px', textAlign: 'center', backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>{log.category}</span>
-                                        <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>{format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')} <span style={{ fontSize: '0.75rem' }}>({formatDuration(log.duration_minutes)})</span></span>
-                                      </div>
-                                      <button className={styles.iconBtn} onClick={() => toggleLog(log.id)} title="View Title and Notes">
-                                        {expandedLogs.has(log.id) ? <EyeOff size={18} /> : <Eye size={18} />}
-                                      </button>
-                                    </div>
-                                    
-                                    {expandedLogs.has(log.id) && (
-                                      <div className={styles.logExpandedBox}>
-                                        <div>
-                                          <strong style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Title</strong>
-                                          <div className={styles.logTitle}>{log.title}</div>
-                                        </div>
-                                        {log.notes && (
-                                          <div>
-                                            <strong style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Notes</strong>
-                                            <div className={styles.logNotes}>{log.notes}</div>
-                                          </div>
-                                        )}
-                                      </div>
-                                    )}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
+        {loading ? <Loader message="Fetching EOD logs..." /> : (
+          <>
+            {/* Desktop Table View */}
+            <div className={styles.desktopTableWrapper}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Employee Name</th>
+                    <th>ID</th>
+                    <th>Designation</th>
+                    <th>Status</th>
+                    <th>Shift</th>
+                    <th>Total Hours</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedData.map(row => (
+                    <React.Fragment key={row.id}>
+                      <tr onClick={() => toggleRow(row.id)} className={styles.rowClickable}>
+                        <td>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                            <button 
+                              type="button" 
+                              onClick={(e) => { e.stopPropagation(); toggleRow(row.id); }} 
+                              className={styles.expandBtn}
+                              aria-label="Toggle log details"
+                            >
+                              {expandedRows.has(row.id) ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+                            </button>
+                            <div className="avatarBadge">
+                              {row.full_name ? row.full_name.charAt(0).toUpperCase() : 'U'}
+                            </div>
+                            <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+                              {row.full_name}
+                            </div>
                           </div>
                         </td>
+                        <td>
+                          <span className="idBadge">{row.employee_id}</span>
+                        </td>
+                        <td>{row.designation?.name || '-'}</td>
+                        <td>
+                          <span className={styles.catBadge} style={{ backgroundColor: row.daily_status === 'shift' ? 'var(--success-color)' : (row.daily_status === 'Not Started' ? 'var(--warning-color)' : 'var(--category-break)') }}>
+                            {row.daily_status}
+                          </span>
+                        </td>
+                        <td>{row.shift_name}</td>
+                        <td style={{ fontWeight: 600 }}>{row.total_hours_logged} hrs</td>
                       </tr>
-                    )}
-                  </React.Fragment>
-                ))}
-                {filteredData.length === 0 && (
-                  <tr><td colSpan={6} style={{ textAlign: 'center', padding: '2rem' }}>No data found for selected criteria.</td></tr>
-                )}
-              </tbody>
-            </table>
-          )}
-        </div>
+                      {expandedRows.has(row.id) && (
+                        <tr className={styles.expandRow}>
+                          <td colSpan={6}>
+                            <div className={styles.expandedContainer}>
+                              <div className={styles.expandedHeader}>
+                                <span className={styles.expandedTitle}>Logged Tasks ({row.logs.length})</span>
+                                <span className={styles.expandedTotal}>Total: {row.total_hours_logged} hrs</span>
+                              </div>
+                              {row.logs.length === 0 ? (
+                                <div className={styles.noLogs}>No tasks logged for this date.</div>
+                              ) : (
+                                <div className={styles.logsList}>
+                                  {row.logs.map((log: any) => (
+                                    <div key={log.id} className={styles.logCard}>
+                                      <div className={styles.logCardTop}>
+                                        <div className={styles.logCardMeta}>
+                                          <span className={styles.catBadge} style={{ backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>
+                                            {log.category}
+                                          </span>
+                                          <span className={styles.logTime}>
+                                            {format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')}
+                                          </span>
+                                          <span className={styles.logDuration}>
+                                            ({formatDuration(log.duration_minutes)})
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <div className={styles.logTitle}>{log.title || 'Untitled Task'}</div>
+                                      {log.notes && (
+                                        <div className={styles.logNotes}>{log.notes}</div>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  ))}
+                  {filteredData.length === 0 && (
+                    <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-secondary)' }}>No data found for selected criteria.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
 
-        <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--border-color)', background: 'var(--bg-page)' }}>
+            {/* Mobile Cards View (Zero Horizontal Scrolling!) */}
+            <div className={styles.mobileCardsWrapper}>
+              {paginatedData.map(row => (
+                <div key={row.id} className={styles.mobileCard} onClick={() => toggleRow(row.id)}>
+                  <div className={styles.mobileCardHeader}>
+                    <div className={styles.mobileCardUser}>
+                      <div className="avatarBadge">
+                        {row.full_name ? row.full_name.charAt(0).toUpperCase() : 'U'}
+                      </div>
+                      <div className={styles.mobileUserInfo}>
+                        <div className={styles.mobileUserName}>{row.full_name}</div>
+                        <span className="idBadge">{row.employee_id}</span>
+                      </div>
+                    </div>
+                    <div className={styles.mobileCardRight}>
+                      <span className={styles.catBadge} style={{ backgroundColor: row.daily_status === 'shift' ? 'var(--success-color)' : (row.daily_status === 'Not Started' ? 'var(--warning-color)' : 'var(--category-break)') }}>
+                        {row.daily_status}
+                      </span>
+                      <div className={styles.mobileHours}>{row.total_hours_logged} hrs</div>
+                    </div>
+                  </div>
+
+                  <div className={styles.mobileCardSub}>
+                    <span>{row.designation?.name || 'No Designation'}</span>
+                    <span>•</span>
+                    <span>{row.shift_name}</span>
+                  </div>
+
+                  <div className={styles.mobileCardFooter}>
+                    <span className={styles.mobileLogsCount}>{row.logs.length} {row.logs.length === 1 ? 'task' : 'tasks'} logged</span>
+                    <div className={styles.mobileExpandIndicator}>
+                      <span>{expandedRows.has(row.id) ? 'Hide Details' : 'View Details'}</span>
+                      {expandedRows.has(row.id) ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                    </div>
+                  </div>
+
+                  {expandedRows.has(row.id) && (
+                    <div className={styles.mobileCardExpanded} onClick={(e) => e.stopPropagation()}>
+                      <div className={styles.expandedHeader}>
+                        <span className={styles.expandedTitle}>Logged Tasks ({row.logs.length})</span>
+                      </div>
+                      {row.logs.length === 0 ? (
+                        <div className={styles.noLogs}>No tasks logged for this date.</div>
+                      ) : (
+                        <div className={styles.logsList}>
+                          {row.logs.map((log: any) => (
+                            <div key={log.id} className={styles.logCard}>
+                              <div className={styles.logCardTop}>
+                                <div className={styles.logCardMeta}>
+                                  <span className={styles.catBadge} style={{ backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>
+                                    {log.category}
+                                  </span>
+                                  <span className={styles.logTime}>
+                                    {format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')}
+                                  </span>
+                                  <span className={styles.logDuration}>
+                                    ({formatDuration(log.duration_minutes)})
+                                  </span>
+                                </div>
+                              </div>
+                              <div className={styles.logTitle}>{log.title || 'Untitled Task'}</div>
+                              {log.notes && (
+                                <div className={styles.logNotes}>{log.notes}</div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+              {filteredData.length === 0 && (
+                <div className={styles.noDataCard}>No data found for selected criteria.</div>
+              )}
+            </div>
+          </>
+        )}
+
+        <div className={styles.paginationWrapper}>
           <Pagination 
             currentPage={currentPage}
             totalItems={filteredData.length}

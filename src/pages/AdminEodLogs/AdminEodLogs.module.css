@@ -1,39 +1,54 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
+  width: 100%;
+  max-width: 100%;
+  padding-bottom: 3rem; /* Generous padding so content never gets cut off when scrolling down */
 }
 
-.card {
-  padding: 1.5rem;
-  background-color: var(--bg-surface);
+/* Main Container Card */
+.mainCard {
+  background: var(--bg-surface);
   border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  width: 100%;
+  max-width: 100%;
 }
 
+/* Unified Sleek Toolbar */
 .toolbar {
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--border-color);
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   background: var(--bg-page);
+  flex-wrap: wrap;
 }
 
-.searchRow {
+.searchBox {
   display: flex;
   align-items: center;
   gap: 0.6rem;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.65rem 1rem;
-  width: 100%;
-  transition: all 0.2s ease;
+  padding: 0.5rem 0.85rem;
+  height: 38px;
+  flex: 1;
+  min-width: 240px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.searchRow:focus-within {
+.searchBox:focus-within {
   border-color: var(--accent-color);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.searchIcon {
+  color: var(--text-secondary);
+  flex-shrink: 0;
 }
 
 .searchInput {
@@ -42,193 +57,404 @@
   outline: none;
   width: 100%;
   color: var(--text-primary);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  padding: 0;
 }
 
-.controlsBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  width: 100%;
-}
-
-.filterGroup {
+.filterControls {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   flex-wrap: wrap;
 }
 
-.filterBox {
+.filterItem {
   display: flex;
   align-items: center;
   gap: 0.45rem;
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0 0.85rem;
+  padding: 0 0.75rem;
   height: 38px;
-  min-width: 160px;
 }
 
-.filterSelect {
+.filterIconBlue {
+  color: #3B82F6;
+  flex-shrink: 0;
+}
+
+.filterIconGreen {
+  color: #10B981;
+  flex-shrink: 0;
+}
+
+.filterIconAmber {
+  color: #F59E0B;
+  flex-shrink: 0;
+}
+
+.dateInput, .selectInput {
   border: none;
   background: transparent;
   padding: 0;
   color: var(--text-primary);
   font-size: 0.82rem;
+  font-weight: 500;
   outline: none;
   cursor: pointer;
-  width: 100%;
-  text-overflow: ellipsis;
+  height: 100%;
 }
 
-.actionButtons {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.actionButtons button {
+.exportBtn {
   height: 38px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0 1.15rem;
-  border-radius: 8px;
+  gap: 0.45rem;
+  padding: 0 1rem;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   white-space: nowrap;
 }
 
-@media (max-width: 768px) {
-  .toolbar {
-    padding: 1rem;
-  }
-  .controlsBar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.6rem;
-  }
-  .filterGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    width: 100%;
-  }
-  .filterBox {
-    width: 100%;
-    height: 40px;
-    padding: 0 0.85rem;
-    box-sizing: border-box;
-  }
-  .filterSelect {
-    font-size: 0.88rem;
-    width: 100%;
-  }
-  .actionButtons {
-    width: 100%;
-    display: flex;
-    gap: 0.4rem;
-  }
-  .actionButtons button {
-    flex: 1;
-    justify-content: center;
-    padding: 0 0.75rem;
-    font-size: 0.82rem;
-  }
-}
-
-.tableContainer {
+/* Desktop Table Wrapper */
+.desktopTableWrapper {
+  width: 100%;
   overflow-x: auto;
+  touch-action: pan-y pan-x;
+  -webkit-overflow-scrolling: touch;
 }
 
-.expandRow {
-  background-color: var(--bg-page);
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 760px;
 }
 
-.detailsBox {
-  padding: 1rem;
-  border-left: 4px solid var(--accent-color);
+.rowClickable {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.rowClickable:hover {
+  background-color: rgba(59, 130, 246, 0.04) !important;
+}
+
+.expandBtn {
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.expandBtn:hover {
+  color: var(--text-primary);
 }
 
 .catBadge {
   display: inline-block;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
   color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-.logDetailsRow {
-  font-size: 0.875rem;
+/* Expanded Drawer (Desktop & Mobile) */
+.expandRow {
+  background-color: var(--bg-page) !important;
+}
+
+.expandedContainer {
+  padding: 1.25rem 1.5rem;
+  border-left: 3px solid var(--accent-color);
+  background-color: var(--bg-page);
   display: flex;
   flex-direction: column;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid var(--border-color);
-  white-space: normal;
+  gap: 0.85rem;
 }
 
-.logDetailsHeader {
+.expandedHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.logDetailsInfo {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+.expandedTitle {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.logExpandedBox {
-  padding: 1rem;
-  background-color: var(--bg-page);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
+.expandedTotal {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.noLogs {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 1rem 0;
+  font-style: italic;
+}
+
+.logsList {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin-top: 0.75rem;
+  gap: 0.65rem;
+}
+
+.logCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.01);
+}
+
+.logCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.logCardMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.logTime {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.logDuration {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
 }
 
 .logTitle {
-  font-weight: 500;
+  font-size: 0.92rem;
+  font-weight: 600;
   color: var(--text-primary);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  min-width: 0;
+  line-height: 1.4;
 }
 
 .logNotes {
+  font-size: 0.84rem;
   color: var(--text-secondary);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  min-width: 0;
+  line-height: 1.45;
+  padding-top: 0.35rem;
+  border-top: 1px dashed var(--border-color);
 }
 
-.iconBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  background-color: transparent;
-  color: var(--text-secondary);
-  transition: all 0.2s ease;
+/* Mobile Cards View (Hidden on Desktop, Visible on Mobile) */
+.mobileCardsWrapper {
+  display: none;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  width: 100%;
+}
+
+.mobileCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
   cursor: pointer;
+  transition: border-color 0.15s ease;
 }
 
-.iconBtn:hover {
-  background-color: var(--bg-page);
-  border-color: var(--border-color);
+.mobileCard:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.mobileCardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.mobileCardUser {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.mobileUserInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.mobileUserName {
+  font-weight: 700;
+  font-size: 0.95rem;
   color: var(--text-primary);
+}
+
+.mobileCardRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+.mobileHours {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.mobileCardSub {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  flex-wrap: wrap;
+}
+
+.mobileCardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.78rem;
+}
+
+.mobileLogsCount {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.mobileExpandIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.mobileCardExpanded {
+  margin-top: 0.35rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.noDataCard {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Pagination Wrapper */
+.paginationWrapper {
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-page);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1024px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .searchBox {
+    width: 100%;
+  }
+  .filterControls {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktopTableWrapper {
+    display: none !important;
+  }
+  .mobileCardsWrapper {
+    display: flex !important;
+  }
+  .toolbar {
+    padding: 0.85rem;
+    gap: 0.75rem;
+  }
+  .filterControls {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .filterItem {
+    width: 100%;
+    padding: 0 0.5rem;
+    height: 36px;
+  }
+  .dateInput, .selectInput {
+    font-size: 0.78rem;
+    width: 100%;
+  }
+  .exportBtn {
+    grid-column: span 2;
+    height: 36px;
+    width: 100%;
+    justify-content: center;
+  }
+  .expandedContainer {
+    padding: 1rem;
+  }
+  .paginationWrapper {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filterControls {
+    grid-template-columns: 1fr;
+  }
+  .exportBtn {
+    grid-column: span 1;
+  }
+  .mobileCard {
+    padding: 0.75rem;
+  }
+  .mobileUserName {
+    font-size: 0.9rem;
+  }
+  .mobileHours {
+    font-size: 0.82rem;
+  }
 }
