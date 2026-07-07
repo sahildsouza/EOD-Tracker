@@ -242,7 +242,7 @@
 
   .filterBox {
     width: 100%;
-    height: 36px;
+    height: 38px !important;
     padding: 0 0.5rem;
     box-sizing: border-box;
   }
@@ -254,13 +254,14 @@
   .actionButtons {
     width: 100%;
     display: flex;
-    gap: 0.4rem;
+    gap: 0.5rem;
   }
 
   .actionButtons button {
     flex: 1;
+    height: 38px !important;
     justify-content: center;
-    padding: 0.55rem 0.3rem;
-    font-size: 0.8rem;
+    padding: 0 0.5rem;
+    font-size: 0.82rem;
   }
 }
