@@ -383,71 +383,66 @@ export default function AdminEmployees() {
 
       {/* Slide-over Form Panel */}
       {isPanelOpen && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)',
-          zIndex: 2000, display: 'flex', justifyContent: 'flex-end'
-        }}>
-          <div style={{
-            width: '100%', maxWidth: '480px', backgroundColor: 'var(--bg-surface)',
-            height: '100vh', padding: '2rem', display: 'flex', flexDirection: 'column',
-            boxShadow: '-8px 0 30px rgba(0,0,0,0.15)', overflowY: 'auto'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.75rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
-              <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)' }}>{isEditing ? 'Edit User' : 'Create User'}</div>
+        <div className={styles.overlay}>
+          <div className={styles.slidePanel}>
+            <div className={styles.panelHeader}>
+              <div className={styles.panelTitle}>{isEditing ? 'Edit User' : 'Create User'}</div>
               <button 
                 type="button" 
                 onClick={() => setIsPanelOpen(false)} 
-                style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem', borderRadius: '6px' }}
+                className={styles.panelCloseBtn}
                 title="Close"
               >
-                <X size={24} />
+                <X size={20} />
               </button>
             </div>
 
-            {error && <div style={{ color: 'var(--danger-color)', marginBottom: '1rem', fontSize: '0.875rem' }}>{error}</div>}
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+              <div className={styles.panelBody}>
+                {error && <div style={{ color: 'var(--danger-color)', marginBottom: '1rem', fontSize: '0.875rem', fontWeight: 600 }}>{error}</div>}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Full Name</label>
-                <input required style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={fullName} onChange={e => setFullName(e.target.value)} />
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Employee ID</label>
-                <input required disabled={isEditing} style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none', opacity: isEditing ? 0.7 : 1 }} value={employeeId} onChange={e => setEmployeeId(e.target.value.toUpperCase())} />
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Email Address</label>
-                <input type="email" required style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={email} onChange={e => setEmail(e.target.value)} />
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Phone Number</label>
-                <input style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={phone} onChange={e => setPhone(e.target.value)} />
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>System Role</label>
-                <select style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={role} onChange={e => setRole(e.target.value)}>
-                  <option value="employee">Employee</option>
-                  <option value="manager">Manager</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Designation</label>
-                <select style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={designationId} onChange={e => setDesignationId(e.target.value)}>
-                  <option value="">-- None --</option>
-                  {designations.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
-                </select>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginBottom: '1.25rem' }}>
-                <label style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Work Location</label>
-                <input style={{ padding: '0.75rem 1rem', width: '100%', backgroundColor: 'var(--bg-page)', border: '1px solid var(--border-color)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.95rem', outline: 'none' }} value={workLocation} onChange={e => setWorkLocation(e.target.value)} placeholder="e.g. Headquarters / Remote" />
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Full Name</label>
+                  <input required className={styles.input} value={fullName} onChange={e => setFullName(e.target.value)} />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Employee ID</label>
+                  <input required disabled={isEditing} className={styles.input} style={{ opacity: isEditing ? 0.7 : 1 }} value={employeeId} onChange={e => setEmployeeId(e.target.value.toUpperCase())} />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Email Address</label>
+                  <input type="email" required className={styles.input} value={email} onChange={e => setEmail(e.target.value)} />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Phone Number</label>
+                  <input className={styles.input} value={phone} onChange={e => setPhone(e.target.value)} />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>System Role</label>
+                  <select className={styles.input} value={role} onChange={e => setRole(e.target.value)}>
+                    <option value="employee">Employee</option>
+                    <option value="manager">Manager</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Designation</label>
+                  <select className={styles.input} value={designationId} onChange={e => setDesignationId(e.target.value)}>
+                    <option value="">-- None --</option>
+                    {designations.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                  </select>
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Work Location</label>
+                  <input className={styles.input} value={workLocation} onChange={e => setWorkLocation(e.target.value)} placeholder="e.g. Headquarters / Remote" />
+                </div>
               </div>
 
-              <div style={{ flex: 1 }} />
-              <button type="submit" className="btn-primary" disabled={saving} style={{ padding: '1rem', marginTop: '1.5rem', fontSize: '1rem', fontWeight: 700 }}>
-                {saving ? 'Saving User...' : 'Save User Profile'}
-              </button>
+              <div className={styles.panelFooter}>
+                <button type="submit" className={`btn-primary ${styles.saveBtn}`} disabled={saving}>
+                  {saving ? 'Saving User...' : 'Save User Profile'}
+                </button>
+              </div>
             </form>
           </div>
         </div>
