@@ -5,7 +5,7 @@ import { calculateMergedMinutes, formatDuration } from '../../utils/timeUtils';
 import { exportToExcel } from '../../utils/exportUtils';
 import { parseISO, format } from 'date-fns';
 import styles from './AdminEodLogs.module.css';
-import { Search, Download, ChevronDown, ChevronRight, FileText, Calendar, Filter, Briefcase } from 'lucide-react';
+import { Search, Download, FileText, Calendar, Filter, Briefcase, Eye, X, ChevronDown } from 'lucide-react';
 import Pagination from '../../components/Pagination/Pagination';
 import Loader from '../../components/Loader/Loader';
 
@@ -29,7 +29,7 @@ export default function AdminEodLogs() {
   const [designations, setDesignations] = useState<any[]>([]);
   const [designationFilter, setDesignationFilter] = useState('');
   
-  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
+  const [selectedEmployeeForLogs, setSelectedEmployeeForLogs] = useState<any | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -104,13 +104,6 @@ export default function AdminEodLogs() {
   const paginatedData = useMemo(() => {
     return filteredData.slice((currentPage - 1) * 10, currentPage * 10);
   }, [filteredData, currentPage]);
-
-  const toggleRow = (id: string) => {
-    const newSet = new Set(expandedRows);
-    if (newSet.has(id)) newSet.delete(id);
-    else newSet.add(id);
-    setExpandedRows(newSet);
-  };
 
   const handleExport = () => {
     const exportData = filteredData.map(d => ({
@@ -224,85 +217,48 @@ export default function AdminEodLogs() {
                     <th>Status</th>
                     <th>Shift</th>
                     <th>Total Hours</th>
+                    <th style={{ textAlign: 'right' }}>Logs</th>
                   </tr>
                 </thead>
                 <tbody>
                   {paginatedData.map(row => (
-                    <React.Fragment key={row.id}>
-                      <tr onClick={() => toggleRow(row.id)} className={styles.rowClickable}>
-                        <td>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                            <button 
-                              type="button" 
-                              onClick={(e) => { e.stopPropagation(); toggleRow(row.id); }} 
-                              className={styles.expandBtn}
-                              aria-label="Toggle log details"
-                            >
-                              {expandedRows.has(row.id) ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
-                            </button>
-                            <div className="avatarBadge">
-                              {row.full_name ? row.full_name.charAt(0).toUpperCase() : 'U'}
-                            </div>
-                            <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>
-                              {row.full_name}
-                            </div>
+                    <tr key={row.id}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <div className="avatarBadge">
+                            {row.full_name ? row.full_name.charAt(0).toUpperCase() : 'U'}
                           </div>
-                        </td>
-                        <td>
-                          <span className="idBadge">{row.employee_id}</span>
-                        </td>
-                        <td>{row.designation?.name || '-'}</td>
-                        <td>
-                          <span className={styles.catBadge} style={{ backgroundColor: row.daily_status === 'shift' ? 'var(--success-color)' : (row.daily_status === 'Not Started' ? 'var(--warning-color)' : 'var(--category-break)') }}>
-                            {row.daily_status}
-                          </span>
-                        </td>
-                        <td>{row.shift_name}</td>
-                        <td style={{ fontWeight: 600 }}>{row.total_hours_logged} hrs</td>
-                      </tr>
-                      {expandedRows.has(row.id) && (
-                        <tr className={styles.expandRow}>
-                          <td colSpan={6}>
-                            <div className={styles.expandedContainer}>
-                              <div className={styles.expandedHeader}>
-                                <span className={styles.expandedTitle}>Logged Tasks ({row.logs.length})</span>
-                                <span className={styles.expandedTotal}>Total: {row.total_hours_logged} hrs</span>
-                              </div>
-                              {row.logs.length === 0 ? (
-                                <div className={styles.noLogs}>No tasks logged for this date.</div>
-                              ) : (
-                                <div className={styles.logsList}>
-                                  {row.logs.map((log: any) => (
-                                    <div key={log.id} className={styles.logCard}>
-                                      <div className={styles.logCardTop}>
-                                        <div className={styles.logCardMeta}>
-                                          <span className={styles.catBadge} style={{ backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>
-                                            {log.category}
-                                          </span>
-                                          <span className={styles.logTime}>
-                                            {format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')}
-                                          </span>
-                                          <span className={styles.logDuration}>
-                                            ({formatDuration(log.duration_minutes)})
-                                          </span>
-                                        </div>
-                                      </div>
-                                      <div className={styles.logTitle}>{log.title || 'Untitled Task'}</div>
-                                      {log.notes && (
-                                        <div className={styles.logNotes}>{log.notes}</div>
-                                      )}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      )}
-                    </React.Fragment>
+                          <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+                            {row.full_name}
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="idBadge">{row.employee_id}</span>
+                      </td>
+                      <td>{row.designation?.name || '-'}</td>
+                      <td>
+                        <span className={styles.catBadge} style={{ backgroundColor: row.daily_status === 'shift' ? 'var(--success-color)' : (row.daily_status === 'Not Started' ? 'var(--warning-color)' : 'var(--category-break)') }}>
+                          {row.daily_status}
+                        </span>
+                      </td>
+                      <td>{row.shift_name}</td>
+                      <td style={{ fontWeight: 600 }}>{row.total_hours_logged} hrs</td>
+                      <td style={{ textAlign: 'right' }}>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedEmployeeForLogs(row)}
+                          className={styles.viewLogsBtn}
+                        >
+                          <Eye size={15} />
+                          <span>View Logs</span>
+                          <span className={styles.viewLogsBadge}>{row.logs.length}</span>
+                        </button>
+                      </td>
+                    </tr>
                   ))}
                   {filteredData.length === 0 && (
-                    <tr><td colSpan={6} style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-secondary)' }}>No data found for selected criteria.</td></tr>
+                    <tr><td colSpan={7} style={{ textAlign: 'center', padding: '3rem 1rem', color: 'var(--text-secondary)' }}>No data found for selected criteria.</td></tr>
                   )}
                 </tbody>
               </table>
@@ -311,7 +267,7 @@ export default function AdminEodLogs() {
             {/* Mobile Cards View (Zero Horizontal Scrolling!) */}
             <div className={styles.mobileCardsWrapper}>
               {paginatedData.map(row => (
-                <div key={row.id} className={styles.mobileCard} onClick={() => toggleRow(row.id)}>
+                <div key={row.id} className={styles.mobileCard}>
                   <div className={styles.mobileCardHeader}>
                     <div className={styles.mobileCardUser}>
                       <div className="avatarBadge">
@@ -338,46 +294,15 @@ export default function AdminEodLogs() {
 
                   <div className={styles.mobileCardFooter}>
                     <span className={styles.mobileLogsCount}>{row.logs.length} {row.logs.length === 1 ? 'task' : 'tasks'} logged</span>
-                    <div className={styles.mobileExpandIndicator}>
-                      <span>{expandedRows.has(row.id) ? 'Hide Details' : 'View Details'}</span>
-                      {expandedRows.has(row.id) ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedEmployeeForLogs(row)}
+                      className={styles.viewLogsBtnMobile}
+                    >
+                      <Eye size={15} />
+                      <span>View Logs ({row.logs.length})</span>
+                    </button>
                   </div>
-
-                  {expandedRows.has(row.id) && (
-                    <div className={styles.mobileCardExpanded} onClick={(e) => e.stopPropagation()}>
-                      <div className={styles.expandedHeader}>
-                        <span className={styles.expandedTitle}>Logged Tasks ({row.logs.length})</span>
-                      </div>
-                      {row.logs.length === 0 ? (
-                        <div className={styles.noLogs}>No tasks logged for this date.</div>
-                      ) : (
-                        <div className={styles.logsList}>
-                          {row.logs.map((log: any) => (
-                            <div key={log.id} className={styles.logCard}>
-                              <div className={styles.logCardTop}>
-                                <div className={styles.logCardMeta}>
-                                  <span className={styles.catBadge} style={{ backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>
-                                    {log.category}
-                                  </span>
-                                  <span className={styles.logTime}>
-                                    {format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')}
-                                  </span>
-                                  <span className={styles.logDuration}>
-                                    ({formatDuration(log.duration_minutes)})
-                                  </span>
-                                </div>
-                              </div>
-                              <div className={styles.logTitle}>{log.title || 'Untitled Task'}</div>
-                              {log.notes && (
-                                <div className={styles.logNotes}>{log.notes}</div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
                 </div>
               ))}
               {filteredData.length === 0 && (
@@ -395,6 +320,103 @@ export default function AdminEodLogs() {
             onPageChange={setCurrentPage}
           />
         </div>
+
+        {/* Pop-up Modal Window for All Logs */}
+        {selectedEmployeeForLogs && (
+          <div className={styles.modalOverlay} onClick={() => setSelectedEmployeeForLogs(null)}>
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+              <div className={styles.modalHeader}>
+                <div className={styles.modalHeaderLeft}>
+                  <div className="avatarBadge">
+                    {selectedEmployeeForLogs.full_name ? selectedEmployeeForLogs.full_name.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                  <div>
+                    <h3 className={styles.modalTitle}>
+                      {selectedEmployeeForLogs.full_name} 
+                      <span className="idBadge" style={{ marginLeft: '0.5rem', fontSize: '0.75rem' }}>{selectedEmployeeForLogs.employee_id}</span>
+                    </h3>
+                    <div className={styles.modalSubtitle}>
+                      <span>{date}</span> • <span>{selectedEmployeeForLogs.designation?.name || 'No Designation'}</span>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSelectedEmployeeForLogs(null)}
+                  className={styles.modalCloseBtn}
+                  aria-label="Close modal"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className={styles.modalSummaryBar}>
+                <div className={styles.summaryItem}>
+                  <span className={styles.summaryLabel}>Daily Status</span>
+                  <span className={styles.catBadge} style={{ backgroundColor: selectedEmployeeForLogs.daily_status === 'shift' ? 'var(--success-color)' : (selectedEmployeeForLogs.daily_status === 'Not Started' ? 'var(--warning-color)' : 'var(--category-break)') }}>
+                    {selectedEmployeeForLogs.daily_status}
+                  </span>
+                </div>
+                <div className={styles.summaryItem}>
+                  <span className={styles.summaryLabel}>Assigned Shift</span>
+                  <span className={styles.summaryValue}>{selectedEmployeeForLogs.shift_name}</span>
+                </div>
+                <div className={styles.summaryItem}>
+                  <span className={styles.summaryLabel}>Total Hours Logged</span>
+                  <span className={styles.summaryHours}>{selectedEmployeeForLogs.total_hours_logged} hrs</span>
+                </div>
+              </div>
+
+              <div className={styles.modalBody}>
+                <div className={styles.modalSectionTitle}>
+                  <span>Logged Tasks ({selectedEmployeeForLogs.logs.length})</span>
+                </div>
+                
+                {selectedEmployeeForLogs.logs.length === 0 ? (
+                  <div className={styles.noLogsModal}>
+                    <FileText size={36} style={{ color: 'var(--border-color)', marginBottom: '0.6rem' }} />
+                    <p style={{ margin: 0 }}>No tasks logged for this employee on {date}.</p>
+                  </div>
+                ) : (
+                  <div className={styles.modalLogsList}>
+                    {selectedEmployeeForLogs.logs.map((log: any) => (
+                      <div key={log.id} className={styles.logCard}>
+                        <div className={styles.logCardTop}>
+                          <div className={styles.logCardMeta}>
+                            <span className={styles.catBadge} style={{ backgroundColor: CATEGORY_COLORS[log.category] || CATEGORY_COLORS['Others'] }}>
+                              {log.category}
+                            </span>
+                            <span className={styles.logTime}>
+                              {format(parseISO(log.from_time), 'HH:mm')} - {format(parseISO(log.to_time), 'HH:mm')}
+                            </span>
+                            <span className={styles.logDuration}>
+                              ({formatDuration(log.duration_minutes)})
+                            </span>
+                          </div>
+                        </div>
+                        <div className={styles.logTitle}>{log.title || 'Untitled Task'}</div>
+                        {log.notes && (
+                          <div className={styles.logNotes}>{log.notes}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className={styles.modalFooter}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedEmployeeForLogs(null)}
+                  className="btn-outline"
+                  style={{ padding: '0.5rem 1.25rem', fontWeight: 600 }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

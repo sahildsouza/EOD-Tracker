@@ -205,47 +205,226 @@
   border-radius: var(--radius-sm);
 }
 
-/* Expanded Drawer (Desktop & Mobile) */
-.expandRow {
-  background-color: var(--bg-page) !important;
+/* View Logs Button (Desktop) */
+.viewLogsBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
 }
 
-.expandedContainer {
+.viewLogsBtn:hover {
+  border-color: var(--accent-color);
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--accent-color);
+}
+
+.viewLogsBadge {
+  background: var(--bg-page);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: all var(--transition-normal);
+}
+
+.viewLogsBtn:hover .viewLogsBadge {
+  background: var(--accent-color);
+  color: #fff;
+  border-color: var(--accent-color);
+}
+
+/* View Logs Button (Mobile) */
+.viewLogsBtnMobile {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--accent-color);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.viewLogsBtnMobile:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Pop-up Modal Window */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.25rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 680px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: scaleUp 0.2s ease-out;
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 1.25rem 1.5rem;
-  border-left: 3px solid var(--accent-color);
-  background-color: var(--bg-page);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-page);
+}
+
+.modalHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+}
+
+.modalSubtitle {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 0.2rem;
+}
+
+.modalCloseBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-normal);
+}
+
+.modalCloseBtn:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.modalSummaryBar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: rgba(59, 130, 246, 0.04);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.summaryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.summaryLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.summaryValue {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.summaryHours {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.modalBody {
+  padding: 1.25rem 1.5rem;
+  overflow-y: auto;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
 }
 
-.expandedHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 0.6rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.expandedTitle {
-  font-size: 0.85rem;
+.modalSectionTitle {
+  font-size: 0.82rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  margin-bottom: 0.2rem;
 }
 
-.expandedTotal {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--accent-color);
+.modalLogsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.noLogs {
-  font-size: 0.85rem;
+.noLogsModal {
+  padding: 3rem 1.5rem;
+  text-align: center;
   color: var(--text-secondary);
-  padding: 1rem 0;
-  font-style: italic;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modalFooter {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-page);
+  display: flex;
+  justify-content: flex-end;
 }
 
 .logsList {
@@ -399,22 +578,7 @@
   font-weight: 600;
 }
 
-.mobileExpandIndicator {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  color: var(--accent-color);
-  font-weight: 600;
-}
 
-.mobileCardExpanded {
-  margin-top: 0.35rem;
-  padding-top: 0.65rem;
-  border-top: 1px dashed var(--border-color);
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
 
 .noDataCard {
   text-align: center;
@@ -495,12 +659,18 @@
     width: 100%;
   }
 
-  .expandedContainer {
+  .modalContent {
+    max-height: 90vh;
+  }
+
+  .modalHeader, .modalBody, .modalFooter {
     padding: 1rem;
   }
 
-  .logsList {
-    max-height: 300px;
+  .modalSummaryBar {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
   }
 
   .paginationWrapper {
