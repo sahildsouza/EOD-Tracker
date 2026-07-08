@@ -397,7 +397,7 @@ export default function AdminEmployees() {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
               <div className={styles.panelBody}>
                 {error && <div style={{ color: 'var(--danger-color)', marginBottom: '1rem', fontSize: '0.875rem', fontWeight: 600 }}>{error}</div>}
 
