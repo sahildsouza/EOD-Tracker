@@ -165,7 +165,7 @@ export default function AdminSettings() {
           onClick={() => setActiveTab('shifts')}
         >
           <Clock size={18} />
-          <span>Work Shifts Schedule</span>
+          <span>Manage Shift</span>
           <span className={styles.tabCount}>{shifts.length}</span>
         </button>
 
@@ -175,7 +175,7 @@ export default function AdminSettings() {
           onClick={() => setActiveTab('designations')}
         >
           <Briefcase size={18} />
-          <span>Role Designations Directory</span>
+          <span>Manage Designation</span>
           <span className={styles.tabCount}>{designations.length}</span>
         </button>
       </div>
