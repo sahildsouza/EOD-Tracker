@@ -166,7 +166,6 @@ export default function AdminSettings() {
         >
           <Clock size={18} />
           <span>Manage Shift</span>
-          <span className={styles.tabCount}>{shifts.length}</span>
         </button>
 
         <button 
@@ -176,7 +175,6 @@ export default function AdminSettings() {
         >
           <Briefcase size={18} />
           <span>Manage Designation</span>
-          <span className={styles.tabCount}>{designations.length}</span>
         </button>
       </div>
 
