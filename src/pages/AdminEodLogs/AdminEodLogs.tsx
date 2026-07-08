@@ -217,7 +217,7 @@ export default function AdminEodLogs() {
                     <th>Status</th>
                     <th>Shift</th>
                     <th>Total Hours</th>
-                    <th style={{ textAlign: 'right' }}>Logs</th>
+                    <th>Logs</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -244,7 +244,7 @@ export default function AdminEodLogs() {
                       </td>
                       <td>{row.shift_name}</td>
                       <td style={{ fontWeight: 600 }}>{row.total_hours_logged} hrs</td>
-                      <td style={{ textAlign: 'right' }}>
+                      <td>
                         <button
                           type="button"
                           onClick={() => setSelectedEmployeeForLogs(row)}
