@@ -5,7 +5,7 @@ import { getCurrentDateIST } from '../../utils/dateUtils';
 import { calculateMergedMinutes, isDateLocked, formatDuration } from '../../utils/timeUtils';
 import styles from './EmployeeCalendar.module.css';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, addMonths, subMonths, isToday, parseISO, isAfter, isSameDay } from 'date-fns';
-import { ChevronLeft, ChevronRight, Eye, EyeOff, Clock, FileText, Calendar, BadgeCheck } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Eye, EyeOff, Clock, FileText, Calendar, BadgeCheck, X } from 'lucide-react';
 import { formatInTimeZone } from 'date-fns-tz';
 import VisualTimeline from '../../components/Dashboard/VisualTimeline';
 
@@ -18,10 +18,12 @@ export default function EmployeeCalendar() {
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [expandedLogId, setExpandedLogId] = useState<string | null>(null);
+  const [selectedLogDetail, setSelectedLogDetail] = useState<any | null>(null);
 
   // Reset expanded log when changing selected date
   useEffect(() => {
     setExpandedLogId(null);
+    setSelectedLogDetail(null);
   }, [selectedDate]);
 
   useEffect(() => {
@@ -168,82 +170,39 @@ export default function EmployeeCalendar() {
                           <FileText size={16} style={{ color: 'var(--accent-color)' }} />
                           <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Logged Activities</h4>
                         </div>
-                        <div className={styles.activitiesContainer}>
+                        <div className={styles.activitiesTableContainer}>
                           {selectedLogs.length === 0 ? (
-                            <p className="text-secondary" style={{ fontSize: '0.875rem' }}>No activities logged for this day.</p>
+                            <div style={{ padding: '1rem', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>No activities logged for this day.</div>
                           ) : (
-                            selectedLogs.map(l => {
-                              const isExpanded = expandedLogId === l.id;
-                              return (
-                                <div 
-                                  key={l.id} 
-                                  style={{ 
-                                    border: isExpanded ? '1px solid var(--accent-color)' : '1px solid var(--border-color)', 
-                                    borderRadius: '10px', 
-                                    overflow: 'hidden',
-                                    background: isExpanded ? 'linear-gradient(135deg, var(--bg-surface) 0%, rgba(59, 130, 246, 0.04) 100%)' : 'var(--bg-surface)',
-                                    transition: 'all 0.2s ease',
-                                    boxShadow: isExpanded ? '0 4px 12px rgba(59, 130, 246, 0.08)' : '0 1px 3px rgba(0,0,0,0.02)'
-                                  }}
-                                >
-                                  {/* Log Header */}
-                                  <div 
-                                    style={{ 
-                                      display: 'flex', flexDirection: 'column', gap: '0.4rem',
-                                      padding: '0.85rem 1rem', 
-                                      cursor: 'pointer',
-                                      userSelect: 'none'
-                                    }}
-                                    onClick={() => setExpandedLogId(isExpanded ? null : l.id)}
-                                  >
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                                        <span style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.25rem 0.65rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.03em', boxShadow: '0 2px 6px rgba(0,0,0,0.1)' }}>
-                                          {l.category}
-                                        </span>
-                                      </div>
-                                      <div style={{ color: isExpanded ? 'var(--accent-color)' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s ease', transform: isExpanded ? 'scale(1.1)' : 'none' }}>
-                                        {isExpanded ? <EyeOff size={18} /> : <Eye size={18} />}
-                                      </div>
-                                    </div>
-
-                                    {!isExpanded && (
-                                      <>
-                                        <div style={{ fontSize: '0.875rem', color: 'var(--text-primary)', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%', paddingTop: '0.1rem' }}>
-                                          {l.title}
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-secondary)', fontSize: '0.8rem', fontWeight: 500 }}>
-                                          <Clock size={13} style={{ color: 'var(--accent-color)' }} />
-                                          <span>{formatInTimeZone(parseISO(l.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(l.to_time), 'Asia/Kolkata', 'HH:mm')} ({formatDuration(l.duration_minutes)})</span>
-                                        </div>
-                                      </>
-                                    )}
-                                  </div>
-                                  
-                                  {/* Log Details */}
-                                  {isExpanded && (
-                                    <div style={{ padding: '1.25rem 1rem 1rem', borderTop: '1px dashed var(--border-color)', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                                      <div>
-                                        <h5 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, lineHeight: 1.4 }}>{l.title}</h5>
-                                      </div>
-                                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-color)', fontSize: '0.85rem', fontWeight: 600, background: 'rgba(59, 130, 246, 0.08)', padding: '0.4rem 0.75rem', borderRadius: '6px', width: 'fit-content' }}>
-                                        <Clock size={15} />
-                                        <span>{formatInTimeZone(parseISO(l.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(l.to_time), 'Asia/Kolkata', 'HH:mm')} ({formatDuration(l.duration_minutes)})</span>
-                                      </div>
-                                      {l.notes && (
-                                        <div style={{ background: 'var(--bg-page)', borderLeft: '3px solid var(--accent-color)', padding: '0.75rem 1rem', borderRadius: '4px 8px 8px 4px', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                                            <FileText size={13} style={{ color: 'var(--accent-color)' }} />
-                                            <span>Activity Notes</span>
-                                          </div>
-                                          <div style={{ fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>{l.notes}</div>
-                                        </div>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              );
-                            })
+                            <table className={styles.activitiesTable}>
+                              <thead>
+                                <tr>
+                                  <th>Category</th>
+                                  <th style={{ textAlign: 'right' }}>Details</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {selectedLogs.map(l => (
+                                  <tr key={l.id}>
+                                    <td>
+                                      <span style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.25rem 0.65rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.03em', display: 'inline-block' }}>
+                                        {l.category}
+                                      </span>
+                                    </td>
+                                    <td style={{ textAlign: 'right' }}>
+                                      <button 
+                                        className={styles.viewLogBtn}
+                                        onClick={() => setSelectedLogDetail(l)}
+                                        title="View all details about this log"
+                                      >
+                                        <Eye size={15} />
+                                        <span>View</span>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
                           )}
                         </div>
                       </div>
@@ -257,6 +216,50 @@ export default function EmployeeCalendar() {
           )}
         </div>
       </div>
+
+      {/* Log Details Modal */}
+      {selectedLogDetail && (
+        <div className={styles.modalOverlay} onClick={() => setSelectedLogDetail(null)}>
+          <div className={styles.modalCard} onClick={e => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h3>Activity Details</h3>
+              <button className={styles.closeBtn} onClick={() => setSelectedLogDetail(null)}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className={styles.modalBody}>
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.35rem' }}>Category</div>
+                <span style={{ backgroundColor: `var(--category-${selectedLogDetail.category.toLowerCase()})`, padding: '0.3rem 0.75rem', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.03em', display: 'inline-block' }}>
+                  {selectedLogDetail.category}
+                </span>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.35rem' }}>Activity Title</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.4 }}>{selectedLogDetail.title}</div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.35rem' }}>Time Range & Duration</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-color)', fontSize: '0.9rem', fontWeight: 600, background: 'rgba(59, 130, 246, 0.08)', padding: '0.5rem 0.85rem', borderRadius: '8px', width: 'fit-content' }}>
+                  <Clock size={16} />
+                  <span>{formatInTimeZone(parseISO(selectedLogDetail.from_time), 'Asia/Kolkata', 'HH:mm')} - {formatInTimeZone(parseISO(selectedLogDetail.to_time), 'Asia/Kolkata', 'HH:mm')} ({formatDuration(selectedLogDetail.duration_minutes)})</span>
+                </div>
+              </div>
+
+              {selectedLogDetail.notes && (
+                <div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.35rem' }}>Activity Notes</div>
+                  <div style={{ background: 'var(--bg-page)', borderLeft: '3px solid var(--accent-color)', padding: '0.85rem 1rem', borderRadius: '4px 8px 8px 4px', fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>
+                    {selectedLogDetail.notes}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   </div>
 );
