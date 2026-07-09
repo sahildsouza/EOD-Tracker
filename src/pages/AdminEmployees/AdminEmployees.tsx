@@ -173,9 +173,28 @@ export default function AdminEmployees() {
     setLoading(false);
   };
 
-  const handleResetPassword = async (empId: string) => {
-    // Requires email.
-    alert('Password reset link sent (simulated).');
+  const handleResetPassword = async (empId: string, empName?: string) => {
+    if (!confirm(`Are you sure you want to reset the password for ${empName || 'this user'} to the default ("Password123!")?\n\nThey will be required to set a new password upon their next login.`)) return;
+
+    setLoading(true);
+    try {
+      const { error: rpcError } = await supabase.rpc('admin_reset_user_password', { target_user_id: empId, new_password: 'Password123!' });
+      if (rpcError) {
+        const { error: profileError } = await supabase.from('profiles').update({ must_change_password: true }).eq('id', empId);
+        if (profileError) {
+          alert(`Failed to reset password: ${rpcError.message}`);
+        } else {
+          alert(`Notice: Database RPC 'admin_reset_user_password' returned error: "${rpcError.message}". However, the user's mandatory password change flag was set to true. Please apply the latest database migration.`);
+        }
+      } else {
+        await fetchData();
+        alert('Password successfully reset to default ("Password123!"). The user must set a new password upon login.');
+      }
+    } catch (err: any) {
+      alert(`Error resetting password: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -342,8 +361,8 @@ export default function AdminEmployees() {
                             <Edit size={16} />
                           </button>
                           <button 
-                            onClick={() => handleResetPassword(emp.id)} 
-                            title="Reset Password"
+                            onClick={() => handleResetPassword(emp.id, emp.full_name)} 
+                            title="Reset Password to Default"
                             style={{ background: 'transparent', border: 'none', padding: '0.45rem', borderRadius: '6px', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', transition: 'all 0.15s ease' }}
                             onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'var(--bg-page)'; e.currentTarget.style.color = '#F59E0B'; }}
                             onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
