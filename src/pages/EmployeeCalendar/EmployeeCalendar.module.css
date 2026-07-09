@@ -200,7 +200,7 @@
   top: 0;
   background-color: var(--bg-page);
   z-index: 5;
-  padding: 0.55rem 0.35rem;
+  padding: 0.6rem 0.85rem;
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -208,7 +208,7 @@
 }
 
 .tableRow {
-  padding: 0.55rem 0.35rem;
+  padding: 0.6rem 0.85rem;
   font-size: 0.85rem;
   color: var(--text-primary);
   transition: background-color 0.2s ease;
@@ -402,7 +402,7 @@
   }
 
   .tableHeader, .tableRow {
-    padding: 0.5rem 0.35rem;
+    padding: 0.55rem 0.65rem;
   }
 
   .viewLogBtn {
