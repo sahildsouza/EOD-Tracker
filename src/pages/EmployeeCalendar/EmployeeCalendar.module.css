@@ -157,7 +157,7 @@
   width: 100%;
   max-height: 250px;
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: hidden;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   background-color: var(--bg-surface);
@@ -180,65 +180,75 @@
 }
 
 .activitiesTable {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
   box-sizing: border-box;
 }
 
+.activitiesTable thead,
+.activitiesTable tbody {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.activitiesTable tr {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 56px 36px;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--border-color);
+}
+
 .activitiesTable th {
-  position: sticky;
-  top: 0;
-  background-color: var(--bg-page);
   padding: 0.55rem 0.35rem;
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--text-secondary);
-  border-bottom: 1px solid var(--border-color);
-  z-index: 5;
   text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .activitiesTable td {
   padding: 0.55rem 0.35rem;
-  border-bottom: 1px solid var(--border-color);
   font-size: 0.85rem;
   color: var(--text-primary);
-  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .activitiesTable th:first-child,
 .activitiesTable td:first-child {
-  width: 55%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  padding-right: 0.2rem;
+  display: flex;
+  align-items: center;
 }
 
 .activitiesTable th:nth-child(2),
 .activitiesTable td:nth-child(2) {
-  width: 25%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-left: 0.2rem;
-  padding-right: 0.2rem;
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-secondary);
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
 }
 
 .activitiesTable th:last-child,
 .activitiesTable td:last-child {
-  width: 20%;
-  white-space: nowrap;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   padding-left: 0.2rem;
-  padding-right: 0.2rem;
-  text-align: center;
 }
 
-.activitiesTable tr:last-child td {
+.activitiesTable tr:last-child {
   border-bottom: none;
 }
 
@@ -251,8 +261,8 @@
   color: var(--accent-color);
   border: 1px solid rgba(59, 130, 246, 0.2);
   border-radius: 6px;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   padding: 0;
   cursor: pointer;
   display: inline-flex;
