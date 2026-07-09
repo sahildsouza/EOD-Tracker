@@ -174,24 +174,22 @@ export default function EmployeeCalendar() {
                           {selectedLogs.length === 0 ? (
                             <div style={{ padding: '1rem', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>No activities logged for this day.</div>
                           ) : (
-                            <table className={styles.activitiesTable}>
-                              <thead>
-                                <tr>
-                                  <th>Category</th>
-                                  <th>Duration</th>
-                                  <th style={{ textAlign: 'right' }}>Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
+                            <div className={styles.activitiesTable}>
+                              <div className={styles.tableHeader}>
+                                <div className={styles.colCategory}>Category</div>
+                                <div className={styles.colDuration}>Duration</div>
+                                <div className={styles.colAction}>Action</div>
+                              </div>
+                              <div className={styles.tableBody}>
                                 {selectedLogs.map(l => (
-                                  <tr key={l.id}>
-                                    <td>
+                                  <div key={l.id} className={styles.tableRow}>
+                                    <div className={styles.colCategory}>
                                       <span style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.2rem 0.45rem', borderRadius: '5px', fontSize: '0.68rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.02em', display: 'inline-block', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                                         {l.category}
                                       </span>
-                                    </td>
-                                    <td>{formatDuration(l.duration_minutes)}</td>
-                                    <td style={{ textAlign: 'right' }}>
+                                    </div>
+                                    <div className={styles.colDuration}>{formatDuration(l.duration_minutes)}</div>
+                                    <div className={styles.colAction}>
                                       <button 
                                         className={styles.viewLogBtn}
                                         onClick={() => setSelectedLogDetail(l)}
@@ -199,11 +197,11 @@ export default function EmployeeCalendar() {
                                       >
                                         <Eye size={16} />
                                       </button>
-                                    </td>
-                                  </tr>
+                                    </div>
+                                  </div>
                                 ))}
-                              </tbody>
-                            </table>
+                              </div>
+                            </div>
                           )}
                         </div>
                       </div>
