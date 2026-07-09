@@ -182,7 +182,7 @@
 .activitiesTable {
   width: 100%;
   border-collapse: collapse;
-  table-layout: auto;
+  table-layout: fixed;
   box-sizing: border-box;
 }
 
@@ -190,7 +190,7 @@
   position: sticky;
   top: 0;
   background-color: var(--bg-page);
-  padding: 0.6rem 0.5rem;
+  padding: 0.55rem 0.35rem;
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -201,7 +201,7 @@
 }
 
 .activitiesTable td {
-  padding: 0.65rem 0.5rem;
+  padding: 0.55rem 0.35rem;
   border-bottom: 1px solid var(--border-color);
   font-size: 0.85rem;
   color: var(--text-primary);
@@ -210,28 +210,30 @@
 
 .activitiesTable th:first-child,
 .activitiesTable td:first-child {
-  max-width: 130px;
+  width: auto;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .activitiesTable th:nth-child(2),
 .activitiesTable td:nth-child(2) {
-  width: 1%;
+  width: 58px;
   white-space: nowrap;
-  padding-left: 0.35rem;
-  padding-right: 0.35rem;
-  font-size: 0.78rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-secondary);
 }
 
 .activitiesTable th:last-child,
 .activitiesTable td:last-child {
-  width: 1%;
+  width: 42px;
   white-space: nowrap;
-  padding-left: 0.35rem;
-  padding-right: 0.35rem;
-  text-align: right;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  text-align: center;
 }
 
 .activitiesTable tr:last-child td {
