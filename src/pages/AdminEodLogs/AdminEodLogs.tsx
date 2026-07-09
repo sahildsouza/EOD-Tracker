@@ -205,9 +205,7 @@ export default function AdminEodLogs() {
         </div>
 
         {loading ? <Loader message="Fetching EOD logs..." /> : (
-          <>
-            {/* Desktop Table View */}
-            <div className={styles.desktopTableWrapper}>
+            <div className={styles.tableContainer}>
               <table className={styles.table}>
                 <thead>
                   <tr>
@@ -263,53 +261,6 @@ export default function AdminEodLogs() {
                 </tbody>
               </table>
             </div>
-
-            {/* Mobile Cards View (Zero Horizontal Scrolling!) */}
-            <div className={styles.mobileCardsWrapper}>
-              {paginatedData.map(row => (
-                <div key={row.id} className={styles.mobileCard}>
-                  <div className={styles.mobileCardHeader}>
-                    <div className={styles.mobileCardUser}>
-                      <div className="avatarBadge">
-                        {row.full_name ? row.full_name.charAt(0).toUpperCase() : 'U'}
-                      </div>
-                      <div className={styles.mobileUserInfo}>
-                        <div className={styles.mobileUserName}>{row.full_name}</div>
-                        <span className="idBadge">{row.employee_id}</span>
-                      </div>
-                    </div>
-                    <div className={styles.mobileCardRight}>
-                      <span className={styles.catBadge} style={{ backgroundColor: row.daily_status === 'shift' ? 'var(--success-color)' : (row.daily_status === 'Not Started' ? 'var(--warning-color)' : 'var(--category-break)') }}>
-                        {row.daily_status}
-                      </span>
-                      <div className={styles.mobileHours}>{row.total_hours_logged} hrs</div>
-                    </div>
-                  </div>
-
-                  <div className={styles.mobileCardSub}>
-                    <span>{row.designation?.name || 'No Designation'}</span>
-                    <span>•</span>
-                    <span>{row.shift_name}</span>
-                  </div>
-
-                  <div className={styles.mobileCardFooter}>
-                    <span className={styles.mobileLogsCount}>{row.logs.length} {row.logs.length === 1 ? 'task' : 'tasks'} logged</span>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedEmployeeForLogs(row)}
-                      className={styles.viewLogsBtnMobile}
-                    >
-                      <Eye size={15} />
-                      <span>View Logs ({row.logs.length})</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
-              {filteredData.length === 0 && (
-                <div className={styles.noDataCard}>No data found for selected criteria.</div>
-              )}
-            </div>
-          </>
         )}
 
         <div className={styles.paginationWrapper}>

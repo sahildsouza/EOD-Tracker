@@ -154,8 +154,8 @@
   border-radius: var(--radius-md);
 }
 
-/* Desktop Table Wrapper */
-.desktopTableWrapper {
+/* Table Wrapper */
+.tableContainer {
   width: 100%;
   overflow-x: auto;
   touch-action: pan-y pan-x;
@@ -619,13 +619,6 @@
 }
 
 @media (max-width: 768px) {
-  .desktopTableWrapper {
-    display: none !important;
-  }
-
-  .mobileCardsWrapper {
-    display: flex !important;
-  }
 
   .toolbar {
     padding: 1rem;
