@@ -160,7 +160,7 @@ export default function EmployeeCalendar() {
                   {selectedStatus.status === 'shift' && (
                     <>
                       <div>
-                        <VisualTimeline entries={selectedLogs} shiftStart={selectedStatus.shift?.start_time} shiftEnd={selectedStatus.shift?.end_time} />
+                        <VisualTimeline entries={selectedLogs} shiftStart={selectedStatus.shift?.start_time} shiftEnd={selectedStatus.shift?.end_time} dateStr={selectedStr || undefined} />
                       </div>
                       
                       <div>
@@ -168,7 +168,7 @@ export default function EmployeeCalendar() {
                           <FileText size={16} style={{ color: 'var(--accent-color)' }} />
                           <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Logged Activities</h4>
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        <div className={styles.activitiesContainer}>
                           {selectedLogs.length === 0 ? (
                             <p className="text-secondary" style={{ fontSize: '0.875rem' }}>No activities logged for this day.</p>
                           ) : (

@@ -6,8 +6,9 @@ import { getCurrentDateIST } from '../../utils/dateUtils';
 
 interface VisualTimelineProps {
   entries: LogEntry[];
-  shiftStart: string; // HH:mm:ss
-  shiftEnd: string; // HH:mm:ss
+  shiftStart?: string; // HH:mm:ss
+  shiftEnd?: string; // HH:mm:ss
+  dateStr?: string; // yyyy-MM-dd
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -19,11 +20,22 @@ const CATEGORY_COLORS: Record<string, string> = {
   Others: 'var(--category-others)',
 };
 
-export default function VisualTimeline({ entries, shiftStart, shiftEnd }: VisualTimelineProps) {
-  const today = getCurrentDateIST();
-  
-  const baseStart = parseISO(`${today}T${shiftStart || '09:00:00'}+05:30`);
-  const baseEnd = parseISO(`${today}T${shiftEnd || '18:00:00'}+05:30`);
+export default function VisualTimeline({ entries, shiftStart, shiftEnd, dateStr }: VisualTimelineProps) {
+  const targetDate = useMemo(() => {
+    if (dateStr) return dateStr;
+    if (entries.length > 0 && (entries[0] as any).date) return (entries[0] as any).date;
+    if (entries.length > 0 && entries[0].from_time) return entries[0].from_time.slice(0, 10);
+    return getCurrentDateIST();
+  }, [dateStr, entries]);
+
+  const baseStart = useMemo(() => parseISO(`${targetDate}T${shiftStart || '09:00:00'}+05:30`), [targetDate, shiftStart]);
+  const baseEnd = useMemo(() => {
+    let end = parseISO(`${targetDate}T${shiftEnd || '18:00:00'}+05:30`);
+    if (end <= baseStart) {
+      end = new Date(end.getTime() + 24 * 60 * 60 * 1000);
+    }
+    return end;
+  }, [targetDate, shiftEnd, baseStart]);
 
   const windowStart = useMemo(() => {
     if (!entries.length) return baseStart;
