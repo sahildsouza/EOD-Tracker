@@ -186,7 +186,7 @@ export default function EmployeeCalendar() {
                                 {selectedLogs.map(l => (
                                   <tr key={l.id}>
                                     <td>
-                                      <span style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.25rem 0.65rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.03em', display: 'inline-block' }}>
+                                      <span style={{ backgroundColor: `var(--category-${l.category.toLowerCase()})`, padding: '0.2rem 0.45rem', borderRadius: '5px', fontSize: '0.68rem', fontWeight: 700, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.02em', display: 'inline-block', maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
                                         {l.category}
                                       </span>
                                     </td>
