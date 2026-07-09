@@ -178,7 +178,8 @@ export default function EmployeeCalendar() {
                               <thead>
                                 <tr>
                                   <th>Category</th>
-                                  <th style={{ textAlign: 'right' }}>Details</th>
+                                  <th>Duration</th>
+                                  <th style={{ textAlign: 'right' }}>Action</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -189,14 +190,14 @@ export default function EmployeeCalendar() {
                                         {l.category}
                                       </span>
                                     </td>
+                                    <td>{formatDuration(l.duration_minutes)}</td>
                                     <td style={{ textAlign: 'right' }}>
                                       <button 
                                         className={styles.viewLogBtn}
                                         onClick={() => setSelectedLogDetail(l)}
                                         title="View all details about this log"
                                       >
-                                        <Eye size={15} />
-                                        <span>View</span>
+                                        <Eye size={16} />
                                       </button>
                                     </td>
                                   </tr>

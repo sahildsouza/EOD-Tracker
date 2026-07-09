@@ -208,9 +208,18 @@
   vertical-align: middle;
 }
 
+.activitiesTable th:nth-child(2),
+.activitiesTable td:nth-child(2) {
+  width: 90px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
 .activitiesTable th:last-child,
 .activitiesTable td:last-child {
-  width: 85px;
+  width: 65px;
+  text-align: right;
 }
 
 .activitiesTable tr:last-child td {
