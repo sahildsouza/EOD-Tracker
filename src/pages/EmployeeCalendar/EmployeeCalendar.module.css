@@ -19,7 +19,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) 420px;
     gap: 1.5rem;
-    align-items: start;
+    align-items: stretch;
   }
 }
 
@@ -29,6 +29,8 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
 }
 
 .calendarHeader {
@@ -150,6 +152,8 @@
   padding: 1.5rem;
   height: 100%;
   box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
 }
 
 /* Scrollable Logged Activities Table Wrapper */
