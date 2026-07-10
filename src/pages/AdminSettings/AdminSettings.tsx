@@ -242,8 +242,9 @@ export default function AdminSettings() {
           </div>
 
           {/* Right Panel: Shift Editor Form */}
-          <div className={`${styles.editorPanel} ${editingShiftId ? styles.isEditing : ''}`}>
-            <div className={styles.editorHeader}>
+          <div className={styles.editorColumn}>
+            <div className={`${styles.editorPanel} ${editingShiftId ? styles.isEditing : ''}`}>
+              <div className={styles.editorHeader}>
               <h3 className={styles.editorTitle}>
                 {editingShiftId ? <><Edit size={18} /> Editing Shift Schedule</> : <><PlusCircle size={18} /> Create New Shift</>}
               </h3>
@@ -301,6 +302,7 @@ export default function AdminSettings() {
               </div>
             </form>
           </div>
+        </div>
         </div>
       ) : (
         <div className={styles.workspaceGrid}>
@@ -363,8 +365,9 @@ export default function AdminSettings() {
           </div>
 
           {/* Right Panel: Designation Editor Form */}
-          <div className={`${styles.editorPanel} ${editingDesigId ? styles.isEditing : ''}`}>
-            <div className={styles.editorHeader}>
+          <div className={styles.editorColumn}>
+            <div className={`${styles.editorPanel} ${editingDesigId ? styles.isEditing : ''}`}>
+              <div className={styles.editorHeader}>
               <h3 className={styles.editorTitle}>
                 {editingDesigId ? <><Edit size={18} /> Editing Role Designation</> : <><PlusCircle size={18} /> Create New Role</>}
               </h3>
@@ -399,6 +402,7 @@ export default function AdminSettings() {
               </div>
             </form>
           </div>
+        </div>
         </div>
       )}
     </div>
