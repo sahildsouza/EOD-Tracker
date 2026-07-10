@@ -15,8 +15,9 @@ export default function EmployeeGuard({ children }: { children: React.ReactNode 
     return <div className="page-container">Loading Daily Status...</div>;
   }
 
-  // If no status is selected for today, redirect to /daily-status
-  if (!status && window.location.pathname !== '/daily-status') {
+  // If no status is selected for today and not skipped, redirect to /daily-status
+  const isSkipped = sessionStorage.getItem('skip_daily_status') === 'true';
+  if (!status && !isSkipped && window.location.pathname !== '/daily-status') {
     return <Navigate to="/daily-status" replace />;
   }
 

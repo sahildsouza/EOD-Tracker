@@ -12,6 +12,7 @@
 }
 
 .card {
+  position: relative;
   width: 100%;
   max-width: 500px;
   background: var(--bg-surface);
@@ -20,6 +21,27 @@
   padding: var(--space-8) var(--space-6);
   box-shadow: var(--shadow-xl);
   text-align: center;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
 }
 
 @media (max-width: 768px) {

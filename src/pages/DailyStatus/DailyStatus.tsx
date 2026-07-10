@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDailyStatus } from '../../hooks/useDailyStatus';
 import { supabase } from '../../lib/supabase';
 import styles from './DailyStatus.module.css';
-import { Briefcase, Palmtree, Coffee, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Briefcase, Palmtree, Coffee, Sparkles, CheckCircle2, X } from 'lucide-react';
 
 export default function DailyStatus() {
   const navigate = useNavigate();
@@ -46,6 +46,7 @@ export default function DailyStatus() {
     setSubmitting(true);
     setError('');
     try {
+      sessionStorage.removeItem('skip_daily_status');
       await updateStatus(selectedStatus, selectedStatus === 'shift' ? selectedShift : undefined);
       navigate('/dashboard', { replace: true });
     } catch (err: any) {
@@ -54,11 +55,24 @@ export default function DailyStatus() {
     }
   };
 
+  const handleClose = () => {
+    sessionStorage.setItem('skip_daily_status', 'true');
+    navigate('/dashboard', { replace: true });
+  };
+
   if (isLoading) return null;
 
   return (
     <div className={styles.container}>
       <div className={styles.card}>
+        <button 
+          type="button" 
+          onClick={handleClose} 
+          className={styles.closeBtn}
+          title="Close and skip status submission for now"
+        >
+          <X size={20} />
+        </button>
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.75rem' }}>
           <div style={{ background: 'rgba(59, 130, 246, 0.15)', padding: '0.85rem', borderRadius: '50%', color: 'var(--accent-color)', display: 'flex' }}>
             <Sparkles size={32} />
