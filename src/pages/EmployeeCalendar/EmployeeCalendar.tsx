@@ -138,8 +138,8 @@ export default function EmployeeCalendar() {
                 <p className="text-secondary">No status recorded for this day.</p>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1rem' }}>
-                    <div style={{ padding: '0.85rem 1rem', background: 'linear-gradient(135deg, var(--bg-page) 0%, rgba(59, 130, 246, 0.06) 100%)', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'stretch' }}>
+                    <div style={{ padding: '0.85rem 1.25rem', background: 'linear-gradient(135deg, var(--bg-page) 0%, rgba(59, 130, 246, 0.06) 100%)', borderRadius: '10px', border: '1px solid var(--border-color)', width: 'fit-content', minWidth: '130px' }}>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.35rem', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                         <BadgeCheck size={14} style={{ color: 'var(--accent-color)' }} />
                         <span>Status</span>
@@ -147,7 +147,7 @@ export default function EmployeeCalendar() {
                       <div style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-primary)', textTransform: 'capitalize' }}>{selectedStatus.status}</div>
                     </div>
                     {selectedStatus.status === 'shift' && (
-                      <div style={{ padding: '0.85rem 1rem', background: 'linear-gradient(135deg, var(--bg-page) 0%, rgba(59, 130, 246, 0.06) 100%)', borderRadius: '10px', border: '1px solid var(--border-color)' }}>
+                      <div style={{ padding: '0.85rem 1.25rem', background: 'linear-gradient(135deg, var(--bg-page) 0%, rgba(59, 130, 246, 0.06) 100%)', borderRadius: '10px', border: '1px solid var(--border-color)', width: 'fit-content', minWidth: '130px' }}>
                         <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600, marginBottom: '0.35rem', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                           <Clock size={14} style={{ color: 'var(--accent-color)' }} />
                           <span>Hours Logged</span>
